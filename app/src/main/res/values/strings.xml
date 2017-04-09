@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Mobile Sensing</string>
+
+    <string-array name="gender_array">
+        <item>Weiblich</item>
+        <item>Männlich</item>
+        <item>Anderes</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,47 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    tools:context="de.dennis.mobilesensing.MainActivity">
+
+    <TextView
+        android:layout_width="164dp"
+        android:layout_height="128dp"
+        android:text="Hier Webview zu ODash"
+        android:id="@+id/textView"
+        android:layout_gravity="center"
+        android:textSize="20dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="right|top">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSettings"
+            android:layout_gravity="right|top"
+            android:src="@android:drawable/ic_menu_manage"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:id="@+id/btnLogout"
+            android:layout_alignBottom="@+id/btnSettings"
+            android:layout_toStartOf="@+id/btnSettings" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test"
+            android:id="@+id/btnTest"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/btnLogout" />
+
+    </RelativeLayout>
+</FrameLayout>
