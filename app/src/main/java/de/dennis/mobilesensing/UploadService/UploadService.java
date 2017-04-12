@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Dennis on 07.04.2017.
@@ -22,7 +23,7 @@ public class UploadService {
 
         Calendar c = Calendar.getInstance();
         c.set(c.YEAR,c.MONTH,c.DATE,23,59,59);
-        Long firstTime = c.getTime().getTime();//start at 23:59:59 today
+        long firstTime = c.getTime().getTime();//start at 23:59:59 today
 
         am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
         am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,

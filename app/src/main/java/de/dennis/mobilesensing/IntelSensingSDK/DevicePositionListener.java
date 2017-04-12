@@ -22,7 +22,7 @@ public class DevicePositionListener implements com.intel.context.sensing.Context
             Log.d(LOG_TAG, "Received value: " + ((DevicePositionItem) state).getType().name());
             SharedPreferences prefs = Application.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
             String devicePosition = ((DevicePositionItem) state).getType().name();
-            if(!prefs.getString("DevicePosition","").equals(devicePosition))
+            if(!prefs.getString("DevicePosition","").equals(devicePosition) && !devicePosition.equals("UNKNOWN") )
             {
                 StorageHelper.openDBConnection().save2DevicePositionHistory((DevicePositionItem) state);
                 SharedPreferences.Editor editor = prefs.edit();

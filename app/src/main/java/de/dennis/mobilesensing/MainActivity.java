@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import de.dennis.mobilesensing.UploadService.BaasBoxUploader;
+import de.dennis.mobilesensing.UploadService.UploadListener;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -27,7 +28,9 @@ public class MainActivity extends AppCompatActivity {
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BaasBoxUploader.startUpload(0);
+                //BaasBoxUploader.startUpload(0);
+                Intent i = new Intent(Application.getContext(), UploadListener.class);
+                sendBroadcast(i);
             }
         });
         btnSettings = (ImageButton) findViewById(R.id.btnSettings);
