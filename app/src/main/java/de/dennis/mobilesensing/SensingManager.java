@@ -137,7 +137,7 @@ public class SensingManager {
             }
             //enable Running Applications
             if(prefs.getBoolean("Apps",true)){
-                mRunningAppService.startSensingRunningApps(Application.getContext(), 60 * 1000);
+                mRunningAppService.startSensingRunningApps(Application.getContext(), 10 * 1000);
                 Log.d(TAG, "App-Tracking enabled");
             }else{
                 mRunningAppService.stopSensingRunningApplications();

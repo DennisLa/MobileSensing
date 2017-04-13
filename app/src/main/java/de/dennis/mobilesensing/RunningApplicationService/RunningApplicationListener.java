@@ -29,21 +29,47 @@ public class RunningApplicationListener extends BroadcastReceiver {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) { //For versions less than lollipop
             ActivityManager am = ((ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE));
             List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(5);
-            top = taskInfo.get(0).topActivity.getPackageName();
-            Date x = new Date();
-            SharedPreferences prefs = Application.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
-            String runningApp = top;
-            if(!prefs.getString("RunningApp","").equals(runningApp))
-            {
-                StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(top,x.getTime()));
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("RunningApp",runningApp);
-                editor.apply();
+            if(taskInfo.size() == 0){
+                Date d = new Date();
+                SharedPreferences prefs = Application.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
+                String runningApp = "";
+                if(!prefs.getString("RunningApp","").equals(runningApp))
+                {
+                    StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(runningApp, d.getTime()));
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("RunningApp",runningApp);
+                    editor.apply();
+                }
+            }else{
+                top = taskInfo.get(0).topActivity.getPackageName();
+                Date x = new Date();
+                SharedPreferences prefs = Application.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
+                String runningApp = top;
+                if(!prefs.getString("RunningApp","").equals(runningApp))
+                {
+                    StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(top,x.getTime()));
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("RunningApp",runningApp);
+                    editor.apply();
+                }
+                Log.d(TAG, "top app = " + top);
             }
-            Log.d(TAG, "top app = " + top);
         } else { //For versions Lollipop and above
             List<AndroidAppProcess> processes = AndroidProcesses.getRunningForegroundApps(context);
             Log.d(TAG,"Processes.size= "+processes.size());
+            if(processes.size() == 0)
+            {
+                Date d = new Date();
+                SharedPreferences prefs = Application.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
+                String runningApp = "";
+                if(!prefs.getString("RunningApp","").equals(runningApp))
+                {
+                    StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(runningApp, d.getTime()));
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("RunningApp",runningApp);
+                    editor.apply();
+                }
+            }
             for (int i = 0; i <= processes.size() - 1; i++) {
                 Log.d(TAG,i+". "+ processes.get(i).getPackageName());
                 Date x = new Date();

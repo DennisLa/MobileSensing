@@ -8,6 +8,8 @@ import com.intel.context.error.ContextError;
 import com.intel.context.item.DevicePositionItem;
 import com.intel.context.item.Item;
 
+import java.util.ArrayList;
+
 import de.dennis.mobilesensing.Application;
 import de.dennis.mobilesensing.storage.StorageHelper;
 
@@ -22,13 +24,14 @@ public class DevicePositionListener implements com.intel.context.sensing.Context
             Log.d(LOG_TAG, "Received value: " + ((DevicePositionItem) state).getType().name());
             SharedPreferences prefs = Application.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
             String devicePosition = ((DevicePositionItem) state).getType().name();
-            if(!prefs.getString("DevicePosition","").equals(devicePosition) && !devicePosition.equals("UNKNOWN") )
+            SharedPreferences.Editor editor = prefs.edit();
+            if(!prefs.getString("DevicePosition","").equals(devicePosition) && !devicePosition.equals("UNKNOWN"))
             {
                 StorageHelper.openDBConnection().save2DevicePositionHistory((DevicePositionItem) state);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString("DevicePosition",devicePosition);
-                editor.apply();
+                editor.putString("DevicePosition", devicePosition);
+                editor.putLong("DevPos_Time",state.getTimestamp());
             }
+            editor.apply();
         } else {
             Log.d(LOG_TAG, "Invalid state type: " + state.getContextType());
         }

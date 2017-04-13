@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import java.util.Date;
+
 import de.dennis.mobilesensing.UploadService.BaasBoxUploader;
 import de.dennis.mobilesensing.UploadService.UploadListener;
 
@@ -29,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //BaasBoxUploader.startUpload(0);
+                SharedPreferences prefs = Application.getContext().getSharedPreferences("Settings",Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putLong("lastTimeUploadServiceExecution",0L);
+                editor.apply();
                 Intent i = new Intent(Application.getContext(), UploadListener.class);
                 sendBroadcast(i);
             }
