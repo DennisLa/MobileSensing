@@ -18,7 +18,7 @@ public class LocationListener implements ContextTypeListener{
         public void onReceive(Item state) {
             if (state instanceof LocationCurrent) {
                 // Obtain the list of recognized physical activities.
-                Log.d(LOG_TAG,"Received value: "+((LocationCurrent) state).getLocation().toString());
+                Log.d(LOG_TAG,"Received value: "+((LocationCurrent) state).getLocation().toString()+", "+state.getTimestamp());
                 StorageHelper.openDBConnection().save2LocHistory((LocationCurrent)state);
             } else {
                 Log.d(LOG_TAG, "Invalid state type: " + state.getContextType());

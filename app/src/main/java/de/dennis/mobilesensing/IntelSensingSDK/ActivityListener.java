@@ -7,10 +7,13 @@ import android.util.Log;
 import com.intel.context.error.ContextError;
 import com.intel.context.item.ActivityRecognition;
 import com.intel.context.item.Item;
+import com.intel.context.item.activityrecognition.PhysicalActivity;
 import com.intel.context.sensing.ContextTypeListener;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.InputMismatchException;
+import java.util.List;
 
 import de.dennis.mobilesensing.Application;
 import de.dennis.mobilesensing.storage.StorageHelper;
@@ -27,44 +30,53 @@ public class ActivityListener implements ContextTypeListener {
             SharedPreferences prefs = Application.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             String activitiyName = ((ActivityRecognition) state).getMostProbableActivity().getActivity().name();
-            int walking = prefs.getInt("Activity_Walking",0);
-            int biking = prefs.getInt("Activity_Biking",0);
-            int running = prefs.getInt("Activity_Running",0);
-            int incar = prefs.getInt("Activity_InCar",0);
-            int random = prefs.getInt("Activity_Random",0);
-            int sedentary = prefs.getInt("Activity_Sedentary",0);
             switch (activitiyName) {
+                case "SEDENTARY":
+                    int sedentary = prefs.getInt("Activity_Sedentary", 0);
+                    sedentary += ((ActivityRecognition) state).getMostProbableActivity().getProbability();
+                    editor.putInt("Activity_Sedentary", sedentary);
+                    break;
                 case "WALKING":
-                    walking++;
+                    int walking = prefs.getInt("Activity_Walking", 0);
+                    walking+= ((ActivityRecognition) state).getMostProbableActivity().getProbability();
                     editor.putInt("Activity_Walking", walking);
                     break;
+                case "INCAR":
+                    int incar = prefs.getInt("Activity_InCar", 0);
+                    incar+= ((ActivityRecognition) state).getMostProbableActivity().getProbability();
+                    editor.putInt("Activity_InCar", incar);
+                    break;
                 case "BIKING":
-                    biking++;
+                    int biking = prefs.getInt("Activity_Biking", 0);
+                    biking+= ((ActivityRecognition) state).getMostProbableActivity().getProbability();
                     editor.putInt("Activity_Biking", biking);
                     break;
                 case "RUNNING":
-                    running++;
+                    int running = prefs.getInt("Activity_Running", 0);
+                    running+= ((ActivityRecognition) state).getMostProbableActivity().getProbability();
                     editor.putInt("Activity_Running", running);
                     break;
-                case "INCAR":
-                    incar++;
-                    editor.putInt("Activity_InCar", incar);
-                    break;
                 case "RANDOM":
-                    random++;
+                    int random = prefs.getInt("Activity_Random", 0);
+                    random+= ((ActivityRecognition) state).getMostProbableActivity().getProbability();
                     editor.putInt("Activity_Random", random);
-                    break;
-                case "SEDENTARY":
-                    sedentary++;
-                    editor.putInt("Activity_Sedentary", sedentary);
                     break;
                 default:
                     break;
             }
+            int actSum = prefs.getInt("Activity_Sum",0)+1;
+            editor.putInt("Activity_Sum",actSum);
+            editor.apply();
             long actTime = prefs.getLong("Activity_Time",0L);
-            //if difference between last time activity and now > 50 Seconds (Value of Location Interval)
-            if(state.getTimestamp() - actTime >= 60000)
+            //if difference between last time activity and now > 60seconds
+            if(state.getTimestamp() - actTime >= 60*1000)
             {
+                int random = prefs.getInt("Activity_Random",0);
+                int running = prefs.getInt("Activity_Running", 0);
+                int biking = prefs.getInt("Activity_Biking", 0);
+                int incar = prefs.getInt("Activity_InCar", 0);
+                int walking = prefs.getInt("Activity_Walking", 0);
+                int sedentary = prefs.getInt("Activity_Sedentary", 0);
                 ArrayList<Integer> list = new ArrayList<>();
                 list.add(walking);
                 list.add(biking);
@@ -72,7 +84,7 @@ public class ActivityListener implements ContextTypeListener {
                 list.add(incar);
                 list.add(random);
                 list.add(sedentary);
-                int max = Integer.MIN_VALUE;
+                float max = Integer.MIN_VALUE;
                 for (Integer i : list){
                     max = Math.max(max, i);
                 }
@@ -101,13 +113,15 @@ public class ActivityListener implements ContextTypeListener {
                 if (max == random || j > 1) {
                     activitiyName = "RANDOM";
                 }
-                Log.d("Minute_Actvity",activitiyName);
+                int prob = (random+running+walking+incar+sedentary+random)/actSum;
+                Log.d("Minute_Actvity",activitiyName+" , "+ prob);
                 if(!prefs.getString("Activity","").equals(activitiyName))
                 {
-                    StorageHelper.openDBConnection().save2ActHistory((ActivityRecognition) state);
+                    StorageHelper.openDBConnection().save2ActHistory(state.getTimestamp(),activitiyName,prob);
                     editor.putString("Activity", activitiyName);
                 }
                 editor.putLong("Activity_Time",state.getTimestamp());
+                editor.putInt("Activity_Sum",0);
                 editor.putInt("Activity_Walking", 0);
                 editor.putInt("Activity_Biking", 0);
                 editor.putInt("Activity_Running", 0);

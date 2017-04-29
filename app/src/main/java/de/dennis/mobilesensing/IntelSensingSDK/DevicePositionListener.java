@@ -29,7 +29,6 @@ public class DevicePositionListener implements com.intel.context.sensing.Context
             {
                 StorageHelper.openDBConnection().save2DevicePositionHistory((DevicePositionItem) state);
                 editor.putString("DevicePosition", devicePosition);
-                editor.putLong("DevPos_Time",state.getTimestamp());
             }
             editor.apply();
         } else {

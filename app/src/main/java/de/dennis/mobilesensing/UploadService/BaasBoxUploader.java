@@ -6,6 +6,7 @@ import com.baasbox.android.BaasDocument;
 import com.baasbox.android.BaasHandler;
 import com.baasbox.android.BaasResult;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,12 +24,11 @@ import de.dennis.mobilesensing.storage.Wrapper.wTrack;
  */
 public class BaasBoxUploader {
     private static boolean isUploaded;
-    public static long startUpload(final long from)
+    public static long startUpload(final long from, long to)
     {
         isUploaded = true;
-        Date d = new Date();
-        //Upload Activitiy
-        List<wActivity> activities = StorageHelper.openDBConnection().getAllActivities(from,d.getTime(),false);
+        //Upload Activities
+        List<wActivity> activities = StorageHelper.openDBConnection().getAllActivities(from, to, false);
         for(wActivity activity: activities){
             final wActivity act = activity;
             BaasDocument doc = new BaasDocument("mobileSensing_Activity");
@@ -48,7 +48,7 @@ public class BaasBoxUploader {
             });
         }
         //Upload Call
-        List<wCall> calls = StorageHelper.openDBConnection().getAllCalls(from, d.getTime(), false);
+        List<wCall> calls = StorageHelper.openDBConnection().getAllCalls(from, to, false);
         for(wCall call: calls){
             final wCall fcall = call;
             BaasDocument doc = new BaasDocument("mobileSensing_Call");
@@ -67,7 +67,7 @@ public class BaasBoxUploader {
             });
         }
         //Upload DevicePosition
-        List<wDevicePosition> devPoss = StorageHelper.openDBConnection().getAllDevicePositions(from, d.getTime(), false);
+        List<wDevicePosition> devPoss = StorageHelper.openDBConnection().getAllDevicePositions(from, to, false);
         for(wDevicePosition devPos: devPoss){
             final wDevicePosition fDevPos = devPos;
             BaasDocument doc = new BaasDocument("mobileSensing_DevicePosition");
@@ -86,7 +86,7 @@ public class BaasBoxUploader {
             });
         }
         //Upload Location
-        List<wLocation> locations = StorageHelper.openDBConnection().getAllHistoryLocs(from, d.getTime(), false);
+        List<wLocation> locations = StorageHelper.openDBConnection().getAllHistoryLocs(from, to, false);
         for(wLocation location: locations){
             final wLocation loc = location;
             BaasDocument doc = new BaasDocument("mobileSensing_Location");
@@ -109,7 +109,7 @@ public class BaasBoxUploader {
             });
         }
         //Upload Network
-        List<wNetwork> networks = StorageHelper.openDBConnection().getAllNetworks(from, d.getTime(), false);
+        List<wNetwork> networks = StorageHelper.openDBConnection().getAllNetworks(from, to, false);
         for(wNetwork network: networks){
             final wNetwork fnetwork = network;
             BaasDocument doc = new BaasDocument("mobileSensing_Network");
@@ -128,7 +128,7 @@ public class BaasBoxUploader {
             });
         }
         //Upload RunningApplication
-        List<RunningApplication> apps = StorageHelper.openDBConnection().getAllRunningApplications(from, d.getTime(), false);
+        List<RunningApplication> apps = StorageHelper.openDBConnection().getAllRunningApplications(from, to, false);
         for(RunningApplication app: apps){
             final RunningApplication fapp = app;
             BaasDocument doc = new BaasDocument("mobileSensing_RunningApplication");
@@ -147,7 +147,7 @@ public class BaasBoxUploader {
             });
         }
         //Upload Track
-        List<wTrack> tracks = StorageHelper.openDBConnection().getAllTracks(from, d.getTime(), false);
+        List<wTrack> tracks = StorageHelper.openDBConnection().getAllTracks(from, to, false);
         for(wTrack track: tracks){
             final wTrack ftrack = track;
             BaasDocument doc = new BaasDocument("mobileSensing_Track");
@@ -169,7 +169,7 @@ public class BaasBoxUploader {
         }
         if(isUploaded == true)
         {
-            return d.getTime();
+            return to;
         }else{
             return from;
         }

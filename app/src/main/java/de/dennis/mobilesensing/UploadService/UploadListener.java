@@ -23,11 +23,11 @@ public class UploadListener extends BroadcastReceiver {
         long lastTime = prefs.getLong("lastTimeUploadServiceExecution",0L);
         if(now - lastTime >= 24 * 3600000) {
             SharedPreferences.Editor editor = prefs.edit();
-            if(prefs.getBoolean("WLANUpload",false) && prefs.getBoolean("isWiFi",false) )
+            if(prefs.getBoolean("WLANUpload",false) && prefs.getBoolean("isWiFi",false))
             {
-                editor.putLong("lastTimeUploadServiceExecution",BaasBoxUploader.startUpload(prefs.getLong("lastTimeUploadServiceExecution",0L)));
+                editor.putLong("lastTimeUploadServiceExecution",BaasBoxUploader.startUpload(prefs.getLong("lastTimeUploadServiceExecution",0L),now));
             }else{
-                editor.putLong("lastTimeUploadServiceExecution",BaasBoxUploader.startUpload(prefs.getLong("lastTimeUploadServiceExecution",0L)));
+                editor.putLong("lastTimeUploadServiceExecution",BaasBoxUploader.startUpload(prefs.getLong("lastTimeUploadServiceExecution",0L),now));
             }
             editor.apply();
         }

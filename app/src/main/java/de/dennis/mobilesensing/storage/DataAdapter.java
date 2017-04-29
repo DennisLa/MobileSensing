@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.intel.context.item.Call;
 import com.intel.context.item.DevicePositionItem;
@@ -129,6 +130,15 @@ public class DataAdapter {
         database.insert(SQLStorage.TABLE_ACTIVITY_HISTORY, null,
                 values);
     }
+    public void save2ActHistory(long timestamp, String activityName, int probability) {
+        ContentValues values = new ContentValues();
+        values.put(SQLStorage.COLUMN_TIMESTAMP, timestamp);
+        values.put(SQLStorage.COLUMN_TYPE,activityName);
+        values.put(SQLStorage.COLUMN_PROBABILITY, probability);
+
+        database.insert(SQLStorage.TABLE_ACTIVITY_HISTORY, null,
+                values);
+    }
     public void save2RunningAppication(RunningApplication runApp) {
         ContentValues values = new ContentValues();
         values.put(SQLStorage.COLUMN_TIMESTAMP, runApp.getTimestamp());
@@ -199,7 +209,7 @@ public class DataAdapter {
               SQLStorage.COLUMN_VEL = 4
               SQLStorage.COLUMN_ALT = 5
               SQLStorage.COLUMN_ACC = 6 */
-        wLocation loc = new wLocation(cursor.getInt(3),cursor.getDouble(1),cursor.getDouble(2),cursor.getDouble(4),cursor.getDouble(5),cursor.getDouble(6));
+        wLocation loc = new wLocation(cursor.getLong(3),cursor.getDouble(1),cursor.getDouble(2),cursor.getDouble(4),cursor.getDouble(5),cursor.getDouble(6));
         return loc;
     }
     public List<wActivity> getAllActivities(long since, long until, boolean descending) {

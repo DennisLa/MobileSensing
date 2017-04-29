@@ -128,7 +128,7 @@ public class SensingManager {
             //enable Network Type
             if(prefs.getBoolean("Network",true)){
                 settings = new Bundle();
-                settings.putLong("TIME_WINDOW", 120000);
+                settings.putLong("TIME_WINDOW", 60*1000);
                 mSensing.enableSensing(ContextType.NETWORK, settings);
                 Log.d(TAG, "Network-Tracking enabled");
             }else{
@@ -137,7 +137,7 @@ public class SensingManager {
             }
             //enable Running Applications
             if(prefs.getBoolean("Apps",true)){
-                mRunningAppService.startSensingRunningApps(Application.getContext(), 10 * 1000);
+                mRunningAppService.startSensingRunningApps(Application.getContext(), 20 * 1000);
                 Log.d(TAG, "App-Tracking enabled");
             }else{
                 mRunningAppService.stopSensingRunningApplications();

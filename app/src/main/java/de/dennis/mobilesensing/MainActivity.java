@@ -5,14 +5,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
 import java.util.Date;
+import java.util.List;
 
 import de.dennis.mobilesensing.UploadService.BaasBoxUploader;
 import de.dennis.mobilesensing.UploadService.UploadListener;
+import de.dennis.mobilesensing.storage.StorageHelper;
+import de.dennis.mobilesensing.storage.Wrapper.wLocation;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -31,12 +35,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //BaasBoxUploader.startUpload(0);
-                SharedPreferences prefs = Application.getContext().getSharedPreferences("Settings",Context.MODE_PRIVATE);
+                /*SharedPreferences prefs = Application.getContext().getSharedPreferences("Settings",Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putLong("lastTimeUploadServiceExecution",0L);
                 editor.apply();
                 Intent i = new Intent(Application.getContext(), UploadListener.class);
-                sendBroadcast(i);
+                sendBroadcast(i);*/
+                List<wLocation> myList =  StorageHelper.openDBConnection().getAllHistoryLocs(0, 1593452902194L, false);
+                Log.d("TEST", myList.get(0).getTimestamp()+"");
             }
         });
         btnSettings = (ImageButton) findViewById(R.id.btnSettings);
