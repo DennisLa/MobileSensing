@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import de.dennis.mobilesensing.RunningApplicationService.RunningApplication;
+import de.dennis.mobilesensing.ScreenOnService.ScreenOn;
 import de.dennis.mobilesensing.storage.StorageHelper;
 import de.dennis.mobilesensing.storage.Wrapper.wActivity;
 import de.dennis.mobilesensing.storage.Wrapper.wCall;
@@ -66,19 +67,19 @@ public class BaasBoxUploader {
                 }
             });
         }
-        //Upload DevicePosition
-        List<wDevicePosition> devPoss = StorageHelper.openDBConnection().getAllDevicePositions(from, to, false);
-        for(wDevicePosition devPos: devPoss){
-            final wDevicePosition fDevPos = devPos;
-            BaasDocument doc = new BaasDocument("mobileSensing_DevicePosition");
-            doc.put("timestamp", devPos.getTimestamp())
-                    .put("position", devPos.getDevicePositionType());
+        //Upload ScreenOn
+        List<ScreenOn> scrOns = StorageHelper.openDBConnection().getAllScreenOn(from, to, false);
+        for(ScreenOn scrOn: scrOns){
+            final ScreenOn fScrOn = scrOn;
+            BaasDocument doc = new BaasDocument("mobileSensing_ScreenOn");
+            doc.put("timestamp", scrOn.getTimestamp())
+                    .put("isScreenOn", scrOn.isScreenOn());
             doc.save(new BaasHandler<BaasDocument>() {
                 @Override
                 public void handle(BaasResult<BaasDocument> res) {
                     if(res.isSuccess()) {
                         Log.d("LOG", "Saved: " + res.value());
-                        StorageHelper.openDBConnection().deleteDevicePosition(fDevPos.getTimestamp());
+                        StorageHelper.openDBConnection().deleteScreenOn(fScrOn.getTimestamp());
                     } else {
                         isUploaded = false;
                     }

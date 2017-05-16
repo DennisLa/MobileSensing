@@ -40,6 +40,7 @@
         <receiver android:name=".RunningApplicationService.RunningApplicationListener" />
         <receiver android:name=".TrackService.TrackListener" />
         <receiver android:name=".UploadService.UploadListener" />
+        <receiver android:name=".ScreenOnService.ScreenOnListener"/>
 
         <service android:name="com.intel.context.core.LocalService" />
 
