@@ -24,7 +24,6 @@ import de.dennis.mobilesensing.IntelSensingSDK.LocationListener;
 import de.dennis.mobilesensing.IntelSensingSDK.NetworkListener;
 import de.dennis.mobilesensing.IntelSensingSDK.SensingListener;
 import de.dennis.mobilesensing.RunningApplicationService.RunningApplicationService;
-import de.dennis.mobilesensing.ScreenOnService.ScreenOnService;
 import de.dennis.mobilesensing.TrackService.TrackService;
 
 /**
@@ -35,19 +34,12 @@ public class SensingManager {
     private Sensing mSensing;
     private ContextTypeListener mLocationListener;
     private ContextTypeListener mActivityListener;
+    private ContextTypeListener mDevicePositionListener;
     private ContextTypeListener mNetworkListener;
     private ContextTypeListener mCallListener;
     //
     private RunningApplicationService mRunningAppService;
     private TrackService mTrackService;
-    private ScreenOnService mScreenOnService;
-    //
-    private boolean isLocationOn;
-    private boolean isActivityOn;
-    private boolean isScreenOn;
-    private boolean isNetworkOn;
-    private boolean isRunAppOn;
-    private boolean isCallOn;
     //
     private String TAG = SensingManager.class.getName();
 
@@ -67,8 +59,9 @@ public class SensingManager {
                     //Activity Listener
                     mActivityListener = new ActivityListener();
                     mSensing.addContextTypeListener(ContextType.ACTIVITY_RECOGNITION, mActivityListener);
-                    //ScreenOn Listener
-                    mScreenOnService = new ScreenOnService();
+                    //Device Position Listener
+                    mDevicePositionListener = new DevicePositionListener();
+                    mSensing.addContextTypeListener(ContextType.DEVICE_POSITION, mDevicePositionListener);
                     //Network Listener
                     mNetworkListener = new NetworkListener();
                     mSensing.addContextTypeListener(ContextType.NETWORK, mNetworkListener);
@@ -97,18 +90,16 @@ public class SensingManager {
         try {
             Bundle settings;
             //enable Location Sensing
-            if(prefs.getBoolean("GPS",true) && !isLocationOn)
+            if(prefs.getBoolean("GPS",true))
             {
                 mSensing.enableSensing(ContextType.LOCATION, null);
-                isLocationOn=true;
                 Log.d(TAG,"GPS-Tracking enabled");
-            }else if(!prefs.getBoolean("GPS",true) && isLocationOn){
+            }else{
                 mSensing.disableSensing(ContextType.LOCATION);
-                isLocationOn =false;
                 Log.d(TAG, "GPS-Tracking disabled");
             }
             //enable Activity Sensing
-            if(prefs.getBoolean("Activity",true) && !isActivityOn){
+            if(prefs.getBoolean("Activity",true)){
                 ActivityOptionBuilder actBui;
                 actBui = new ActivityOptionBuilder();
                 actBui
@@ -117,55 +108,57 @@ public class SensingManager {
                         .setSensorHubContinuousFlag(ContinuousFlag.NOPAUSE_ON_SLEEP);
                 settings = actBui.toBundle();
                 mSensing.enableSensing(ContextType.ACTIVITY_RECOGNITION, settings);
-                isActivityOn = true;
                 Log.d(TAG, "Activity-Tracking enabled");
-            }else if(!prefs.getBoolean("Activity",true) && isActivityOn){
+            }else{
                 mSensing.disableSensing(ContextType.ACTIVITY_RECOGNITION);
-                isActivityOn=false;
                 Log.d(TAG, "Activity-Tracking disabled");
             }
-            //enable ScreenOn
-            if(prefs.getBoolean("ScreenOn",true) && !isScreenOn){
-                mScreenOnService.startSensingScreenStatus(Application.getContext(),10*1000);
-                isScreenOn=true;
-                Log.d(TAG, "ScreenOn-Tracking enabled");
-            }else if(!prefs.getBoolean("ScreenOn",true) && isScreenOn){
-                mScreenOnService.stopSensingScreenStatus();
-                isScreenOn=false;
-                Log.d(TAG, "ScreenOn-Tracking disabled");
+            //enable Device Position
+            if(prefs.getBoolean("DevicePosition",true)){
+                DevicePositionOptionBuilder optBui;
+                optBui = new DevicePositionOptionBuilder();
+                optBui.setSensorHubContinuousFlag(ContinuousFlag.NOPAUSE_ON_SLEEP);
+                settings = optBui.toBundle();
+                mSensing.enableSensing(ContextType.DEVICE_POSITION, settings);
+                Log.d(TAG, "DevicePosition-Tracking enabled");
+            }else{
+                mSensing.disableSensing(ContextType.DEVICE_POSITION);
+                Log.d(TAG, "DevicePosition-Tracking disabled");
             }
             //enable Network Type
-            if(prefs.getBoolean("Network",true) && !isNetworkOn){
+            if(prefs.getBoolean("Network",true)){
                 settings = new Bundle();
                 settings.putLong("TIME_WINDOW", 60*1000);
                 mSensing.enableSensing(ContextType.NETWORK, settings);
-                isNetworkOn = true;
                 Log.d(TAG, "Network-Tracking enabled");
-            }else if (!prefs.getBoolean("Network",true) && isNetworkOn){
+            }else{
                 mSensing.disableSensing(ContextType.NETWORK);
-                isNetworkOn = false;
                 Log.d(TAG, "Network-Tracking disabled");
             }
             //enable Running Applications
-            if(prefs.getBoolean("Apps",true)&& !isRunAppOn){
-                mRunningAppService.startSensingRunningApps(Application.getContext(), 10 * 1000);
-                isRunAppOn = true;
+            if(prefs.getBoolean("Apps",true)){
+                mRunningAppService.startSensingRunningApps(Application.getContext(), 20 * 1000);
                 Log.d(TAG, "App-Tracking enabled");
-            }else if(!prefs.getBoolean("Apps",true) && isRunAppOn){
+            }else{
                 mRunningAppService.stopSensingRunningApplications();
-                isRunAppOn = false;
                 Log.d(TAG, "App-Tracking disabled");
             }
             //enable Call
-            if(prefs.getBoolean("Call",true) && !isCallOn){
+            if(prefs.getBoolean("Call",true)){
                 mSensing.enableSensing(ContextType.CALL, null);
-                isCallOn=true;
                 Log.d(TAG, "Call-EarTouch-Tracking enabled");
-            }else if(!prefs.getBoolean("Call",true) && isCallOn){
+            }else{
                 mSensing.disableSensing(ContextType.CALL);
-                isCallOn = false;
                 Log.d(TAG, "Call-EarTouch-Tracking disabled");
             }
+            //enable Tracks
+            /*if (prefs.getBoolean("GPS", true)&&prefs.getBoolean("Activity",true)) {
+                mTrackService.startTrackSensing(Application.getContext(), 1 * 3600000); //Interval = 24h = 24*3 600 000
+                Log.d(TAG, "Track-Tracking enabled");
+            }else{
+                mTrackService.stopSensingRunningApplications();
+                Log.d(TAG, "Track-Tracking disabled");
+            }*/
         } catch (ContextProviderException e) {
             Log.e("APPLICATION", "Error enabling context type" + e.getMessage());
         }

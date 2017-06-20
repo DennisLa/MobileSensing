@@ -15,7 +15,7 @@ public class SettingsActivity extends AppCompatActivity {
     Switch swtAll;
     Switch swtGPS;
     Switch swtActivity;
-    Switch swtScreenOn;
+    Switch swtDevicePosition;
     Switch swtApps;
     Switch swtCall;
     Switch swtNetwork;
@@ -39,7 +39,7 @@ public class SettingsActivity extends AppCompatActivity {
                 editor.putBoolean("Call",swtCall.isChecked());
                 editor.putBoolean("Apps",swtApps.isChecked());
                 editor.putBoolean("Activity",swtActivity.isChecked());
-                editor.putBoolean("ScreenOn",swtScreenOn.isChecked());
+                editor.putBoolean("DevicePosition",swtDevicePosition.isChecked());
                 editor.putBoolean("WLANUpload",swtWLANUpload.isChecked());
                 editor.apply();
                 Application.getSensingManager().loadSensingSettings();
@@ -58,7 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
                     swtAll.setChecked(check);
                     swtGPS.setChecked(check);
                     swtActivity.setChecked(check);
-                    swtScreenOn.setChecked(check);
+                    swtDevicePosition.setChecked(check);
                     swtApps.setChecked(check);
                     swtCall.setChecked(check);
                     swtNetwork.setChecked(check);
@@ -71,8 +71,8 @@ public class SettingsActivity extends AppCompatActivity {
         swtGPS.setChecked(prefs.getBoolean("GPS", true));
         swtActivity = (Switch) findViewById(R.id.swtActivity);
         swtActivity.setChecked(prefs.getBoolean("Activity", true));
-        swtScreenOn = (Switch) findViewById(R.id.swtScrOn);
-        swtScreenOn.setChecked(prefs.getBoolean("DevicePosition", true));
+        swtDevicePosition = (Switch) findViewById(R.id.swtDPos);
+        swtDevicePosition.setChecked(prefs.getBoolean("DevicePosition", true));
         swtApps = (Switch) findViewById(R.id.swtApp);
         swtApps.setChecked(prefs.getBoolean("Apps", true));
         swtCall = (Switch) findViewById(R.id.swtCall);
@@ -91,7 +91,7 @@ public class SettingsActivity extends AppCompatActivity {
                 checkIfAllChecked();
             }
         });
-        swtScreenOn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        swtDevicePosition.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 checkIfAllChecked();
@@ -119,7 +119,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
     private void checkIfAllChecked(){
         isClickAllChange = false;
-        if(swtNetwork.isChecked()&&swtGPS.isChecked()&&swtScreenOn.isChecked()&&swtActivity.isChecked()&&swtApps.isChecked()&&swtCall.isChecked()){
+        if(swtNetwork.isChecked()&&swtGPS.isChecked()&&swtDevicePosition.isChecked()&&swtActivity.isChecked()&&swtApps.isChecked()&&swtCall.isChecked()){
             swtAll.setChecked(true);
         }else{
             swtAll.setChecked(false);

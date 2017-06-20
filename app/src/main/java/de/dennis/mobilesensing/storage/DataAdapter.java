@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.dennis.mobilesensing.RunningApplicationService.RunningApplication;
-import de.dennis.mobilesensing.ScreenOnService.ScreenOn;
 import de.dennis.mobilesensing.storage.Wrapper.wActivity;
 import de.dennis.mobilesensing.storage.Wrapper.wCall;
 import de.dennis.mobilesensing.storage.Wrapper.wDevicePosition;
@@ -72,10 +71,6 @@ public class DataAdapter {
             SQLStorage.COLUMN_ENDTIMESTAMP,
             SQLStorage.COLUMN_TYPE,
             SQLStorage.COLUMN_KILOMETER};
-    private String[] allColumnsScreenOn = {
-            SQLStorage.COLUMN_ID,
-            SQLStorage.COLUMN_TIMESTAMP,
-            SQLStorage.COLUMN_ISSCREENON};
 
     public DataAdapter(Context context) {
         dbHelper = new SQLStorage(context);
@@ -113,9 +108,6 @@ public class DataAdapter {
     }
     public void deleteTrack(long timestamp){
         database.delete(SQLStorage.TABLE_TRACK_HISTORY, SQLStorage.COLUMN_TIMESTAMP + " = " + timestamp, null);
-    }
-    public void deleteScreenOn(long timestamp){
-        database.delete(SQLStorage.TABLE_SCREENON_HISTORY, SQLStorage.COLUMN_TIMESTAMP + " = " + timestamp, null);
     }
     public void save2LocHistory(LocationCurrent loc) {
         ContentValues values = new ContentValues();
@@ -179,19 +171,6 @@ public class DataAdapter {
         database.insert(SQLStorage.TABLE_DEVICE_POSITION_HISTORY, null,
                 values);
     }
-    public void save2ScreenOnHistory(ScreenOn screenOn) {
-        //TODO Write save to DB
-        ContentValues values = new ContentValues();
-        values.put(SQLStorage.COLUMN_TIMESTAMP,screenOn.getTimestamp());
-        int screenOnInInt = 0;
-        if(screenOn.isScreenOn()){
-            screenOnInInt = 1;
-        }
-        values.put(SQLStorage.COLUMN_ISSCREENON, screenOnInInt);
-
-        database.insert(SQLStorage.TABLE_SCREENON_HISTORY, null,
-                values);
-    }
     public void save2TrackHistory(wTrack track){
         ContentValues values = new ContentValues();
         values.put(SQLStorage.COLUMN_TIMESTAMP,track.getStartTime());
@@ -241,7 +220,7 @@ public class DataAdapter {
         }
 
         Cursor cursor = database.query(SQLStorage.TABLE_ACTIVITY_HISTORY,
-                allColumnsActivity, SQLStorage.COLUMN_TIMESTAMP + " > " + since + " and " + SQLStorage.COLUMN_TIMESTAMP + " < " + until, null, null, null, SQLStorage.COLUMN_TIMESTAMP + " " + order);
+                allColumnsActivity, SQLStorage.COLUMN_TIMESTAMP+" > "+since + " and " +SQLStorage.COLUMN_TIMESTAMP+ " < "+until, null, null, null, SQLStorage.COLUMN_TIMESTAMP+" "+order);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -272,7 +251,7 @@ public class DataAdapter {
         }
 
         Cursor cursor = database.query(SQLStorage.TABLE_RUNNING_APPLICATION_HISTORY,
-                allColumnsRunningApplication, SQLStorage.COLUMN_TIMESTAMP + " > " + since + " and " + SQLStorage.COLUMN_TIMESTAMP + " < " + until, null, null, null, SQLStorage.COLUMN_TIMESTAMP + " " + order);
+                allColumnsRunningApplication, SQLStorage.COLUMN_TIMESTAMP+" > "+since + " and " +SQLStorage.COLUMN_TIMESTAMP+ " < "+until, null, null, null, SQLStorage.COLUMN_TIMESTAMP+" "+order);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -401,37 +380,4 @@ public class DataAdapter {
         wTrack track = new wTrack(cursor.getLong(1),cursor.getLong(2),cursor.getString(3),cursor.getDouble(4));
         return track;
     }
-    public List<ScreenOn> getAllScreenOn(long since, long until, boolean descending) {
-        List<ScreenOn> screens = new ArrayList<ScreenOn>();
-        String order = "DESC";
-        if(!descending){
-            order = "ASC";
-        }
-
-        Cursor cursor = database.query(SQLStorage.TABLE_SCREENON_HISTORY,
-                allColumnsScreenOn, SQLStorage.COLUMN_TIMESTAMP+" > "+since + " and " +SQLStorage.COLUMN_TIMESTAMP+ " < "+until, null, null, null, SQLStorage.COLUMN_TIMESTAMP+" "+order);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            ScreenOn screenOn = cursorToScreenOn(cursor);
-            screens.add(screenOn);
-            cursor.moveToNext();
-        }
-        // make sure to close the cursor
-        cursor.close();
-        return screens;
-    }
-    private ScreenOn cursorToScreenOn(Cursor cursor) {
-            /*SQLStorage.COLUMN_ID,
-            SQLStorage.COLUMN_TIMESTAMP,
-            SQLStorage.COLUMN_ISSCREENON};*/
-        boolean isScreenOn = false;
-        if(cursor.getInt(2) == 1)
-        {
-            isScreenOn = true;
-        }
-        ScreenOn screenOn = new ScreenOn(cursor.getLong(1),isScreenOn);
-        return screenOn;
-    }
-
 }

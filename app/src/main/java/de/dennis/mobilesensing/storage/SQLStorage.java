@@ -16,7 +16,6 @@ public class SQLStorage extends SQLiteOpenHelper {
     public static final String TABLE_RUNNING_APPLICATION_HISTORY ="appHistory";
     public static final String TABLE_NETWORK_HISTORY = "netHistory";
     public static final String TABLE_TRACK_HISTORY = "trackHistory";
-    public static final String TABLE_SCREENON_HISTORY = "screenOnHistory";
 
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_LAT = "lat";
@@ -29,7 +28,6 @@ public class SQLStorage extends SQLiteOpenHelper {
     public static final String COLUMN_KILOMETER = "kilometer";
     public static final String COLUMN_ALT = "altitude";
     public static final String COLUMN_ACC = "accuracy";
-    public static final String COLUMN_ISSCREENON = "isScreenOn";
 
 
     private static final String DATABASE_NAME = "MobileSensing.db";
@@ -92,13 +90,6 @@ public class SQLStorage extends SQLiteOpenHelper {
             + COLUMN_KILOMETER + " real"
             + ") ;";
 
-    private static final String DATABASE_CREATE_SCREENON_HISTORY = "create table "
-            + TABLE_SCREENON_HISTORY + " ("
-            + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + COLUMN_TIMESTAMP +" Integer, "
-            + COLUMN_ISSCREENON + " Integer"
-            + ") ;";
-
 
 
 
@@ -117,7 +108,6 @@ public class SQLStorage extends SQLiteOpenHelper {
         database.execSQL(DATABASE_CREATE_NETWORK_HISTORY);
         database.execSQL(DATABASE_CREATE_RUNNING_APPLICATION_HISTORY);
         database.execSQL(DATABASE_CREATE_TRACK_HISTORY);
-        database.execSQL(DATABASE_CREATE_SCREENON_HISTORY);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
