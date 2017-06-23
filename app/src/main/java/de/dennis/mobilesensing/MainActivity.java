@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 import de.dennis.mobilesensing.UploadService.BaasBoxUploader;
+import de.dennis.mobilesensing.UploadService.MongoNodeUploader;
 import de.dennis.mobilesensing.UploadService.UploadListener;
 import de.dennis.mobilesensing.storage.StorageHelper;
 import de.dennis.mobilesensing.storage.Wrapper.wLocation;
@@ -41,8 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
                 Intent i = new Intent(Application.getContext(), UploadListener.class);
                 sendBroadcast(i);*/
-                List<wLocation> myList =  StorageHelper.openDBConnection().getAllHistoryLocs(0, 1593452902194L, false);
-                Log.d("TEST", myList.get(0).getTimestamp()+"");
+                MongoNodeUploader.startUpload(0,1000000000);
             }
         });
         btnSettings = (ImageButton) findViewById(R.id.btnSettings);
