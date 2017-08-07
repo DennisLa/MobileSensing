@@ -10,18 +10,13 @@ import java.util.List;
 
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.OtherSensors.RunningApplicationService.RunningApplication;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.OtherSensors.ScreenOnService.ScreenOn;
-import de.dennis.mobilesensing.storage.StorageHelper;
-import de.dennis.mobilesensing.storage.Wrapper.wActivity;
-import de.dennis.mobilesensing.storage.Wrapper.wCall;
-import de.dennis.mobilesensing.storage.Wrapper.wLocation;
-import de.dennis.mobilesensing.storage.Wrapper.wNetwork;
-import de.dennis.mobilesensing.storage.Wrapper.wTrack;
 
 /**
  * Created by Dennis on 07.04.2017.
  */
 public class BaasBoxUploader {
-    private static boolean isUploaded;
+   private static boolean isUploaded;
+    /*
     public static long startUpload(final long from, long to)
     {
         isUploaded = true;
@@ -173,4 +168,5 @@ public class BaasBoxUploader {
         }
 
     }
+    */
 }

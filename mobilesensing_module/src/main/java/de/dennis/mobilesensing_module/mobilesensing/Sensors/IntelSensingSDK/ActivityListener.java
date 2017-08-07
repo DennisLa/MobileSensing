@@ -12,8 +12,7 @@ import com.intel.context.sensing.ContextTypeListener;
 
 import java.util.ArrayList;
 
-import de.dennis.mobilesensing.Application;
-import de.dennis.mobilesensing.storage.StorageHelper;
+import de.dennis.mobilesensing_module.mobilesensing.Module;
 
 /**
  * Created by Dennis on 06.03.2017.
@@ -24,7 +23,7 @@ public class ActivityListener implements ContextTypeListener {
     public void onReceive(Item state) {
         if (state instanceof com.intel.context.item.ActivityRecognition) {
             Log.d(LOG_TAG, "Received value: " + ((ActivityRecognition) state).getMostProbableActivity().getActivity() + " " + ((ActivityRecognition) state).getMostProbableActivity().getProbability());
-            SharedPreferences prefs = Application.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
+            SharedPreferences prefs = Module.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             String activitiyName = ((ActivityRecognition) state).getMostProbableActivity().getActivity().name();
             switch (activitiyName) {
@@ -114,7 +113,7 @@ public class ActivityListener implements ContextTypeListener {
                 Log.d("Minute_Actvity",activitiyName+" , "+ prob);
                 if(!prefs.getString("Activity","").equals(activitiyName))
                 {
-                    StorageHelper.openDBConnection().save2ActHistory(state.getTimestamp(),activitiyName,prob);
+                    //TODO
                     editor.putString("Activity", activitiyName);
                 }
                 editor.putLong("Activity_Time",state.getTimestamp());

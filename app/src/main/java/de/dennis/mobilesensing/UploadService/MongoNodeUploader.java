@@ -21,19 +21,14 @@ import java.util.List;
 
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.OtherSensors.RunningApplicationService.RunningApplication;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.OtherSensors.ScreenOnService.ScreenOn;
-import de.dennis.mobilesensing.storage.StorageHelper;
-import de.dennis.mobilesensing.storage.Wrapper.wActivity;
-import de.dennis.mobilesensing.storage.Wrapper.wCall;
-import de.dennis.mobilesensing.storage.Wrapper.wLocation;
-import de.dennis.mobilesensing.storage.Wrapper.wNetwork;
-import de.dennis.mobilesensing.storage.Wrapper.wTrack;
+
 
 /**
  * Created by Dennis on 01.06.2017.
  */
 public class MongoNodeUploader {
     private static boolean isUploaded;
-    public long startUpload(final long from, long to)
+    /*public long startUpload(final long from, long to)
     {
         isUploaded = true;
         //Upload Activities
@@ -77,7 +72,9 @@ public class MongoNodeUploader {
         }
 
     }
+    */
 
+    /*
     public HttpResponse postData(String values, String sensor, String session) {
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost httppost = new HttpPost("http://141.99.12.45:3000/sendData");
@@ -95,7 +92,9 @@ public class MongoNodeUploader {
             // process execption
         }
     }
+    */
 
+    /*
     private class AsyncUpload extends AsyncTask<String,Void,HttpResponse> {
         long startTimestamp = 0;
         long endTimestamp = 0;
@@ -110,12 +109,13 @@ public class MongoNodeUploader {
         @Override
         protected void onPostExecute(HttpResponse result){
             if(result.getStatusLine().getStatusCode() == 200){
-                /*
+
                 if(sensor.equals("ACTIVITY"){
                     StorageHelper.openDBConnection().deleteActivities(startTimestamp,endTimestamp);
                 }
-                */
+
             }
         }
     }
+    */
 }

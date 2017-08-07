@@ -25,9 +25,9 @@ public class UploadListener extends BroadcastReceiver {
             SharedPreferences.Editor editor = prefs.edit();
             if(prefs.getBoolean("WLANUpload",false) && prefs.getBoolean("isWiFi",false))
             {
-                editor.putLong("lastTimeUploadServiceExecution",BaasBoxUploader.startUpload(prefs.getLong("lastTimeUploadServiceExecution",0L),now));
+                //TODO editor.putLong("lastTimeUploadServiceExecution",BaasBoxUploader.startUpload(prefs.getLong("lastTimeUploadServiceExecution",0L),now));
             }else{
-                editor.putLong("lastTimeUploadServiceExecution",BaasBoxUploader.startUpload(prefs.getLong("lastTimeUploadServiceExecution",0L),now));
+               //TODO editor.putLong("lastTimeUploadServiceExecution",BaasBoxUploader.startUpload(prefs.getLong("lastTimeUploadServiceExecution",0L),now));
             }
             editor.apply();
         }

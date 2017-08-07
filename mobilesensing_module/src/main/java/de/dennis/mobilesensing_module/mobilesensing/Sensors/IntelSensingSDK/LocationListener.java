@@ -7,8 +7,6 @@ import com.intel.context.item.Item;
 import com.intel.context.item.LocationCurrent;
 import com.intel.context.sensing.ContextTypeListener;
 
-import de.dennis.mobilesensing.storage.StorageHelper;
-
 /**
  * Created by Dennis on 28.02.2017.
  */
@@ -19,7 +17,7 @@ public class LocationListener implements ContextTypeListener{
             if (state instanceof LocationCurrent) {
                 // Obtain the list of recognized physical activities.
                 Log.d(LOG_TAG,"Received value: "+((LocationCurrent) state).getLocation().toString()+", "+state.getTimestamp());
-                StorageHelper.openDBConnection().save2LocHistory((LocationCurrent)state);
+                //TODO StorageHelper.openDBConnection().save2LocHistory((LocationCurrent)state);
             } else {
                 Log.d(LOG_TAG, "Invalid state type: " + state.getContextType());
             }

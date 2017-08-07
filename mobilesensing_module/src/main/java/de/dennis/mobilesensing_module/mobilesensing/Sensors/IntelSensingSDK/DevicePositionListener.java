@@ -8,8 +8,7 @@ import com.intel.context.error.ContextError;
 import com.intel.context.item.DevicePositionItem;
 import com.intel.context.item.Item;
 
-import de.dennis.mobilesensing.Application;
-import de.dennis.mobilesensing.storage.StorageHelper;
+import de.dennis.mobilesensing_module.mobilesensing.Module;
 
 /**
  * Created by Dennis on 06.03.2017.
@@ -20,12 +19,12 @@ public class DevicePositionListener implements com.intel.context.sensing.Context
     public void onReceive(Item state) {
         if (state instanceof DevicePositionItem) {
             Log.d(LOG_TAG, "Received value: " + ((DevicePositionItem) state).getType().name());
-            SharedPreferences prefs = Application.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
+            SharedPreferences prefs = Module.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
             String devicePosition = ((DevicePositionItem) state).getType().name();
             SharedPreferences.Editor editor = prefs.edit();
             if(!prefs.getString("DevicePosition","").equals(devicePosition) && !devicePosition.equals("UNKNOWN"))
             {
-                StorageHelper.openDBConnection().save2DevicePositionHistory((DevicePositionItem) state);
+                //TODO StorageHelper.openDBConnection().save2DevicePositionHistory((DevicePositionItem) state);
                 editor.putString("DevicePosition", devicePosition);
             }
             editor.apply();

@@ -9,8 +9,7 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import java.util.Date;
-
-import de.dennis.mobilesensing.storage.StorageHelper;
+import de.dennis.mobilesensing_module.mobilesensing.Module;
 
 /**
  * Created by Dennis on 04.05.2017.
@@ -21,12 +20,12 @@ public class ScreenOnListener extends BroadcastReceiver{
         PowerManager powerManager = (PowerManager) context.getSystemService(context.POWER_SERVICE);
         boolean isScreenOn= Build.VERSION.SDK_INT>= Build.VERSION_CODES.KITKAT_WATCH&&powerManager.isInteractive()|| Build.VERSION.SDK_INT< Build.VERSION_CODES.KITKAT_WATCH&&powerManager.isScreenOn();
 
-        SharedPreferences prefs = de.dennis.mobilesensing.Application.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
+        SharedPreferences prefs = Module.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
         Date d= new Date();
         if(!prefs.getBoolean("ScreenOn",false)==isScreenOn)
         {
             Log.d("SCREENON_Listener","Screen on: "+isScreenOn);
-            StorageHelper.openDBConnection().save2ScreenOnHistory(new ScreenOn(d.getTime(),isScreenOn));
+            //TODO StorageHelper.openDBConnection().save2ScreenOnHistory(new ScreenOn(d.getTime(),isScreenOn));
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("ScreenOn",isScreenOn);
             editor.apply();

@@ -14,8 +14,7 @@ import com.jaredrummler.android.processes.models.AndroidAppProcess;
 import java.util.Date;
 import java.util.List;
 
-import de.dennis.mobilesensing.Application;
-import de.dennis.mobilesensing.storage.StorageHelper;
+import de.dennis.mobilesensing_module.mobilesensing.Module;
 
 /**
  * Created by Dennis on 11.03.2017.
@@ -31,11 +30,11 @@ public class RunningApplicationListener extends BroadcastReceiver {
             List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(5);
             if(taskInfo.size() == 0){
                 Date d = new Date();
-                SharedPreferences prefs = Application.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
+                SharedPreferences prefs = Module.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
                 String runningApp = "";
                 if(!prefs.getString("RunningApp","").equals(runningApp))
                 {
-                    StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(runningApp, d.getTime()));
+                    //TODO StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(runningApp, d.getTime()));
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("RunningApp",runningApp);
                     editor.apply();
@@ -43,11 +42,11 @@ public class RunningApplicationListener extends BroadcastReceiver {
             }else{
                 top = taskInfo.get(0).topActivity.getPackageName();
                 Date x = new Date();
-                SharedPreferences prefs = Application.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
+                SharedPreferences prefs = Module.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
                 String runningApp = top;
                 if(!prefs.getString("RunningApp","").equals(runningApp))
                 {
-                    StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(top,x.getTime()));
+                    //TODO StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(top,x.getTime()));
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("RunningApp",runningApp);
                     editor.apply();
@@ -60,11 +59,11 @@ public class RunningApplicationListener extends BroadcastReceiver {
             if(processes.size() == 0)
             {
                 Date d = new Date();
-                SharedPreferences prefs = Application.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
+                SharedPreferences prefs = Module.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
                 String runningApp = "";
                 if(!prefs.getString("RunningApp","").equals(runningApp))
                 {
-                    StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(runningApp, d.getTime()));
+                    //TODO StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(runningApp, d.getTime()));
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("RunningApp",runningApp);
                     editor.apply();
@@ -75,11 +74,11 @@ public class RunningApplicationListener extends BroadcastReceiver {
                 Date x = new Date();
                 if(!processes.get(i).getPackageName().equals("com.google.android.gms"))
                 {
-                    SharedPreferences prefs = Application.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
+                    SharedPreferences prefs = Module.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
                     String runningApp = processes.get(i).getPackageName();
                     if(!prefs.getString("RunningApp","").equals(runningApp))
                     {
-                        StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(processes.get(i).getPackageName(), x.getTime()));
+                        //TODO StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(processes.get(i).getPackageName(), x.getTime()));
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putString("RunningApp",runningApp);
                         editor.apply();
