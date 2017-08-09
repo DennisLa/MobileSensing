@@ -4,7 +4,7 @@ package de.dennis.mobilesensing_module.mobilesensing;
 import android.content.Context;
 import android.util.Log;
 
-import de.dennis.mobilesensing_module.mobilesensing.Storage.MyObjectBox;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.MyObjectBox;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.StorageEventListener;
 import io.objectbox.BoxStore;
 
@@ -29,8 +29,14 @@ public class Module extends android.app.Application{
     public static void startUp(Context app_context){
         context = app_context;
         // ObjectBox
-        boxStore = MyObjectBox.builder().androidContext(getContext()).build();
         sel = new StorageEventListener();
+        try{
+            boxStore = MyObjectBox.builder().androidContext(getContext()).build();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+        //
     }
     public static Context getContext() {
         return context;

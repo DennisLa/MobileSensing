@@ -11,18 +11,15 @@ import com.intel.context.item.Network;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.SensorInfo;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.SensorTimeseries;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.SensorValue;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.StringEntitiy;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ValueInfo;
-import io.objectbox.relation.ToOne;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorValue;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.StringEntity;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ValueInfo;
 
 /**
  * Created by Dennis on 06.03.2017.
@@ -43,38 +40,27 @@ public class NetworkListener implements com.intel.context.sensing.ContextTypeLis
             editorsettings.apply();
             SharedPreferences prefsdata = Module.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
             String networkType = ((Network) state).getNetworkType().name();
+            //Call when value changed
             if(!prefsdata.getString("Network","").equals(networkType))
             {
-                //TODO StorageHelper.openDBConnection().save2NetworkHistory((Network) state);
+                //new Timeseries *******************************************************************
+                    //Init SensorInfo
+                    SensorInfo si = new SensorInfo("Network","IntelSensing Network Sensor");
+                        //Add  one ValueInfo for each measure
+                        si.addValueInfo(new ValueInfo("Network type","Name of the Network type e.g. WiFi","String"));
+                    //Init SensorValue
+                    SensorValue sv = new SensorValue(563457754321L);
+                        //Add one StringEntitiy for each measure (same order)
+                        sv.addStringEntity(new StringEntity(((Network) state).getNetworkType().name()));
+                    //Init Time Series
+                    //TODO Type, UUID, User
+                    SensorTimeseries st = new SensorTimeseries(563457754321L,"Type","UUID","User",si,sv);
+                //Send Event
+                EventBus.getDefault().post(new SensorDataEvent(st));
+                //**********************************************************************************
                 SharedPreferences.Editor editor = prefsdata.edit();
                 editor.putString("Network",networkType);
                 editor.apply();
-
-                // timestamp as unique identifier used fo live upload and objectbox
-                long timestamp = state.getTimestamp();
-                // JSON Field timestamp_day
-                GregorianCalendar g = new GregorianCalendar();
-                g.setTimeInMillis(timestamp);
-                String timestamp_day = g.toString();
-                // Additional JSON Field / User = "" because its unknown
-                String type = "sensor";
-                String sensorid = "";
-                String user = "";
-                // JSON Field Info
-                List<ValueInfo> vi = new ArrayList<>();
-                vi.add(new ValueInfo("","",""));
-                SensorInfo si = new SensorInfo("Network","Provides information related to network connections. " +
-                        "A new item is notified when a network event occurs (for example, the network access is disconnected or connected)." +
-                        " By default, every two hours, the state is refreshed with traffic and other network values that change.",vi);
-                // JSON Array Values
-                List<SensorValue> sv = new ArrayList<>();
-                List<StringEntitiy> sel = new ArrayList<>();
-                sel.add(new StringEntitiy(((Network) state).getIp()+""));
-                sv.add(new SensorValue(state.getTimestamp(),sel));
-                // Build Timeseries Object
-                SensorTimeseries ts = new SensorTimeseries(state.getTimestamp(),timestamp_day,type,sensorid,user,si,sv);
-                //Send Event
-                EventBus.getDefault().post(new SensorDataEvent(ts));
             }
         } else {
             Log.d(LOG_TAG, "Invalid state type: " + state.getContextType());
