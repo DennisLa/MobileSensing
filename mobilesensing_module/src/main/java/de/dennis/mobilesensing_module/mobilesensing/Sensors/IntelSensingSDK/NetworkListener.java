@@ -61,6 +61,7 @@ public class NetworkListener implements com.intel.context.sensing.ContextTypeLis
                 SharedPreferences.Editor editor = prefsdata.edit();
                 editor.putString("Network",networkType);
                 editor.apply();
+                Log.d("ObjectBox_Network","updated to"+networkType);
             }
         } else {
             Log.d(LOG_TAG, "Invalid state type: " + state.getContextType());

@@ -8,7 +8,15 @@ import com.intel.context.error.ContextError;
 import com.intel.context.item.DevicePositionItem;
 import com.intel.context.item.Item;
 
+import org.greenrobot.eventbus.EventBus;
+
+import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorValue;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.StringEntity;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ValueInfo;
 
 /**
  * Created by Dennis on 06.03.2017.
@@ -26,6 +34,25 @@ public class DevicePositionListener implements com.intel.context.sensing.Context
             {
                 //TODO StorageHelper.openDBConnection().save2DevicePositionHistory((DevicePositionItem) state);
                 editor.putString("DevicePosition", devicePosition);
+
+                //new Timeseries *******************************************************************
+                //Init SensorInfo
+                SensorInfo si = new SensorInfo("DevicePosition","IntelSensing Network Sensor");
+                //Add  one ValueInfo for each measure
+                si.addValueInfo(new ValueInfo("DevicePosition Type","Position of Device e.g. in Hand","String"));
+                //Init SensorValue
+                Long tsLong = System.currentTimeMillis()/1000;
+                SensorValue sv = new SensorValue(tsLong);
+                //Add one StringEntitiy for each measure (same order)
+                sv.addStringEntity(new StringEntity(devicePosition));
+                //Init Time Series
+                //TODO Type, UUID, User
+                SensorTimeseries st = new SensorTimeseries(tsLong,"Type","UUID","User",si,sv);
+                //Send Event
+                EventBus.getDefault().post(new SensorDataEvent(st));
+                //**********************************************************************************
+                editor.putString("DevicePosition",devicePosition);
+                Log.d("ObjectBox_DevicePo","updated to"+devicePosition);
             }
             editor.apply();
         } else {

@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:6836742050697117276",
-      "lastPropertyId": "3:2030473453061713089",
+      "lastPropertyId": "4:3326066083100248226",
       "name": "SensorInfo",
       "properties": [
         {
@@ -19,6 +19,11 @@
         {
           "id": "3:2030473453061713089",
           "name": "description"
+        },
+        {
+          "id": "4:3326066083100248226",
+          "indexId": "6:5242197643884091499",
+          "name": "sensorTimeseriesId"
         }
       ]
     },
@@ -125,7 +130,7 @@
     }
   ],
   "lastEntityId": "5:1387001295245851897",
-  "lastIndexId": "5:4640370968670136603",
+  "lastIndexId": "6:5242197643884091499",
   "lastSequenceId": "0:0",
   "modelVersion": 2,
   "retiredEntityUids": [],

@@ -1,7 +1,10 @@
 package de.dennis.mobilesensing;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.checkPermissions();
         setContentView(R.layout.activity_main);
         btnTest = (Button) findViewById(R.id.btnTest);
         btnTest.setOnClickListener(new View.OnClickListener() {
@@ -117,5 +121,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         finish();
+    }
+    public void checkPermissions(){
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            String[] permissions = new String[]{Manifest.permission.READ_CONTACTS,Manifest.permission.READ_CALL_LOG,Manifest.permission.INTERNET,Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION};
+            boolean flag = false;
+            for (int i = 0; i < permissions.length; i++) {
+                if (checkSelfPermission(permissions[i]) == PackageManager.PERMISSION_DENIED) {
+                    flag = true;
+                    break;
+                }
+            }
+
+            if (flag) {
+                requestPermissions(permissions, 1);
+            }
+
+        }
     }
 }

@@ -19,6 +19,8 @@ public class Application extends android.app.Application {
         super.onCreate();
         context = getApplicationContext();
         Module.startUp(context);
+        sensMang = new SensingManager();
+        sensMang.startSensing();
     }
     public static Context getContext() {
         return context;

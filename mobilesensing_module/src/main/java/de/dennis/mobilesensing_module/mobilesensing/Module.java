@@ -1,9 +1,11 @@
 package de.dennis.mobilesensing_module.mobilesensing;
 
 
+import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import de.dennis.mobilesensing_module.mobilesensing.SensingManager.SensingManager;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.MyObjectBox;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.StorageEventListener;
 import io.objectbox.BoxStore;
@@ -15,6 +17,8 @@ import io.objectbox.BoxStore;
 public class Module extends android.app.Application{
     private static BoxStore boxStore;
     private static StorageEventListener sel;
+
+
     //
     private static Context context;
     @Override
@@ -27,6 +31,7 @@ public class Module extends android.app.Application{
         sel = new StorageEventListener();
     }
     public static void startUp(Context app_context){
+
         context = app_context;
         // ObjectBox
         sel = new StorageEventListener();

@@ -135,7 +135,7 @@
         android:id="@+id/swtNetwork"
         android:layout_alignTop="@+id/textView7"
         android:layout_alignStart="@+id/swtApp"
-        android:checked="false" />
+        android:checked="false" />1
 
     <Switch
         android:layout_width="wrap_content"

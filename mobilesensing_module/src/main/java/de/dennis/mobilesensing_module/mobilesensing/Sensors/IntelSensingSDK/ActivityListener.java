@@ -1,5 +1,6 @@
 package de.dennis.mobilesensing_module.mobilesensing.Sensors.IntelSensingSDK;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -10,15 +11,24 @@ import com.intel.context.item.Item;
 import com.intel.context.item.activityrecognition.PhysicalActivity;
 import com.intel.context.sensing.ContextTypeListener;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
+import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorValue;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.StringEntity;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ValueInfo;
 
 /**
  * Created by Dennis on 06.03.2017.
  */
 public class ActivityListener implements ContextTypeListener {
     private final String LOG_TAG = ActivityListener.class.getName();
+    private String activityFinal;
 
     public void onReceive(Item state) {
         if (state instanceof com.intel.context.item.ActivityRecognition) {
@@ -111,6 +121,7 @@ public class ActivityListener implements ContextTypeListener {
                 }
                 int prob = (random+running+walking+incar+sedentary+random)/actSum;
                 Log.d("Minute_Actvity",activitiyName+" , "+ prob);
+                activityFinal =activitiyName+","+ prob;
                 if(!prefs.getString("Activity","").equals(activitiyName))
                 {
                     //TODO
@@ -124,6 +135,26 @@ public class ActivityListener implements ContextTypeListener {
                 editor.putInt("Activity_InCar", 0);
                 editor.putInt("Activity_Random", 0);
                 editor.putInt("Activity_Sedentary", 0);
+
+                //new Timeseries *******************************************************************
+                //Init SensorInfo
+                SensorInfo si = new SensorInfo("ActivityRecognition","IntelSensing Network Sensor");
+                //Add  one ValueInfo for each measure
+                si.addValueInfo(new ValueInfo("Activity Type","Name of the Activity type e.g. Walking","String"));
+                //Init SensorValue
+                Long tsLong = System.currentTimeMillis()/1000;
+                SensorValue sv = new SensorValue(tsLong);
+                //Add one StringEntitiy for each measure (same order)
+                sv.addStringEntity(new StringEntity(activityFinal));
+                //Init Time Series
+                //TODO Type, UUID, User
+                SensorTimeseries st = new SensorTimeseries(tsLong,"Type","UUID","User",si,sv);
+                //Send Event
+                EventBus.getDefault().post(new SensorDataEvent(st));
+                //**********************************************************************************
+                editor.putString("Activity",activityFinal);
+                Log.d("ObjectBox_Activity","updated to"+activityFinal);
+
             }
             editor.apply();
         } else {

@@ -90,7 +90,7 @@ public class SensingManager {
         try {
             Bundle settings;
             //enable Location Sensing
-            if(prefs.getBoolean("GPS",false))
+            if(prefs.getBoolean("GPS",true))
             {
                 mSensing.enableSensing(ContextType.LOCATION, null);
                 Log.d(TAG,"GPS-Tracking enabled");
@@ -99,7 +99,7 @@ public class SensingManager {
                 Log.d(TAG, "GPS-Tracking disabled");
             }
             //enable Activity Sensing
-            if(prefs.getBoolean("Activity",false)){
+            if(prefs.getBoolean("Activity",true)){
                 ActivityOptionBuilder actBui;
                 actBui = new ActivityOptionBuilder();
                 actBui
@@ -114,7 +114,7 @@ public class SensingManager {
                 Log.d(TAG, "Activity-Tracking disabled");
             }
             //enable Device Position
-            if(prefs.getBoolean("DevicePosition",false)){
+            if(prefs.getBoolean("DevicePosition",true)){
                 DevicePositionOptionBuilder optBui;
                 optBui = new DevicePositionOptionBuilder();
                 optBui.setSensorHubContinuousFlag(ContinuousFlag.NOPAUSE_ON_SLEEP);
@@ -126,9 +126,9 @@ public class SensingManager {
                 Log.d(TAG, "DevicePosition-Tracking disabled");
             }
             //enable Network Type
-            if(prefs.getBoolean("Network",false)){
+            if(prefs.getBoolean("Network",true)){
                 settings = new Bundle();
-                settings.putLong("TIME_WINDOW", 60*1000);
+                settings.putLong("TIME_WINDOW", 3*1000);
                 mSensing.enableSensing(ContextType.NETWORK, settings);
                 Log.d(TAG, "Network-Tracking enabled");
             }else{
@@ -136,7 +136,7 @@ public class SensingManager {
                 Log.d(TAG, "Network-Tracking disabled");
             }
             //enable Running Applications
-            if(prefs.getBoolean("Apps",false)){
+            if(prefs.getBoolean("Apps",true)){
                 mRunningAppService.startSensingRunningApps(Module.getContext(), 20 * 1000);
                 Log.d(TAG, "App-Tracking enabled");
             }else{
@@ -144,7 +144,7 @@ public class SensingManager {
                 Log.d(TAG, "App-Tracking disabled");
             }
             //enable Call
-            if(prefs.getBoolean("Call",false)){
+            if(prefs.getBoolean("Call",true)){
                 mSensing.enableSensing(ContextType.CALL, null);
                 Log.d(TAG, "Call-EarTouch-Tracking enabled");
             }else{
