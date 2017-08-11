@@ -142,7 +142,7 @@ public class ActivityListener implements ContextTypeListener {
                 //Add  one ValueInfo for each measure
                 si.addValueInfo(new ValueInfo("Activity Type","Name of the Activity type e.g. Walking","String"));
                 //Init SensorValue
-                Long tsLong = System.currentTimeMillis()/1000;
+                Long tsLong = System.currentTimeMillis();
                 SensorValue sv = new SensorValue(tsLong);
                 //Add one StringEntitiy for each measure (same order)
                 sv.addStringEntity(new StringEntity(activityFinal));

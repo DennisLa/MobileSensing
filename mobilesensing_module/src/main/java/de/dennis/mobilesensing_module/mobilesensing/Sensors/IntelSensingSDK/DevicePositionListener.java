@@ -41,7 +41,7 @@ public class DevicePositionListener implements com.intel.context.sensing.Context
                 //Add  one ValueInfo for each measure
                 si.addValueInfo(new ValueInfo("DevicePosition Type","Position of Device e.g. in Hand","String"));
                 //Init SensorValue
-                Long tsLong = System.currentTimeMillis()/1000;
+                Long tsLong = System.currentTimeMillis();
                 SensorValue sv = new SensorValue(tsLong);
                 //Add one StringEntitiy for each measure (same order)
                 sv.addStringEntity(new StringEntity(devicePosition));

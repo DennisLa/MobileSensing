@@ -49,12 +49,12 @@ public class NetworkListener implements com.intel.context.sensing.ContextTypeLis
                         //Add  one ValueInfo for each measure
                         si.addValueInfo(new ValueInfo("Network type","Name of the Network type e.g. WiFi","String"));
                     //Init SensorValue
-                    SensorValue sv = new SensorValue(563457754321L);
+                    SensorValue sv = new SensorValue(System.currentTimeMillis());
                         //Add one StringEntitiy for each measure (same order)
                         sv.addStringEntity(new StringEntity(((Network) state).getNetworkType().name()));
                     //Init Time Series
                     //TODO Type, UUID, User
-                    SensorTimeseries st = new SensorTimeseries(563457754321L,"Type","UUID","User",si,sv);
+                    SensorTimeseries st = new SensorTimeseries(System.currentTimeMillis(),"Type","UUID","User",si,sv);
                 //Send Event
                 EventBus.getDefault().post(new SensorDataEvent(st));
                 //**********************************************************************************

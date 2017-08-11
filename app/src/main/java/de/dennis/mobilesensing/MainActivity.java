@@ -11,7 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.DataAdapter;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
@@ -45,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 /*
                 ValueInfo vi = new ValueInfo("Name","Description","unit");
                 List<ValueInfo> lvi = new ArrayList<ValueInfo>();
@@ -122,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         finish();
     }
+
     public void checkPermissions(){
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

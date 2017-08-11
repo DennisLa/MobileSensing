@@ -38,7 +38,7 @@ public class CallListener implements com.intel.context.sensing.ContextTypeListen
             //Add  one ValueInfo for each measure
             si.addValueInfo(new ValueInfo("Call Type","Caller Information e.g. Caller phone number","String"));
             //Init SensorValue
-            Long tsLong = System.currentTimeMillis()/1000;
+            Long tsLong = System.currentTimeMillis();
             SensorValue sv = new SensorValue(tsLong);
             //Add one StringEntitiy for each measure (same order)
             sv.addStringEntity(new StringEntity(callResult));
