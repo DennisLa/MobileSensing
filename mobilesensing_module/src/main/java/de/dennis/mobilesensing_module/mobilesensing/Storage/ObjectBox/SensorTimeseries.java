@@ -149,7 +149,7 @@ public class SensorTimeseries {
         GregorianCalendar g = new GregorianCalendar();
         g.setTimeInMillis(timestamp);
         //2016-05-23T16:00:00.000Z
-        this.timestamp_day = g.get(GregorianCalendar.YEAR)+"-"+g.get(GregorianCalendar.MONTH)+1+"-"+g.get(GregorianCalendar.DAY_OF_MONTH)+"T"+"00:00:00.000Z";
+        this.timestamp_day = g.get(GregorianCalendar.YEAR)+"-"+(g.get(GregorianCalendar.MONTH)+1)+"-"+g.get(GregorianCalendar.DAY_OF_MONTH)+"T"+"00:00:00.000Z";
         this.type = type;
         this.sensor_id = sensor_id;
         this.user = user;
