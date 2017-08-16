@@ -42,12 +42,11 @@ public class SensingManager {
     //
     private String TAG = SensingManager.class.getName();
     //
-    SharedPreferences prefs;
+    private SharedPreferences prefs;
 
     public SensingManager() {
          prefs = Module.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
-    }
-    public void startSensing(){
+        //Init Intel SDK
         mSensing = new Sensing(Module.getContext(), new SensingListener());
         //
         mSensing.start(new InitCallback() {
@@ -76,21 +75,19 @@ public class SensingManager {
                 } catch (ContextProviderException e) {
                     e.printStackTrace();
                 }
-                loadSensingSettings();
             }
             public void onError(ContextError error) {
                 Log.d("APPLICATION", "Error: " + error.getMessage());
             }
         });
     }
-    public void loadSensingSettings()
+    public void startSensing()
     {
         SharedPreferences prefs = Module.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
-        Log.d(TAG, (prefs.getBoolean("GPS",true))+" GPS VALUE");
         try {
             Bundle settings;
             //enable Location Sensing
-            if(prefs.getBoolean("GPS",true))
+            if(prefs.getBoolean("GPS",false))
             {
                 mSensing.enableSensing(ContextType.LOCATION, null);
                 Log.d(TAG,"GPS-Tracking enabled");
@@ -99,7 +96,7 @@ public class SensingManager {
                 Log.d(TAG, "GPS-Tracking disabled");
             }
             //enable Activity Sensing
-            if(prefs.getBoolean("Activity",true)){
+            if(prefs.getBoolean("Activity",false)){
                 ActivityOptionBuilder actBui;
                 actBui = new ActivityOptionBuilder();
                 actBui
@@ -114,7 +111,7 @@ public class SensingManager {
                 Log.d(TAG, "Activity-Tracking disabled");
             }
             //enable Device Position
-            if(prefs.getBoolean("DevicePosition",true)){
+            if(prefs.getBoolean("DevicePosition",false)){
                 DevicePositionOptionBuilder optBui;
                 optBui = new DevicePositionOptionBuilder();
                 optBui.setSensorHubContinuousFlag(ContinuousFlag.NOPAUSE_ON_SLEEP);
@@ -126,7 +123,7 @@ public class SensingManager {
                 Log.d(TAG, "DevicePosition-Tracking disabled");
             }
             //enable Network Type
-            if(prefs.getBoolean("Network",true)){
+            if(prefs.getBoolean("Network",false)){
                 settings = new Bundle();
                 settings.putLong("TIME_WINDOW", 3*1000);
                 mSensing.enableSensing(ContextType.NETWORK, settings);
@@ -136,7 +133,7 @@ public class SensingManager {
                 Log.d(TAG, "Network-Tracking disabled");
             }
             //enable Running Applications
-            if(prefs.getBoolean("Apps",true)){
+            if(prefs.getBoolean("Apps",false)){
                 mRunningAppService.startSensingRunningApps(Module.getContext(), 20 * 1000);
                 Log.d(TAG, "App-Tracking enabled");
             }else{
@@ -144,7 +141,7 @@ public class SensingManager {
                 Log.d(TAG, "App-Tracking disabled");
             }
             //enable Call
-            if(prefs.getBoolean("Call",true)){
+            if(prefs.getBoolean("Call",false)){
                 mSensing.enableSensing(ContextType.CALL, null);
                 Log.d(TAG, "Call-EarTouch-Tracking enabled");
             }else{
@@ -155,9 +152,8 @@ public class SensingManager {
             Log.e("APPLICATION", "Error enabling context type" + e.getMessage());
         }
     }
-
     //Settings Interface
-    public void setSensing(SensorNames name, boolean run){
+    public void setSensingSetting(SensorNames name, boolean run){
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean(name.toString(),run);
         editor.apply();

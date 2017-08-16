@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import de.dennis.mobilesensing_module.mobilesensing.SensingManager.SensorNames;
+
 public class SettingsActivity extends AppCompatActivity {
     Button btnSave;
     Switch swtAll;
@@ -32,17 +34,15 @@ public class SettingsActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               SharedPreferences.Editor editor = prefs.edit();
+                Application.getSensingManager().setSensingSetting(SensorNames.GPS,swtGPS.isChecked());
+                Application.getSensingManager().setSensingSetting(SensorNames.Network,swtNetwork.isChecked());
+                Application.getSensingManager().setSensingSetting(SensorNames.Call,swtCall.isChecked());
+                Application.getSensingManager().setSensingSetting(SensorNames.Apps,swtApps.isChecked());
+                Application.getSensingManager().setSensingSetting(SensorNames.Activity,swtActivity.isChecked());
+                Application.getSensingManager().setSensingSetting(SensorNames.ScreenOn,swtScreenOn.isChecked());
+                Application.getSensingManager().setSensingSetting(SensorNames.WLANUpload,swtWLANUpload.isChecked());
+                Application.getSensingManager().startSensing();
 
-                editor.putBoolean("GPS",swtGPS.isChecked());
-                editor.putBoolean("Network",swtNetwork.isChecked());
-                editor.putBoolean("Call",swtCall.isChecked());
-                editor.putBoolean("Apps",swtApps.isChecked());
-                editor.putBoolean("Activity",swtActivity.isChecked());
-                editor.putBoolean("ScreenOn",swtScreenOn.isChecked());
-                editor.putBoolean("WLANUpload",swtWLANUpload.isChecked());
-                editor.apply();
-                Application.getSensingManager().loadSensingSettings();
             }
         });
         //Switches for Settings

@@ -26,15 +26,10 @@ public class DataAdapter {
 
     public void saveTimeseriesToOB(SensorTimeseries st)
     {
-        Box tsBox = Module.getBoxStore().boxFor(SensorTimeseries.class);
-
-        Log.d("Test",st.getTimestamp_day());
-        Log.d("Test",st.getSensor_info().getSensor_name());
-        //Log.d("Test", st.getSensor_infoToOne().getTarget().getSensor_name());
-        long id = searchForTimeseriesOfSameDay(st.getTimestamp_day(),st.getSensor_info().getSensor_name());
-        if(id != 0){
+        Box tsBox = Module.getBoxStore().boxFor(SensorTimeseries.class);;
+        SensorTimeseries st_day = getSensorTimeseries(st.getTimestamp_day(),st.getSensor_info().getSensor_name());
+        if(st_day != null){
             //Update Entity
-            SensorTimeseries st_day = (SensorTimeseries) tsBox.get(id);
             Box svBox = Module.getBoxStore().boxFor(SensorValue.class);
             Box seBox = Module.getBoxStore().boxFor(StringEntity.class);
             //Putting SensorValue & StringEntity
@@ -92,17 +87,28 @@ public class DataAdapter {
 
     }
 
-    public long searchForTimeseriesOfSameDay(String timestamp_day, String sensor_name ){
+    public SensorTimeseries getSensorTimeseries(String timestamp_day, String sensor_name ){
         Box tsBox = Module.getBoxStore().boxFor(SensorTimeseries.class);
         List<SensorTimeseries> lst = tsBox.getAll();
-        long id = 0;
-        for(SensorTimeseries st: lst){
+        SensorTimeseries st = null;
+        for(SensorTimeseries sti: lst){
             if(st.getTimestamp_day().equals(timestamp_day) && st.getSensor_info().getSensor_name().equals(sensor_name)){
-                id = st.getTimestamp();
+                st = sti;
                 break;
             }
         }
-        return id;
+        return st;
+    }
+    public List<SensorTimeseries> getSensorTimeseriesOlder(String timestamp_day, String sensor_name){
+        Box tsBox = Module.getBoxStore().boxFor(SensorTimeseries.class);
+        List<SensorTimeseries> lst = tsBox.getAll();
+        ArrayList<SensorTimeseries> rlst = new ArrayList<>();
+        for(SensorTimeseries st: lst){
+            if(!(st.getTimestamp_day().equals(timestamp_day)) && st.getSensor_info().getSensor_name().equals(sensor_name)){
+                rlst.add(st);
+            }
+        }
+        return rlst;
     }
     public void deleteTimeseries(SensorTimeseries st){
         Box stBox = Module.getBoxStore().boxFor(SensorTimeseries.class);
@@ -133,9 +139,8 @@ public class DataAdapter {
         return svBox.getAll();
     }
 
-    public SensorTimeseries getSensorTimeseries(String sensorname, String timestampDay){
-        long id = searchForTimeseriesOfSameDay(timestampDay, sensorname);
-        Box stBox = Module.getBoxStore().boxFor(SensorTimeseries.class);
-        return (SensorTimeseries) stBox.get(id);
+    public void deleteTimeseries(String timestamp_day, String sensorName) {
+        SensorTimeseries st = getSensorTimeseries(timestamp_day,sensorName);
+        deleteTimeseries(st);
     }
 }

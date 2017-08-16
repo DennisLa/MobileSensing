@@ -39,7 +39,7 @@
 
         <receiver android:name="de.dennis.mobilesensing_module.mobilesensing.Sensors.OtherSensors.RunningApplicationService.RunningApplicationListener" />
         <receiver android:name=".TrackService.TrackListener" />
-        <receiver android:name=".UploadService.UploadListener" />
+        <receiver android:name="de.dennis.mobilesensing_module.mobilesensing.Upload.DailyUpload.UploadListener" />
         <receiver android:name="de.dennis.mobilesensing_module.mobilesensing.Sensors.OtherSensors.ScreenOnService.ScreenOnListener"/>
 
         <service android:name="com.intel.context.core.LocalService" />
