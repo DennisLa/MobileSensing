@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import de.dennis.mobilesensing_module.mobilesensing.Module;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.StorageEventListener;
 import de.dennis.mobilesensing_module.mobilesensing.Upload.DailyUpload.UploadService;
 
 /**
@@ -11,6 +12,8 @@ import de.dennis.mobilesensing_module.mobilesensing.Upload.DailyUpload.UploadSer
  */
 
 public class UploadManager {
+    UploadService us;
+    StorageEventListener sel;
     public UploadManager(){
 
     }
@@ -24,7 +27,8 @@ public class UploadManager {
         editor.putString("UploadUrl",url);
         editor.putString("UploadSession",session);
         editor.apply();
-        UploadService us = new UploadService();
+        sel = new StorageEventListener();
+        us = new UploadService();
         us.startUploadService(context, 3600000);
     }
 }

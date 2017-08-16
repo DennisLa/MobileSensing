@@ -6,6 +6,7 @@ import com.baasbox.android.BaasUser;
 
 import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.SensingManager.SensingManager;
+import de.dennis.mobilesensing_module.mobilesensing.SensingManager.SensorNames;
 import de.dennis.mobilesensing_module.mobilesensing.Upload.UploadManager;
 
 /**
@@ -21,6 +22,7 @@ public class Application extends android.app.Application {
         context = getApplicationContext();
         Module.init(context);
         sensMang = Module.getSensingManager();
+        sensMang.setSensingSetting(SensorNames.Activity,true);
         sensMang.startSensing();
         uplMang = Module.getUploadManager();
         uplMang.setDailyUpload(context, BaasUser.current().getToken(),"http://141.99.12.45:3000/sendData");

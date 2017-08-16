@@ -17,7 +17,6 @@ import io.objectbox.BoxStore;
 
 public class Module extends android.app.Application{
     private static BoxStore boxStore;
-    private static StorageEventListener sel;
     private static SensingManager sensingManager;
     private static UploadManager uploadManager;
 
@@ -29,7 +28,6 @@ public class Module extends android.app.Application{
     public static void init(Context app_context){
         context = app_context;
         // ObjectBox
-        sel = new StorageEventListener();
         sensingManager = new SensingManager();
         uploadManager = new UploadManager();
         try{

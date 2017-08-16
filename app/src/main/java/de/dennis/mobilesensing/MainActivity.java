@@ -1,6 +1,7 @@
 package de.dennis.mobilesensing;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -113,14 +114,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        /*SharedPreferences prefs = Application.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        SharedPreferences prefs = Application.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
         String Session = prefs.getString("Session", null);
         if(Session == null)
         {
             Intent i = new Intent(Application.getContext(), LoginActivity.class);
             startActivity(i);
             finish();
-        }*/
+        }
     }
 
     @Override

@@ -26,10 +26,10 @@ public class UploadListener extends BroadcastReceiver {
 
         SharedPreferences.Editor editor = prefs.edit();
         DailyUploader du = new DailyUploader();
-        if(prefs.getBoolean("WLANUpload",false) && prefs.getBoolean("isWiFi",false))
+        if(prefs.getBoolean("WLANUpload",false) && prefs.getBoolean("isWiFi",false) && !prefs.getString("UploadSession","").equals("") && !prefs.getString("UploadUrl","").equals(""))
         {
             du.startUpload( BaasUser.current().getName(),prefs.getString("UploadSession",""),prefs.getString("UploadUrl",""));
-        }else if(!prefs.getBoolean("WLANUpload",false)){
+        }else if(!prefs.getBoolean("WLANUpload",false) && !prefs.getString("UploadSession","").equals("") && !prefs.getString("UploadUrl","").equals("")){
             du.startUpload(BaasUser.current().getName(),prefs.getString("UploadSession",""),prefs.getString("UploadUrl",""));
         }
     }
