@@ -89,6 +89,7 @@ public class SensingManager {
             //enable Location Sensing
             if(prefs.getBoolean("GPS",false))
             {
+                //TODO GLocation einbauen
                 mSensing.enableSensing(ContextType.LOCATION, null);
                 Log.d(TAG,"GPS-Tracking enabled");
             }else{
