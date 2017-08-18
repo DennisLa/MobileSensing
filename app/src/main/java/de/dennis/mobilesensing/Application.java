@@ -23,16 +23,16 @@ public class Application extends android.app.Application {
         Module.init(context);
         sensMang = Module.getSensingManager();
         //TODO Persmission ?
-        sensMang.setSensingSetting(SensorNames.Activity,true);
-        sensMang.setSensingSetting(SensorNames.GPS,true);
-        sensMang.setSensingSetting(SensorNames.WLANUpload,true);
-        sensMang.setSensingSetting(SensorNames.ScreenOn,true);
-        sensMang.setSensingSetting(SensorNames.Apps,true);
-        sensMang.setSensingSetting(SensorNames.Call,true);
-        sensMang.setSensingSetting(SensorNames.Network,true);
+        sensMang.setSensingSetting(SensorNames.Activity,false);
+        sensMang.setSensingSetting(SensorNames.GPS,false);
+        sensMang.setSensingSetting(SensorNames.WLANUpload,false);
+        sensMang.setSensingSetting(SensorNames.ScreenOn,false);
+        sensMang.setSensingSetting(SensorNames.Apps,false);
+        sensMang.setSensingSetting(SensorNames.Call,false);
+        sensMang.setSensingSetting(SensorNames.Network,false);
         sensMang.startSensing();
         uplMang = Module.getUploadManager();
-        uplMang.setDailyUpload(context, BaasUser.current().getToken(),"http://141.99.12.45:3000/sendData");
+//        uplMang.setDailyUpload(context, BaasUser.current().getToken(),"http://141.99.12.45:3000/sendData");
 
     }
     public static Context getContext() {

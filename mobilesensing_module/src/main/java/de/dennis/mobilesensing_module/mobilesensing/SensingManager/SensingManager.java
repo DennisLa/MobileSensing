@@ -1,5 +1,6 @@
 package de.dennis.mobilesensing_module.mobilesensing.SensingManager;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.intel.context.sensing.ContextTypeListener;
 import com.intel.context.sensing.InitCallback;
 
 import de.dennis.mobilesensing_module.mobilesensing.Module;
+import de.dennis.mobilesensing_module.mobilesensing.Sensors.GoogleLocation.GLocationListener;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.IntelSensingSDK.ActivityListener;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.IntelSensingSDK.CallListener;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.IntelSensingSDK.DevicePositionListener;
@@ -37,6 +39,7 @@ public class SensingManager {
     private ContextTypeListener mDevicePositionListener;
     private ContextTypeListener mNetworkListener;
     private ContextTypeListener mCallListener;
+    private GLocationListener mGLocationlistener;
     //
     private RunningApplicationService mRunningAppService;
     //
@@ -44,10 +47,12 @@ public class SensingManager {
     //
     private SharedPreferences prefs;
 
+
     public SensingManager() {
          prefs = Module.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
         //Init Intel SDK
         mSensing = new Sensing(Module.getContext(), new SensingListener());
+        mGLocationlistener = new GLocationListener(Module.getContext());
         //
         mSensing.start(new InitCallback() {
             public void onSuccess() {
@@ -87,13 +92,14 @@ public class SensingManager {
         try {
             Bundle settings;
             //enable Location Sensing
-            if(prefs.getBoolean("GPS",false))
+            if(prefs.getBoolean("GPS",true))
             {
-                //TODO GLocation einbauen
-                mSensing.enableSensing(ContextType.LOCATION, null);
+                mGLocationlistener.getUpdateCoordinates(5000);
+               // mSensing.enableSensing(ContextType.LOCATION, null);
                 Log.d(TAG,"GPS-Tracking enabled");
             }else{
-                mSensing.disableSensing(ContextType.LOCATION);
+                mGLocationlistener.stopLoop();
+                //mSensing.disableSensing(ContextType.LOCATION);
                 Log.d(TAG, "GPS-Tracking disabled");
             }
             //enable Activity Sensing
