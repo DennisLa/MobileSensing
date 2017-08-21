@@ -35,7 +35,7 @@ public class Module extends android.app.Application{
         }catch(Exception e){
             e.printStackTrace();
         }
-    }
+        }
     public static Context getContext() {
         return context;
     }

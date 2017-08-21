@@ -1,7 +1,10 @@
 package de.dennis.mobilesensing_module.mobilesensing.Sensors.GoogleLocation;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -19,14 +22,22 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
+import org.greenrobot.eventbus.EventBus;
+
+import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorValue;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.StringEntity;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ValueInfo;
 
 
 /**
  * Created by Anton on 02.08.2017.
  */
 
-public class GLocationListener implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class GLocationListener implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener  {
 
 
     private Location location; // location
@@ -40,8 +51,9 @@ public class GLocationListener implements GoogleApiClient.ConnectionCallbacks, G
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest mLocationRequest;
     private int stopLoopint; // 1 is active 0 is deactivated
+    private boolean mRequestingLocationUpdates=true;
 
-    public GLocationListener(Context c)
+    public GLocationListener(Context c, long interval, long fastestInterval)
     {
 
 
@@ -55,19 +67,10 @@ public class GLocationListener implements GoogleApiClient.ConnectionCallbacks, G
         {
             Log.d(TAG,e.toString());
         }
-        mLocationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                for (Location location : locationResult.getLocations()) {
-                    // Update UI with location data
-                    // ...
-                    coordinatesUpdate = location.getLatitude() +","+ location.getLongitude();
-                    //EventBus.getDefault().post(new MessageEvent(coordinates));
-                    Log.d(TAG, coordinatesUpdate);
-                }
-            };
-        };
+        createLocationCallback();
+        createLocationRequest(interval,fastestInterval);
     }
+
 
 
 
@@ -79,11 +82,56 @@ public class GLocationListener implements GoogleApiClient.ConnectionCallbacks, G
                 .addApi(LocationServices.API)
                 .build();
     }
-    protected void createLocationRequest() {
-        LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
+    @Override
+    public void onConnected(Bundle bundle) {
+        if ( Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission(Module.getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(Module.getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return  ;
+        }
+        location = LocationServices.FusedLocationApi.getLastLocation(mGAC);
+
+    }
+    protected void createLocationRequest(long interval, long fastestInterval) {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(interval);
+        mLocationRequest.setFastestInterval(fastestInterval);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+    private void createLocationCallback(){
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                for (Location location : locationResult.getLocations()) {
+                    // Update UI with location data
+                    // ...
+                    coordinatesUpdate = location.getLatitude() +","+ location.getLongitude();
+                    //EventBus.getDefault().post(new MessageEvent(coordinates));
+                    Log.d(TAG, coordinatesUpdate);
+                    //new Timeseries *******************************************************************
+                    //Init SensorInfo
+                    SensorInfo si = new SensorInfo("Location","Google Location");
+                    //Add  one ValueInfo for each measure
+                    si.addValueInfo(new ValueInfo("Location Type","Location: Latitude, Longitude","String"));
+                    //Init SensorValue
+                    Long tsLong = System.currentTimeMillis();
+                    SensorValue sv = new SensorValue(tsLong);
+                    //Add one StringEntitiy for each measure (same order)
+                    sv.addStringEntity(new StringEntity(coordinatesUpdate));
+                    //Init Time Series
+                    //TODO Type, UUID, User
+                    SensorTimeseries st = new SensorTimeseries(tsLong,"Type","UUID","User",si,sv);
+                    //Send Event
+                    EventBus.getDefault().post(new SensorDataEvent(st));
+                    //**********************************************************************************
+                    SharedPreferences prefsdata = Module.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefsdata.edit();
+                    editor.putString("Location",coordinatesUpdate);
+                    editor.apply();
+                    Log.d("ObjectBox_Location","updated to"+coordinatesUpdate);
+                }
+            };
+        };
     }
 
     public void startLocationUpdates() {
@@ -119,53 +167,25 @@ public class GLocationListener implements GoogleApiClient.ConnectionCallbacks, G
         return longitude;
     }
 
-    public void getCoordinates(){
+    public String getCoordinates(){
+
         if(location != null){
             coordinates = location.getLatitude() +","+ location.getLongitude();
             //EventBus.getDefault().post(new MessageEvent(coordinates));
             Log.d(TAG, coordinates);
         }
-
-    }
-    public void getUpdateCoordinates(int delay){
-        stopLoopint =1;
-        Handler handler = new Handler();
-
-
-                while (stopLoopint != 0)
-
-                {
-                    handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    if (location != null) {
-                        coordinates = location.getLatitude() + "," + location.getLongitude();
-                        //EventBus.getDefault().post(new MessageEvent(coordinates));
-                        Log.d(TAG, coordinates);
-
-                    }
-                }
-                    },delay);
-                }
-
+        return coordinates;
 
     }
 
-    public void stopLoop() {
-        stopLoopint = 0;
-    }
 
-    @Override
-    public void onConnected(Bundle bundle) {
-        if ( Build.VERSION.SDK_INT >= 23 &&
-                ContextCompat.checkSelfPermission(Module.getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(Module.getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return  ;
-        }
-        location = LocationServices.FusedLocationApi.getLastLocation(mGAC);
+    public void stopLocationUpdates() {
+
+            mFusedLocationClient.removeLocationUpdates(mLocationCallback);
 
     }
+
+
 
     @Override
     public void onConnectionSuspended(int i) {
