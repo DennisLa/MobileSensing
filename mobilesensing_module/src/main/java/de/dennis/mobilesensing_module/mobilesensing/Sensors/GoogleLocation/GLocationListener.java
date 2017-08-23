@@ -112,12 +112,14 @@ public class GLocationListener implements GoogleApiClient.ConnectionCallbacks, G
                     //Init SensorInfo
                     SensorInfo si = new SensorInfo("Location","Google Location");
                     //Add  one ValueInfo for each measure
-                    si.addValueInfo(new ValueInfo("Location Type","Location: Latitude, Longitude","String"));
+                    si.addValueInfo(new ValueInfo("Latitude","Location: Latitude","Double"));
+                    si.addValueInfo(new ValueInfo("Longitude","Location: Longitude","Double"));
                     //Init SensorValue
                     Long tsLong = System.currentTimeMillis();
                     SensorValue sv = new SensorValue(tsLong);
                     //Add one StringEntitiy for each measure (same order)
-                    sv.addStringEntity(new StringEntity(coordinatesUpdate));
+                    sv.addStringEntity(new StringEntity(location.getLatitude()+""));
+                    sv.addStringEntity(new StringEntity(location.getLongitude()+""));
                     //Init Time Series
                     //TODO Type, UUID, User
                     SensorTimeseries st = new SensorTimeseries(tsLong,"Type","UUID","User",si,sv);
