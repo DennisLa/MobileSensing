@@ -5,15 +5,15 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.MyObjectBox;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.DoubleEntity;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GeoPointEntity;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.IntegerEntity;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.StringEntity;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorValue;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.StringEntity;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ValueInfo;
 import io.objectbox.Box;
-import io.objectbox.BoxStore;
-import io.objectbox.relation.ToOne;
 
 /**
  * Created by Dennis on 05.08.2017.
@@ -26,20 +26,47 @@ public class DataAdapter {
 
     public void saveTimeseriesToOB(SensorTimeseries st)
     {
-        Box tsBox = Module.getBoxStore().boxFor(SensorTimeseries.class);;
+        Box tsBox = Module.getBoxStore().boxFor(SensorTimeseries.class);
         SensorTimeseries st_day = getSensorTimeseries(st.getTimestamp_day(),st.getSensor_info().getSensor_name());
+
+        //
+        Box svBox = Module.getBoxStore().boxFor(SensorValue.class);
+        Box ieBox = Module.getBoxStore().boxFor(IntegerEntity.class);
+        Box seBox = Module.getBoxStore().boxFor(StringEntity.class);
+        Box gpeBox = Module.getBoxStore().boxFor(GeoPointEntity.class);
+        Box deBox = Module.getBoxStore().boxFor(DoubleEntity.class);
+        Box siBox = Module.getBoxStore().boxFor(SensorInfo.class);
+        Box viBox = Module.getBoxStore().boxFor(ValueInfo.class);
+        //
         if(st_day != null){
             //Update Entity
-            Box svBox = Module.getBoxStore().boxFor(SensorValue.class);
-            Box seBox = Module.getBoxStore().boxFor(StringEntity.class);
-            //Putting SensorValue & StringEntity
+
+            //Putting SensorValue & ObjectEntities
             List<SensorValue> lsv = st.getValues();
             for(SensorValue sv: lsv){
-                List<StringEntity> lse = sv.getValues();
-                for(StringEntity se: lse){
-                    se.setId(seBox.put(se));
+                ArrayList<GeoPointEntity> gpe = new ArrayList<>();
+                ArrayList<StringEntity> se = new ArrayList<>();
+                ArrayList<IntegerEntity> ie = new ArrayList<>();
+                ArrayList<DoubleEntity> de = new ArrayList<>();
+                List<Object> lo = sv.getValues();
+                for(Object o: lo){
+                    if (o.getClass().equals(GeoPointEntity.class)){
+                        ((GeoPointEntity)o).setId(gpeBox.put(o));
+                    }
+                    if(o.getClass().equals(StringEntity.class)){
+                        ((StringEntity)o).setId(seBox.put(o));
+                    }
+                    if(o.getClass().equals(IntegerEntity.class)){
+                        ((IntegerEntity)o).setId(ieBox.put(o));
+                    }
+                    if(o.getClass().equals(DoubleEntity.class)){
+                        ((DoubleEntity)o).setId(deBox.put(o));
+                    }
                 }
-                sv.setValues(lse);
+                sv.setGeoPointEntities(gpe);
+                sv.setIntegerEntities(ie);
+                sv.setStringEntities(se);
+                sv.setDoubleEntities(de);
                 sv.setId(svBox.put(sv));
             }
             for(SensorValue oldsv: st_day.getValues()){
@@ -50,23 +77,42 @@ public class DataAdapter {
         }else{
             try{
             //New Entity
-            Box seBox = Module.getBoxStore().boxFor(StringEntity.class);
-            Box svBox = Module.getBoxStore().boxFor(SensorValue.class);
-            Box siBox = Module.getBoxStore().boxFor(SensorInfo.class);
-            Box viBox = Module.getBoxStore().boxFor(ValueInfo.class);
-
             //Putting SensorValue & StringEntitiy
            List<SensorValue> lsv = st.getValues();
-            for(SensorValue sv: lsv){
-                List<StringEntity> lse = sv.getValues();
-                for(StringEntity se: lse){
-                   se.setId(seBox.put(se));
-
+                for(SensorValue sv: lsv){
+                    List<Object> lo = sv.getValues();
+                    int i = 0;
+                    ArrayList<GeoPointEntity> gpe = new ArrayList<>();
+                    ArrayList<StringEntity> se = new ArrayList<>();
+                    ArrayList<IntegerEntity> ie = new ArrayList<>();
+                    ArrayList<DoubleEntity> de = new ArrayList<>();
+                    for(Object o: lo){
+                        if (o.getClass().equals(GeoPointEntity.class)){
+                            ((GeoPointEntity)o).setId(gpeBox.put(o));
+                            gpe.add((GeoPointEntity)o);
+                            i++;
+                        }
+                        if(o.getClass().equals(StringEntity.class)){
+                            ((StringEntity)o).setId(seBox.put(o));
+                            se.add((StringEntity)o);
+                            i++;
+                        }
+                        if(o.getClass().equals(IntegerEntity.class)){
+                            ((IntegerEntity)o).setId(ieBox.put(o));
+                            ie.add((IntegerEntity)o);
+                            i++;
+                        }
+                        if(o.getClass().equals(DoubleEntity.class)){
+                            ((DoubleEntity)o).setId(deBox.put(o));
+                        }
+                    }
+                    Log.d("DataAdapter",i+"");
+                    sv.setGeoPointEntities(gpe);
+                    sv.setIntegerEntities(ie);
+                    sv.setStringEntities(se);
+                    sv.setDoubleEntities(de);
+                    sv.setId(svBox.put(sv));
                 }
-                sv.setValues(lse);
-                sv.setId(svBox.put(sv));
-            }
-            st.setValues(lsv);
             //Putting SensorInfo & ValueInfo
             SensorInfo si = st.getSensor_info();
             List<ValueInfo> lvi = si.getValue_info();
@@ -92,7 +138,7 @@ public class DataAdapter {
         List<SensorTimeseries> lst = tsBox.getAll();
         SensorTimeseries st = null;
         for(SensorTimeseries sti: lst){
-            if(st.getTimestamp_day().equals(timestamp_day) && st.getSensor_info().getSensor_name().equals(sensor_name)){
+            if(sti.getTimestamp_day().equals(timestamp_day) && sti.getSensor_info().getSensor_name().equals(sensor_name)){
                 st = sti;
                 break;
             }
@@ -112,13 +158,27 @@ public class DataAdapter {
     }
     public void deleteTimeseries(SensorTimeseries st){
         Box stBox = Module.getBoxStore().boxFor(SensorTimeseries.class);
+        Box ieBox = Module.getBoxStore().boxFor(IntegerEntity.class);
         Box seBox = Module.getBoxStore().boxFor(StringEntity.class);
+        Box gpeBox = Module.getBoxStore().boxFor(GeoPointEntity.class);
         Box svBox = Module.getBoxStore().boxFor(SensorValue.class);
         Box siBox = Module.getBoxStore().boxFor(SensorInfo.class);
         Box viBox = Module.getBoxStore().boxFor(ValueInfo.class);
+        Box deBox = Module.getBoxStore().boxFor(DoubleEntity.class);
         for(SensorValue sv:st.getValues()){
-            for(StringEntity se: sv.getValues()){
-                seBox.remove(se);
+            for(Object o: sv.getValues()){
+                if (o.getClass().equals(GeoPointEntity.class)){
+                    gpeBox.remove(o);
+                }
+                if(o.getClass().equals(StringEntity.class)){
+                    seBox.remove(o);
+                }
+                if(o.getClass().equals(IntegerEntity.class)){
+                    ieBox.remove(o);
+                }
+                if(o.getClass().equals(DoubleEntity.class)){
+                    ieBox.remove(o);
+                }
             }
             svBox.remove(sv);
         }
@@ -142,5 +202,12 @@ public class DataAdapter {
     public void deleteTimeseries(String timestamp_day, String sensorName) {
         SensorTimeseries st = getSensorTimeseries(timestamp_day,sensorName);
         deleteTimeseries(st);
+    }
+
+    public void deleteAllTimeseries() {
+        List<SensorTimeseries> lst = getAllSensorTimeseries();
+        for(SensorTimeseries ts : lst){
+            deleteTimeseries(ts.getTimestamp_day(),ts.getSensor_info().getSensor_name());
+        }
     }
 }

@@ -193,7 +193,8 @@ public class SensorTimeseries {
             timeseries.put("user",getUser());
             //values
             JSONArray values = new JSONArray();
-            for(SensorValue sv: getValues()){
+            List<SensorValue> lsv = getValues();
+            for(SensorValue sv: lsv){
                 values.put(sv.toJSON());
             }
             timeseries.put("values",values);

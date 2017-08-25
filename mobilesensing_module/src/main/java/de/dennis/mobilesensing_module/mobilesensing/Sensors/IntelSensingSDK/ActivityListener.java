@@ -1,6 +1,5 @@
 package de.dennis.mobilesensing_module.mobilesensing.Sensors.IntelSensingSDK;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -8,7 +7,6 @@ import android.util.Log;
 import com.intel.context.error.ContextError;
 import com.intel.context.item.ActivityRecognition;
 import com.intel.context.item.Item;
-import com.intel.context.item.activityrecognition.PhysicalActivity;
 import com.intel.context.sensing.ContextTypeListener;
 
 import org.greenrobot.eventbus.EventBus;
@@ -20,7 +18,6 @@ import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorValue;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.StringEntity;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ValueInfo;
 
 /**
@@ -145,7 +142,7 @@ public class ActivityListener implements ContextTypeListener {
                 Long tsLong = System.currentTimeMillis();
                 SensorValue sv = new SensorValue(tsLong);
                 //Add one StringEntitiy for each measure (same order)
-                sv.addStringEntity(new StringEntity(activityFinal));
+                //sv.addStringEntity(new ObjectEntity(activityFinal));
                 //Init Time Series
                 //TODO Type, UUID, User
                 SensorTimeseries st = new SensorTimeseries(tsLong,"Type","UUID","User",si,sv);

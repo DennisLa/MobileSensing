@@ -17,7 +17,6 @@ import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorValue;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.StringEntity;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ValueInfo;
 
 /**
@@ -47,7 +46,7 @@ public class ScreenOnListener extends BroadcastReceiver{
             SensorValue sv = new SensorValue(tsLong);
             //Add one StringEntitiy for each measure (same order)
             String isScreenOnString = String.valueOf(isScreenOn);
-            sv.addStringEntity(new StringEntity(isScreenOnString));
+            //sv.addStringEntity(new ObjectEntity(isScreenOnString));
             //Init Time Series
             //TODO Type, UUID, User
             SensorTimeseries st = new SensorTimeseries(tsLong,"Type","UUID","User",si,sv);

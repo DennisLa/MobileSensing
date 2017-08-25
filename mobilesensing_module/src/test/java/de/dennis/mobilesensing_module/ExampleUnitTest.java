@@ -2,6 +2,8 @@ package de.dennis.mobilesensing_module;
 
 import org.junit.Test;
 
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorValue;
+
 import static org.junit.Assert.*;
 
 /**

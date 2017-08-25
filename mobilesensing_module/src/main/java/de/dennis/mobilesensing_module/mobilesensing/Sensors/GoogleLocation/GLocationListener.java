@@ -1,15 +1,11 @@
 package de.dennis.mobilesensing_module.mobilesensing.Sensors.GoogleLocation;
 
-import android.app.Application;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -29,7 +25,6 @@ import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorValue;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.StringEntity;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ValueInfo;
 
 
@@ -118,8 +113,9 @@ public class GLocationListener implements GoogleApiClient.ConnectionCallbacks, G
                     Long tsLong = System.currentTimeMillis();
                     SensorValue sv = new SensorValue(tsLong);
                     //Add one StringEntitiy for each measure (same order)
-                    sv.addStringEntity(new StringEntity(location.getLatitude()+""));
-                    sv.addStringEntity(new StringEntity(location.getLongitude()+""));
+                    //TODO
+                    /*sv.addStringEntity(new ObjectEntity(location.getLatitude()+""));
+                    sv.addStringEntity(new ObjectEntity(location.getLongitude()+""));*/
                     //Init Time Series
                     //TODO Type, UUID, User
                     SensorTimeseries st = new SensorTimeseries(tsLong,"Type","UUID","User",si,sv);

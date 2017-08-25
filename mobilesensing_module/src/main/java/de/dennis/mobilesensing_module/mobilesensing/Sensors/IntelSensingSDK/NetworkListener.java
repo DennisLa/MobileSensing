@@ -10,15 +10,11 @@ import com.intel.context.item.Network;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorValue;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.StringEntity;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ValueInfo;
 
 /**
@@ -51,7 +47,7 @@ public class NetworkListener implements com.intel.context.sensing.ContextTypeLis
                     //Init SensorValue
                     SensorValue sv = new SensorValue(System.currentTimeMillis());
                         //Add one StringEntitiy for each measure (same order)
-                        sv.addStringEntity(new StringEntity(((Network) state).getNetworkType().name()));
+                        //sv.addStringEntity(new ObjectEntity(((Network) state).getNetworkType().name()));
                     //Init Time Series
                     //TODO Type, UUID, User
                     SensorTimeseries st = new SensorTimeseries(System.currentTimeMillis(),"Type","UUID","User",si,sv);

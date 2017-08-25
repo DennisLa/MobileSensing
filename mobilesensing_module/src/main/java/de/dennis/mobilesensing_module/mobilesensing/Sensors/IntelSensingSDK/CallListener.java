@@ -15,7 +15,6 @@ import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorValue;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.StringEntity;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ValueInfo;
 
 /**
@@ -41,7 +40,7 @@ public class CallListener implements com.intel.context.sensing.ContextTypeListen
             Long tsLong = System.currentTimeMillis();
             SensorValue sv = new SensorValue(tsLong);
             //Add one StringEntitiy for each measure (same order)
-            sv.addStringEntity(new StringEntity(callResult));
+            //sv.addStringEntity(new ObjectEntity(callResult));
             //Init Time Series
             //TODO Type, UUID, User
             SensorTimeseries st = new SensorTimeseries(tsLong,"Type","UUID","User",si,sv);

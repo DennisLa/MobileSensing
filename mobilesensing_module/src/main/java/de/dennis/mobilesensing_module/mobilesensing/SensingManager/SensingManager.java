@@ -96,7 +96,6 @@ public class SensingManager {
             //enable Location Sensing
             if(prefs.getBoolean("GPS",false))
             {
-
                 mGLocationListener.getCoordinates();
                 mGLocationListener.startLocationUpdates();
                // mSensing.enableSensing(ContextType.LOCATION, null);
