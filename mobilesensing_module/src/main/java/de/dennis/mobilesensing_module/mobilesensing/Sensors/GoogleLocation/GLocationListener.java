@@ -22,6 +22,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GeoPointEntity;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorValue;
@@ -107,18 +108,15 @@ public class GLocationListener implements GoogleApiClient.ConnectionCallbacks, G
                     //Init SensorInfo
                     SensorInfo si = new SensorInfo("Location","Google Location");
                     //Add  one ValueInfo for each measure
-                    si.addValueInfo(new ValueInfo("Latitude","Location: Latitude","Double"));
-                    si.addValueInfo(new ValueInfo("Longitude","Location: Longitude","Double"));
+                    si.addValueInfo(new ValueInfo("GeoJSON","GeoJSON describing a Point","JSON"));
                     //Init SensorValue
                     Long tsLong = System.currentTimeMillis();
                     SensorValue sv = new SensorValue(tsLong);
                     //Add one StringEntitiy for each measure (same order)
-                    //TODO
-                    /*sv.addStringEntity(new ObjectEntity(location.getLatitude()+""));
-                    sv.addStringEntity(new ObjectEntity(location.getLongitude()+""));*/
+                    sv.addGeoPointEntity(new GeoPointEntity(location.getLatitude(),location.getLongitude()));
                     //Init Time Series
                     //TODO Type, UUID, User
-                    SensorTimeseries st = new SensorTimeseries(tsLong,"Type","UUID","User",si,sv);
+                    SensorTimeseries st = new SensorTimeseries(tsLong,"LocationSensor","LocationSensor"+Module.getUser(),Module.getUser(),si,sv);
                     //Send Event
                     EventBus.getDefault().post(new SensorDataEvent(st));
                     //**********************************************************************************

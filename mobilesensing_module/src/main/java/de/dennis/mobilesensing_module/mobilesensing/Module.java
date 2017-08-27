@@ -19,14 +19,16 @@ public class Module extends android.app.Application{
     private static BoxStore boxStore;
     private static SensingManager sensingManager;
     private static UploadManager uploadManager;
+    private static String userName;
 
     private static Context context;
     @Override
     public void onCreate() {
         super.onCreate();
     }
-    public static void init(Context app_context){
+    public static void init(Context app_context, String user_Name){
         context = app_context;
+        userName = user_Name;
         // ObjectBox
         sensingManager = new SensingManager();
         uploadManager = new UploadManager();
@@ -47,5 +49,8 @@ public class Module extends android.app.Application{
     }
     public static UploadManager getUploadManager() {
         return uploadManager;
+    }
+    public static String getUser(){
+        return userName;
     }
 }

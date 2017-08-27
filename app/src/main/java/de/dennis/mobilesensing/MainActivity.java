@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                Module.init(getApplicationContext());
+                Module.init(getApplicationContext(),"MaxMustermann");
                 ValueInfo vi = new ValueInfo("Name","Description","unit");
                 List<ValueInfo> lvi = new ArrayList<ValueInfo>();
                 lvi.add(vi);

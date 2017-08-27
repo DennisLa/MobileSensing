@@ -20,7 +20,7 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
-        Module.init(context);
+        Module.init(context, "USERNAME");
         sensMang = Module.getSensingManager();
         //TODO Persmission ?
         sensMang.setSensingSetting(SensorNames.Activity,false);
