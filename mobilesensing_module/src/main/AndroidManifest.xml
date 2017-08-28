@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.dennis.mobilesensing_module">
 
@@ -20,7 +21,9 @@
         android:allowBackup="false"
         android:label="@string/app_name"
         android:supportsRtl="true">
+        <activity android:name=".mobilesensing.PermissionActivity"></activity>
 
     </application>
+
 
 </manifest>

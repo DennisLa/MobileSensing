@@ -30,7 +30,7 @@ public class Application extends android.app.Application {
         sensMang.setSensingSetting(SensorNames.Apps,false);
         sensMang.setSensingSetting(SensorNames.Call,false);
         sensMang.setSensingSetting(SensorNames.Network,false);
-        sensMang.startSensing();
+        //sensMang.startSensing();
         uplMang = Module.getUploadManager();
 //        uplMang.setDailyUpload(context, BaasUser.current().getToken(),"http://141.99.12.45:3000/sendData");
 

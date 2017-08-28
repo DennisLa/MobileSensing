@@ -187,10 +187,34 @@
           "name": "sensor_valueId"
         }
       ]
+    },
+    {
+      "id": "10:5241043950638552226",
+      "lastPropertyId": "4:1845837952086462776",
+      "name": "DoubleEntity",
+      "properties": [
+        {
+          "id": "1:2168154149015017617",
+          "name": "id"
+        },
+        {
+          "id": "2:7687076928402406665",
+          "name": "value"
+        },
+        {
+          "id": "3:4633946712034305567",
+          "name": "sortIndex"
+        },
+        {
+          "id": "4:1845837952086462776",
+          "indexId": "11:7044656098986646017",
+          "name": "sensor_valueId"
+        }
+      ]
     }
   ],
-  "lastEntityId": "9:5942748400008560175",
-  "lastIndexId": "10:7203461495496474023",
+  "lastEntityId": "10:5241043950638552226",
+  "lastIndexId": "11:7044656098986646017",
   "lastSequenceId": "0:0",
   "modelVersion": 2,
   "retiredEntityUids": [
