@@ -23,6 +23,7 @@
         android:supportsRtl="true">
         <activity android:name=".mobilesensing.PermissionActivity"></activity>
 
+        <service android:name="com.intel.context.core.LocalService" />
     </application>
 
 

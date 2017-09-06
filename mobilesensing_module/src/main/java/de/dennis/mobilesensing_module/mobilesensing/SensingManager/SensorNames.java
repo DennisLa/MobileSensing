@@ -5,5 +5,5 @@ package de.dennis.mobilesensing_module.mobilesensing.SensingManager;
  */
 
 public enum SensorNames {
-   GPS,Network,Call,Apps,Activity,ScreenOn,WLANUpload
+   GPS,Network,Call,Apps,Activity,ScreenOn,WLANUpload,Track
 }

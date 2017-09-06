@@ -13,7 +13,6 @@ import de.dennis.mobilesensing_module.mobilesensing.Upload.DailyUpload.UploadSer
 
 public class UploadManager {
     UploadService us;
-    StorageEventListener sel;
     public UploadManager(){
 
     }
@@ -27,7 +26,6 @@ public class UploadManager {
         editor.putString("UploadUrl",url);
         editor.putString("UploadSession",session);
         editor.apply();
-        sel = new StorageEventListener();
         us = new UploadService();
         us.startUploadService(context, 3600000);
     }

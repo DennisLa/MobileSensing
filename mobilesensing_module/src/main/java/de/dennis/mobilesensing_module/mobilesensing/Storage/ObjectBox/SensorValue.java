@@ -40,6 +40,9 @@ public class SensorValue {
     @Backlink
     private List<DoubleEntity> doubleEntities = new ToMany<>(this, SensorValue_.doubleEntities);
 
+    @Backlink
+    private List<LineStringEntity> lineStringEntities = new ToMany<>(this, SensorValue_.lineStringEntities);
+
     @Relation
     private SensorTimeseries sensor_timeseries;
     /** Used to resolve relations */
@@ -166,10 +169,7 @@ public class SensorValue {
 
     public ArrayList<Object> getValues(){
         ArrayList<Object> alo = new ArrayList<>();
-        int i = getIntegerEntities().size();
-        int j = getStringEntities().size();
-        int k = getGeoPointEntities().size();
-        Object oa[] = new Object[getIntegerEntities().size()+getStringEntities().size()+geoPointEntities.size()+doubleEntities.size()];
+        Object oa[] = new Object[getIntegerEntities().size()+getStringEntities().size()+geoPointEntities.size()+doubleEntities.size()+lineStringEntities.size()];
         for(IntegerEntity ie : integerEntities){
             oa[ie.getSortIndex()]= ie;
         }
@@ -181,6 +181,9 @@ public class SensorValue {
         }
         for(DoubleEntity de: doubleEntities){
             oa[de.getSortIndex()] =de;
+        }
+        for(LineStringEntity lse: lineStringEntities){
+            oa[lse.getSortIndex()] =lse;
         }
         for(Object o: oa){
             if(o !=null){
@@ -235,11 +238,33 @@ public class SensorValue {
             if(o.getClass().equals(DoubleEntity.class)){
                 value.put(((DoubleEntity)o).getValue());
             }
+            if(o.getClass().equals(LineStringEntity.class)){
+                value.put(((LineStringEntity)o).toJSON());
+            }
         }
         sv.put("value",value);
         return  sv;
     }
     public int getIndex() {
         return index;
+    }
+
+    public void addLineStringEntity(LineStringEntity lse) {
+        if(lineStringEntities ==null)
+        {
+            lineStringEntities = new ArrayList<>();
+        }
+        lse.setSortIndex(index);
+        lse.setSensor_value(this);
+        lineStringEntities.add(lse);
+        index++;
+    }
+
+    public void setLineStringEntities(ArrayList<LineStringEntity> lineStringEntities) {
+        this.lineStringEntities = lineStringEntities;
+    }
+
+    public List<LineStringEntity> getLineStringEntities() {
+        return lineStringEntities;
     }
 }

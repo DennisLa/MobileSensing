@@ -8,6 +8,7 @@ import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.DoubleEntity;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GeoPointEntity;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.IntegerEntity;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.LineStringEntity;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.StringEntity;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
@@ -37,6 +38,7 @@ public class DataAdapter {
         Box deBox = Module.getBoxStore().boxFor(DoubleEntity.class);
         Box siBox = Module.getBoxStore().boxFor(SensorInfo.class);
         Box viBox = Module.getBoxStore().boxFor(ValueInfo.class);
+        Box lseBox = Module.getBoxStore().boxFor(LineStringEntity.class);
         //
         if(st_day != null){
             //Update Entity
@@ -48,6 +50,7 @@ public class DataAdapter {
                 ArrayList<StringEntity> se = new ArrayList<>();
                 ArrayList<IntegerEntity> ie = new ArrayList<>();
                 ArrayList<DoubleEntity> de = new ArrayList<>();
+                ArrayList<LineStringEntity> lse = new ArrayList<>();
                 List<Object> lo = sv.getValues();
                 for(Object o: lo){
                     if (o.getClass().equals(GeoPointEntity.class)){
@@ -62,11 +65,19 @@ public class DataAdapter {
                     if(o.getClass().equals(DoubleEntity.class)){
                         ((DoubleEntity)o).setId(deBox.put(o));
                     }
+                    if(o.getClass().equals(LineStringEntity.class)){
+                        LineStringEntity ls = (LineStringEntity)o;
+                        for(GeoPointEntity gp: ls.getValues()){
+                            gp.setId(gpeBox.put(gp));
+                        }
+                        ls.setId(lseBox.put(o));
+                    }
                 }
                 sv.setGeoPointEntities(gpe);
                 sv.setIntegerEntities(ie);
                 sv.setStringEntities(se);
                 sv.setDoubleEntities(de);
+                sv.setLineStringEntities(lse);
                 sv.setId(svBox.put(sv));
             }
             for(SensorValue oldsv: st_day.getValues()){
@@ -86,6 +97,7 @@ public class DataAdapter {
                     ArrayList<StringEntity> se = new ArrayList<>();
                     ArrayList<IntegerEntity> ie = new ArrayList<>();
                     ArrayList<DoubleEntity> de = new ArrayList<>();
+                    ArrayList<LineStringEntity> lse = new ArrayList<>();
                     for(Object o: lo){
                         if (o.getClass().equals(GeoPointEntity.class)){
                             ((GeoPointEntity)o).setId(gpeBox.put(o));
@@ -105,12 +117,20 @@ public class DataAdapter {
                         if(o.getClass().equals(DoubleEntity.class)){
                             ((DoubleEntity)o).setId(deBox.put(o));
                         }
+                        if(o.getClass().equals(LineStringEntity.class)){
+                            LineStringEntity ls = (LineStringEntity)o;
+                            for(GeoPointEntity gp: ls.getValues()){
+                                gp.setId(gpeBox.put(gp));
+                            }
+                            ls.setId(lseBox.put(o));
+                        }
                     }
                     Log.d("DataAdapter",i+"");
                     sv.setGeoPointEntities(gpe);
                     sv.setIntegerEntities(ie);
                     sv.setStringEntities(se);
                     sv.setDoubleEntities(de);
+                    sv.setLineStringEntities(lse);
                     sv.setId(svBox.put(sv));
                 }
             //Putting SensorInfo & ValueInfo
@@ -165,6 +185,7 @@ public class DataAdapter {
         Box siBox = Module.getBoxStore().boxFor(SensorInfo.class);
         Box viBox = Module.getBoxStore().boxFor(ValueInfo.class);
         Box deBox = Module.getBoxStore().boxFor(DoubleEntity.class);
+        Box lseBox = Module.getBoxStore().boxFor(LineStringEntity.class);
         for(SensorValue sv:st.getValues()){
             for(Object o: sv.getValues()){
                 if (o.getClass().equals(GeoPointEntity.class)){
@@ -177,7 +198,14 @@ public class DataAdapter {
                     ieBox.remove(o);
                 }
                 if(o.getClass().equals(DoubleEntity.class)){
-                    ieBox.remove(o);
+                    deBox.remove(o);
+                }
+                if(o.getClass().equals(LineStringEntity.class)){
+                    LineStringEntity lse = (LineStringEntity)o;
+                    for(GeoPointEntity gp: lse.getValues()){
+                        gpeBox.remove(gp);
+                    }
+                    lseBox.remove(lse);
                 }
             }
             svBox.remove(sv);

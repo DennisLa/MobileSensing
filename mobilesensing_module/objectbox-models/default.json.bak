@@ -211,10 +211,30 @@
           "name": "sensor_valueId"
         }
       ]
+    },
+    {
+      "id": "11:6967655174947100471",
+      "lastPropertyId": "3:8636178038154018983",
+      "name": "LineStringEntity",
+      "properties": [
+        {
+          "id": "1:9216805249429586355",
+          "name": "id"
+        },
+        {
+          "id": "2:3795195993090335651",
+          "name": "sortIndex"
+        },
+        {
+          "id": "3:8636178038154018983",
+          "indexId": "12:433584984369334737",
+          "name": "sensor_valueId"
+        }
+      ]
     }
   ],
-  "lastEntityId": "10:5241043950638552226",
-  "lastIndexId": "11:7044656098986646017",
+  "lastEntityId": "11:6967655174947100471",
+  "lastIndexId": "12:433584984369334737",
   "lastSequenceId": "0:0",
   "modelVersion": 2,
   "retiredEntityUids": [

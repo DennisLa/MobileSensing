@@ -138,7 +138,7 @@
     },
     {
       "id": "8:6824238146016827325",
-      "lastPropertyId": "5:5761132066954115896",
+      "lastPropertyId": "6:8575275573429177313",
       "name": "GeoPointEntity",
       "properties": [
         {
@@ -161,6 +161,11 @@
           "id": "5:5761132066954115896",
           "indexId": "8:4149662972134798114",
           "name": "sensor_valueId"
+        },
+        {
+          "id": "6:8575275573429177313",
+          "indexId": "13:588205257721495161",
+          "name": "lineStringEntityId"
         }
       ]
     },
@@ -211,10 +216,30 @@
           "name": "sensor_valueId"
         }
       ]
+    },
+    {
+      "id": "11:6967655174947100471",
+      "lastPropertyId": "3:8636178038154018983",
+      "name": "LineStringEntity",
+      "properties": [
+        {
+          "id": "1:9216805249429586355",
+          "name": "id"
+        },
+        {
+          "id": "2:3795195993090335651",
+          "name": "sortIndex"
+        },
+        {
+          "id": "3:8636178038154018983",
+          "indexId": "12:433584984369334737",
+          "name": "sensor_valueId"
+        }
+      ]
     }
   ],
-  "lastEntityId": "10:5241043950638552226",
-  "lastIndexId": "11:7044656098986646017",
+  "lastEntityId": "11:6967655174947100471",
+  "lastIndexId": "13:588205257721495161",
   "lastSequenceId": "0:0",
   "modelVersion": 2,
   "retiredEntityUids": [
