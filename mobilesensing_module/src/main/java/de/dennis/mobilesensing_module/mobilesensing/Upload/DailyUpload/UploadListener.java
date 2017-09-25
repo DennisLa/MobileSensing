@@ -7,9 +7,17 @@ import android.content.SharedPreferences;
 
 import com.baasbox.android.BaasUser;
 
-import java.util.Date;
+import org.greenrobot.eventbus.EventBus;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
+import de.dennis.mobilesensing_module.mobilesensing.EventBus.UploadEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.DataAdapter;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
 
 /**
  * Created by Dennis on 07.04.2017.
@@ -25,12 +33,19 @@ public class UploadListener extends BroadcastReceiver {
         long lastTime = prefs.getLong("lastTimeUploadServiceExecution",0L);
 
         SharedPreferences.Editor editor = prefs.edit();
-        DailyUploader du = new DailyUploader();
-        if(prefs.getBoolean("WLANUpload",false) && prefs.getBoolean("isWiFi",false) && !prefs.getString("UploadSession","").equals("") && !prefs.getString("UploadUrl","").equals(""))
+        if(prefs.getBoolean("WLANUpload",false) && prefs.getBoolean("isWiFi",false))
         {
-            du.startUpload( BaasUser.current().getName(),prefs.getString("UploadSession",""),prefs.getString("UploadUrl",""));
-        }else if(!prefs.getBoolean("WLANUpload",false) && !prefs.getString("UploadSession","").equals("") && !prefs.getString("UploadUrl","").equals("")){
-            du.startUpload(BaasUser.current().getName(),prefs.getString("UploadSession",""),prefs.getString("UploadUrl",""));
+            DataAdapter da = new DataAdapter();
+            GregorianCalendar g = new GregorianCalendar();
+            g.setTimeInMillis(now);
+            //2016-05-23T16:00:00.000Z
+            String timestamp_day = g.get(GregorianCalendar.YEAR)+"-"+g.get(GregorianCalendar.MONTH)+"-"+g.get(GregorianCalendar.DAY_OF_MONTH)+"T"+"00:00:00.000Z";
+            List<SensorTimeseries> lst = da.getAllSensorTimeseriesOlder(timestamp_day);
+            for(SensorTimeseries st: lst){
+                EventBus.getDefault().post(new UploadEvent(st));
+            }
+        }else if(!prefs.getBoolean("WLANUpload",false)){
+
         }
     }
 }

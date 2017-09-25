@@ -19,13 +19,14 @@ public class UploadManager {
     public void setLiveUpload(){
 
     }
-    public void setDailyUpload(Context context, String session, String url){
+    public void setDailyUpload(Context context){
+        //, String session, String url
         //BaasUser.current().getToken(),"http://141.99.12.45:3000/sendData"
-        SharedPreferences prefs = Module.getContext().getSharedPreferences("Settings",Context.MODE_PRIVATE);
+        /*SharedPreferences prefs = Module.getContext().getSharedPreferences("Settings",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("UploadUrl",url);
         editor.putString("UploadSession",session);
-        editor.apply();
+        editor.apply();*/
         us = new UploadService();
         us.startUploadService(context, 3600000);
     }

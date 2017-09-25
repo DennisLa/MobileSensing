@@ -26,23 +26,20 @@ buildscript {
 
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath 'com.android.tools.build:gradle:2.2.3' //2.3.1
         classpath 'io.objectbox:objectbox-gradle-plugin:0.9.13'
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/intel-context-sensing-1.8.0.1000.jar')
-    //compile 'com.android.support:appcompat-v7:23.4.0'
-    //compile 'com.android.support:support-v4:23.4.0'
-    //compile 'com.android.support:design:23.4.0'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'io.objectbox:objectbox-android:0.9.13'
     compile 'com.jaredrummler:android-processes:1.0.9'
     compile 'com.baasbox:baasbox-android:0.9.0'
     compile 'com.google.android.gms:play-services-location:11.0.4'
     compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
 }

@@ -238,4 +238,16 @@ public class DataAdapter {
             deleteTimeseries(ts.getTimestamp_day(),ts.getSensor_info().getSensor_name());
         }
     }
+
+    public List<SensorTimeseries> getAllSensorTimeseriesOlder(String timestamp_day) {
+        Box tsBox = Module.getBoxStore().boxFor(SensorTimeseries.class);
+        List<SensorTimeseries> lst = tsBox.getAll();
+        ArrayList<SensorTimeseries> rlst = new ArrayList<>();
+        for(SensorTimeseries st: lst){
+            if(!(st.getTimestamp_day().equals(timestamp_day))){
+                rlst.add(st);
+            }
+        }
+        return rlst;
+    }
 }

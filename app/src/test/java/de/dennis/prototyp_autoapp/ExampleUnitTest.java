@@ -1,4 +1,4 @@
-package de.dennis.mobilesensing;
+package de.dennis.prototyp_autoapp;
 
 import org.junit.Test;
 

@@ -38,9 +38,12 @@ import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ValueInfo;
 public class LiveTrackRecognitionListener {
 
     public LiveTrackRecognitionListener(){
-        EventBus.getDefault().register(this);
+
     }
 
+    public void start(){
+        EventBus.getDefault().register(this);
+    }
     // This method will be called when a new SensorDataEvent arrived
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onMessageEvent(SensorDataEvent event) {
@@ -70,11 +73,14 @@ public class LiveTrackRecognitionListener {
                         Location.distanceBetween(gp1.getLat(),gp1.getLng(),gp2.getLat(),gp2.getLng(),results);
                         if(results.length > 0){
                             if(Math.abs(results[0]) >= 50){
-                                editor.putLong("startTimestamp",sv2.getTimestamp());
-                                editor.putLong("endTimestamp",0l);
-                                editor.putLong("stopCounter",0);
+                                if(prefs.getLong("startTimestamp",0)>0){
+                                    editor.putLong("endTimestamp",0);
+                                    editor.putLong("stopCounter",0);
+                                }else{
+                                    editor.putLong("startTimestamp",sv2.getTimestamp());
+                                }
                             }else{
-                                if(prefs.getLong("endTimestamp",0l) >0){
+                                if(prefs.getLong("endTimestamp",0) >0){
                                     int counter = prefs.getInt("stopCounter",0)+1;
                                     if(counter >= 10){
                                         counter = 0;
@@ -97,7 +103,6 @@ public class LiveTrackRecognitionListener {
                                         }
                                         sv.addLineStringEntity(lse);
                                         //Init Time Series
-                                        //TODO Type, UUID, User
                                         SensorTimeseries set = new SensorTimeseries(tsLong,"TrackRecognition","TrackRecognition"+Module.getUser(),Module.getUser(),si,sv);
                                         //Send Event
                                         EventBus.getDefault().post(new TrackEndEvent(set));
@@ -119,6 +124,8 @@ public class LiveTrackRecognitionListener {
             }
                 }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(TrackEndEvent event) {
         if(event.getClass().equals(TrackEndEvent.class)){
             GregorianCalendar g = new GregorianCalendar();

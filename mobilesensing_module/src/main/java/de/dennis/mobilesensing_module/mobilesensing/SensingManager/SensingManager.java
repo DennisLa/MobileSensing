@@ -71,6 +71,7 @@ public class SensingManager {
         //Init Intel SDK
         mSensing = new Sensing(Module.getContext(), new SensingListener());
         mGLocationListener = new GLocationListener(Module.getContext(),60*1000,60*1000); //context,interval, fastest interval |Changed Interval to 1 Min
+        mLiveTrackRecognitionListener = new LiveTrackRecognitionListener();
         initSensing(false);
         sel = new StorageEventListener();
         //
@@ -190,7 +191,7 @@ public class SensingManager {
                 }
                 //enable Track
                 if(prefs.getBoolean("Track",false)){
-                    mLiveTrackRecognitionListener = new LiveTrackRecognitionListener();
+                    mLiveTrackRecognitionListener.start();
                     Log.d(TAG, "Track-Tracking enabled");
                 }else{
                     mLiveTrackRecognitionListener.stop();
