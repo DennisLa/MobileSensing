@@ -11,10 +11,14 @@ import android.util.Log;
 import com.jaredrummler.android.processes.AndroidProcesses;
 import com.jaredrummler.android.processes.models.AndroidAppProcess;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.Date;
 import java.util.List;
 
+import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.RunningApplicationListener.RunningApplicationObject;
 
 /**
  * Created by Dennis on 11.03.2017.
@@ -35,6 +39,8 @@ public class RunningApplicationListener extends BroadcastReceiver {
                 if(!prefs.getString("RunningApp","").equals(runningApp))
                 {
                     //TODO StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(runningApp, d.getTime()));
+                    RunningApplicationObject rap = new RunningApplicationObject(d.getTime(),runningApp);
+                    EventBus.getDefault().post(new SensorDataEvent(rap));
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("RunningApp",runningApp);
                     editor.apply();
@@ -47,6 +53,8 @@ public class RunningApplicationListener extends BroadcastReceiver {
                 if(!prefs.getString("RunningApp","").equals(runningApp))
                 {
                     //TODO StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(top,x.getTime()));
+                    RunningApplicationObject rap = new RunningApplicationObject(x.getTime(),runningApp);
+                    EventBus.getDefault().post(new SensorDataEvent(rap));
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("RunningApp",runningApp);
                     editor.apply();
@@ -64,6 +72,8 @@ public class RunningApplicationListener extends BroadcastReceiver {
                 if(!prefs.getString("RunningApp","").equals(runningApp))
                 {
                     //TODO StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(runningApp, d.getTime()));
+                    RunningApplicationObject rap = new RunningApplicationObject(d.getTime(),runningApp);
+                    EventBus.getDefault().post(new SensorDataEvent(rap));
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("RunningApp",runningApp);
                     editor.apply();
@@ -79,6 +89,8 @@ public class RunningApplicationListener extends BroadcastReceiver {
                     if(!prefs.getString("RunningApp","").equals(runningApp))
                     {
                         //TODO StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(processes.get(i).getPackageName(), x.getTime()));
+                        RunningApplicationObject rap = new RunningApplicationObject(x.getTime(),processes.get(i).getPackageName());
+                        EventBus.getDefault().post(new SensorDataEvent(rap));
                         SharedPreferences.Editor editor = prefs.edit();
                         editor.putString("RunningApp",runningApp);
                         editor.apply();

@@ -1,5 +1,6 @@
 package de.dennis.mobilesensing_module.mobilesensing.EventBus;
 
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorObject;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
 
 /**
@@ -7,9 +8,9 @@ import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTime
  */
 
 public class TrackEndEvent {
-    public final SensorTimeseries data;
+    public final SensorObject data;
 
-    public TrackEndEvent(SensorTimeseries data) {
+    public TrackEndEvent(SensorObject data) {
         this.data = data;
     }
 }

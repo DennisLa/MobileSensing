@@ -22,11 +22,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GeoPointEntity;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocationListener.GLocationsObject;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorValue;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ValueInfo;
 
 
 /**
@@ -104,21 +101,10 @@ public class GLocationListener implements GoogleApiClient.ConnectionCallbacks, G
                     coordinatesUpdate = location.getLatitude() +","+ location.getLongitude();
                     //EventBus.getDefault().post(new MessageEvent(coordinates));
                     Log.d(TAG, coordinatesUpdate);
-                    //new Timeseries *******************************************************************
-                    //Init SensorInfo
-                    SensorInfo si = new SensorInfo("Location","Google Location");
-                    //Add  one ValueInfo for each measure
-                    si.addValueInfo(new ValueInfo("GeoJSON","GeoJSON describing a Point","JSON"));
-                    //Init SensorValue
-                    Long tsLong = System.currentTimeMillis();
-                    SensorValue sv = new SensorValue(tsLong);
-                    //Add one StringEntitiy for each measure (same order)
-                    sv.addGeoPointEntity(new GeoPointEntity(location.getLatitude(),location.getLongitude()));
-                    //Init Time Series
-                    //TODO Type, UUID, User
-                    SensorTimeseries st = new SensorTimeseries(tsLong,"LocationSensor","LocationSensor"+Module.getUser(),Module.getUser(),si,sv);
+                    //New GLocationObject*****************************************************************
+                    GLocationsObject glo = new GLocationsObject(System.currentTimeMillis(),location.getLatitude(),location.getLongitude());
                     //Send Event
-                    EventBus.getDefault().post(new SensorDataEvent(st));
+                    EventBus.getDefault().post(new SensorDataEvent(glo));
                     //**********************************************************************************
                     SharedPreferences prefsdata = Module.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefsdata.edit();

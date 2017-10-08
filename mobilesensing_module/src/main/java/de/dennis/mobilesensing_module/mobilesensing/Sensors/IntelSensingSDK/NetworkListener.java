@@ -12,10 +12,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.NetworkListener.NetworkObject;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorValue;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ValueInfo;
 
 /**
  * Created by Dennis on 06.03.2017.
@@ -40,19 +38,9 @@ public class NetworkListener implements com.intel.context.sensing.ContextTypeLis
             if(!prefsdata.getString("Network","").equals(networkType))
             {
                 //new Timeseries *******************************************************************
-                    //Init SensorInfo
-                    SensorInfo si = new SensorInfo("Network","IntelSensing Network Sensor");
-                        //Add  one ValueInfo for each measure
-                        si.addValueInfo(new ValueInfo("Network type","Name of the Network type e.g. WiFi","String"));
-                    //Init SensorValue
-                    SensorValue sv = new SensorValue(System.currentTimeMillis());
-                        //Add one StringEntitiy for each measure (same order)
-                        //sv.addStringEntity(new ObjectEntity(((Network) state).getNetworkType().name()));
-                    //Init Time Series
-                    //TODO Type, UUID, User
-                    SensorTimeseries st = new SensorTimeseries(System.currentTimeMillis(),"Type","UUID","User",si,sv);
+                NetworkObject no = new NetworkObject(System.currentTimeMillis(),((Network) state).getNetworkType().name());
                 //Send Event
-                EventBus.getDefault().post(new SensorDataEvent(st));
+                EventBus.getDefault().post(new SensorDataEvent(no));
                 //**********************************************************************************
                 SharedPreferences.Editor editor = prefsdata.edit();
                 editor.putString("Network",networkType);

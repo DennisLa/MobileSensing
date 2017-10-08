@@ -15,10 +15,8 @@ import java.util.ArrayList;
 
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ActivityListener.ActivityObject;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorValue;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ValueInfo;
 
 /**
  * Created by Dennis on 06.03.2017.
@@ -134,20 +132,9 @@ public class ActivityListener implements ContextTypeListener {
                 editor.putInt("Activity_Sedentary", 0);
 
                 //new Timeseries *******************************************************************
-                //Init SensorInfo
-                SensorInfo si = new SensorInfo("ActivityRecognition","IntelSensing Network Sensor");
-                //Add  one ValueInfo for each measure
-                si.addValueInfo(new ValueInfo("Activity Type","Name of the Activity type e.g. Walking","String"));
-                //Init SensorValue
-                Long tsLong = System.currentTimeMillis();
-                SensorValue sv = new SensorValue(tsLong);
-                //Add one StringEntitiy for each measure (same order)
-                //sv.addStringEntity(new ObjectEntity(activityFinal));
-                //Init Time Series
-                //TODO Type, UUID, User
-                SensorTimeseries st = new SensorTimeseries(tsLong,"Type","UUID","User",si,sv);
+                ActivityObject ao = new ActivityObject(System.currentTimeMillis(),activityFinal);
                 //Send Event
-                EventBus.getDefault().post(new SensorDataEvent(st));
+                EventBus.getDefault().post(new SensorDataEvent(ao));
                 //**********************************************************************************
                 editor.putString("Activity",activityFinal);
                 Log.d("ObjectBox_Activity","updated to"+activityFinal);

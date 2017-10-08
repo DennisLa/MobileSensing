@@ -19,15 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.dennis.mobilesensing_module.mobilesensing.Module;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.DataAdapter;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.DoubleEntity;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GeoPointEntity;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.IntegerEntity;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.StringEntity;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorInfo;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorValue;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ValueInfo;
 
 
 /**
@@ -47,46 +38,6 @@ public class MainActivity extends AppCompatActivity {
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                Module.init(getApplicationContext(),"MaxMustermann");
-                ValueInfo vi = new ValueInfo("Name","Description","unit");
-                List<ValueInfo> lvi = new ArrayList<ValueInfo>();
-                lvi.add(vi);
-                SensorInfo si = new SensorInfo("SensorName","Description",lvi);
-                //
-
-                SensorValue sv = new SensorValue(9277456789L);
-                sv.addStringEntitiy(new StringEntity("hello"));
-                sv.addGeoPointEntity(new GeoPointEntity(4.5,4.6));
-                sv.addIntegerEntitiy(new IntegerEntity(1));
-                sv.addDoubleEntitiy(new DoubleEntity(2.3345));
-
-                List<SensorValue> lsv = new ArrayList<SensorValue>();
-                lsv.add(sv);
-                //
-                SensorTimeseries st = new SensorTimeseries(963457754321L,"Type","ID","User",si,lsv);
-                //
-                DataAdapter da = new DataAdapter();
-                //da.deleteAllTimeseries();
-                List<SensorTimeseries> p = da.getAllSensorTimeseries();
-                da.saveTimeseriesToOB(st);
-                Log.d("MainActivity","Send SensorTimeseries");
-                List<SensorTimeseries> l = da.getAllSensorTimeseries();
-                List<SensorValue> lgp = da.getAllSensorValues();
-                for(SensorTimeseries s: l){
-                    List<SensorValue> l1 = s.getValues();
-                    SensorInfo s1 = s.getSensor_info();
-                    try {
-                        if(s.getTimestamp()==963457754321L){
-                            JSONObject jo = s.toJSON();
-                            String joString = jo.toString();
-                            Log.d("","");
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
             }
         });
         btnSettings = (ImageButton) findViewById(R.id.btnSettings);

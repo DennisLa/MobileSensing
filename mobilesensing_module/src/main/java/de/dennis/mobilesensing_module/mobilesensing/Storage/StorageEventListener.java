@@ -18,9 +18,11 @@ public class StorageEventListener {
     // This method will be called when a new SensorDataEvent arrived
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
     public void onMessageEvent(SensorDataEvent event) {
-        DataAdapter da = new DataAdapter();
-        da.saveTimeseriesToOB(event.data);
+        ObjectBoxAdapter obd = new ObjectBoxAdapter();
+        obd.saveSensorObject(event.data);
     }
+
+
 }
 
 

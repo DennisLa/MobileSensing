@@ -1,16 +1,16 @@
 package de.dennis.mobilesensing_module.mobilesensing.SensingManager;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
+import android.app.Activity;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 
 import com.intel.context.Sensing;
 import com.intel.context.error.ContextError;
@@ -28,9 +28,6 @@ import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.PermissionActivity;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.GoogleLocation.GLocationListener;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.IntelSensingSDK.ActivityListener;
-import de.dennis.mobilesensing_module.mobilesensing.Sensors.IntelSensingSDK.CallListener;
-import de.dennis.mobilesensing_module.mobilesensing.Sensors.IntelSensingSDK.DevicePositionListener;
-import de.dennis.mobilesensing_module.mobilesensing.Sensors.IntelSensingSDK.LocationListener;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.IntelSensingSDK.NetworkListener;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.IntelSensingSDK.SensingListener;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.OtherSensors.LiveTrackRecognition.LiveTrackRecognitionListener;
@@ -38,7 +35,7 @@ import de.dennis.mobilesensing_module.mobilesensing.Sensors.OtherSensors.Running
 import de.dennis.mobilesensing_module.mobilesensing.Storage.StorageEventListener;
 
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 /**
@@ -215,17 +212,11 @@ public class SensingManager {
                     //Activity Listener
                     mActivityListener = new ActivityListener();
                     mSensing.addContextTypeListener(ContextType.ACTIVITY_RECOGNITION, mActivityListener);
-                    //Device Position Listener
-                    mDevicePositionListener = new DevicePositionListener();
-                    mSensing.addContextTypeListener(ContextType.DEVICE_POSITION, mDevicePositionListener);
                     //Network Listener
                     mNetworkListener = new NetworkListener();
                     mSensing.addContextTypeListener(ContextType.NETWORK, mNetworkListener);
                     //RunningApp Listener
                     mRunningAppService = new RunningApplicationService();
-                    //Call Listener
-                    mCallListener = new CallListener();
-                    mSensing.addContextTypeListener(ContextType.CALL, mCallListener);
                     Log.d("APPLICATION", "Sensing started");
                     if(startAgain){
                         startSensing();

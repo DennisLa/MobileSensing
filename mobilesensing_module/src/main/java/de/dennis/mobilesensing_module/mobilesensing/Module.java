@@ -6,7 +6,7 @@ import android.content.Context;
 import android.util.Log;
 
 import de.dennis.mobilesensing_module.mobilesensing.SensingManager.SensingManager;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.MyObjectBox;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ActivityListener.MyObjectBox;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.StorageEventListener;
 import de.dennis.mobilesensing_module.mobilesensing.Upload.UploadManager;
 import io.objectbox.BoxStore;
