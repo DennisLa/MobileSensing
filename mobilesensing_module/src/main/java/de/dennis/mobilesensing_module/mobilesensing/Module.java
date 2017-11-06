@@ -5,8 +5,13 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.EventBusBuilder;
+
 import de.dennis.mobilesensing_module.mobilesensing.SensingManager.SensingManager;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ActivityListener.MyObjectBox;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.Customer;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.MyObjectBox;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.Order;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.StorageEventListener;
 import de.dennis.mobilesensing_module.mobilesensing.Upload.UploadManager;
 import io.objectbox.BoxStore;
@@ -32,12 +37,8 @@ public class Module extends android.app.Application{
         // ObjectBox
         sensingManager = new SensingManager();
         uploadManager = new UploadManager();
-        try{
-            boxStore = MyObjectBox.builder().androidContext(getContext()).build();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        }
+        boxStore = MyObjectBox.builder().androidContext(context).build();
+    }
     public static Context getContext() {
         return context;
     }

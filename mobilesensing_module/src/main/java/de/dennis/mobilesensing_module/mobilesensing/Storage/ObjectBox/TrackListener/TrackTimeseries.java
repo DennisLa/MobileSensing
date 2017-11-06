@@ -19,13 +19,15 @@ import io.objectbox.BoxStore;
  */
 @Entity
 public class TrackTimeseries extends SensorTimeseries{
-    @Id(assignable = true)
-    protected long timestamp;
+    @Id
+    public long id;
     @Index
-    protected String timestamp_day;
-    protected boolean uploaded;
+    public long timestamp;
+    @Index
+    public String timestamp_day;
+    public boolean uploaded;
     @Backlink
-    protected ToMany<TrackObject> values = new ToMany<>(this, TrackTimeseries_.values);
+    public ToMany<TrackObject> values;
     /** Used to resolve relations */
     @Internal
     @Generated(1307364262)

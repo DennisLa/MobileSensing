@@ -5,6 +5,7 @@ import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorObje
 import io.objectbox.annotation.Backlink;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
+import io.objectbox.annotation.Index;
 import io.objectbox.annotation.Relation;
 import io.objectbox.relation.ToOne;
 import io.objectbox.annotation.Generated;
@@ -16,11 +17,13 @@ import io.objectbox.BoxStore;
  */
 @Entity
 public class NetworkObject extends SensorObject {
-    @Id(assignable = true)
-    protected long timestamp;
-    protected String networkType;
+    @Id
+    public long id;
+    @Index
+    public long timestamp;
+    public String networkType;
 
-    protected ToOne<NetworkTimeseries> networkTimeseries = new ToOne<>(this, NetworkObject_.networkTimeseries);
+    public ToOne<NetworkTimeseries> networkTimeseries;
     /** Used to resolve relations */
     @Internal
     @Generated(1307364262)

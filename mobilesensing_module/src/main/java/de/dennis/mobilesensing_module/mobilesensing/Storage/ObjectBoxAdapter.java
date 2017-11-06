@@ -1,9 +1,13 @@
 package de.dennis.mobilesensing_module.mobilesensing.Storage;
 
+import android.util.Log;
+
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ActivityListener.ActivityObject;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ActivityListener.ActivityTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocationListener.GLocationTimeseries;
@@ -27,105 +31,108 @@ import io.objectbox.relation.ToMany;
  */
 
 public class ObjectBoxAdapter {
+    final String TAG = "ObjectBoxAdapter";
 
     public void saveSensorObject(SensorObject so){
         //GLocation
         if(so.getClass().getName().equals(GLocationsObject.class.getName())){
-            Box timeseriesBox = BoxStore.getDefault().boxFor(GLocationTimeseries.class);
-            Box objectBox = BoxStore.getDefault().boxFor(GLocationsObject.class);
+            Box timeseriesBox = Module.getBoxStore().boxFor(GLocationTimeseries.class);
+            Box objectBox = Module.getBoxStore().boxFor(GLocationsObject.class);
             GLocationsObject so_casted = (GLocationsObject) so;
             GLocationTimeseries to = (GLocationTimeseries) timeseriesBox.get(getTimestampDay(so_casted.getTimestamp()));
             if(to == null){
                 to = new GLocationTimeseries(getTimestampDay(so_casted.getTimestamp()));
             }
-            objectBox.put(so_casted);
+            /*objectBox.put(so_casted);
             ToMany<GLocationsObject> tmo = to.getValues();
-            tmo.add(so_casted);
-            to.setValues(tmo);
+            tmo.add(so_casted);*/
+            to.values.add(so_casted);
             timeseriesBox.put(to);
+            Log.d(TAG, "GLocation");
         }
         //Network
         if(so.getClass().getName().equals(NetworkObject.class.getName())){
-            Box timeseriesBox = BoxStore.getDefault().boxFor(NetworkTimeseries.class);
-            Box objectBox = BoxStore.getDefault().boxFor(NetworkObject.class);
+            Box timeseriesBox = Module.getBoxStore().boxFor(NetworkTimeseries.class);
+            Box objectBox = Module.getBoxStore().boxFor(NetworkObject.class);
             NetworkObject so_casted = (NetworkObject) so;
             NetworkTimeseries to = (NetworkTimeseries) timeseriesBox.get(getTimestampDay(so_casted.getTimestamp()));
             if(to == null){
                 to = new NetworkTimeseries(getTimestampDay(so_casted.getTimestamp()));
             }
-            objectBox.put(so_casted);
+            /*objectBox.put(so_casted);
             ToMany<NetworkObject> tmo = to.getValues();
-            tmo.add(so_casted);
-            to.setValues(tmo);
+            tmo.add(so_casted);*/
+            to.values.add(so_casted);
             timeseriesBox.put(to);
+            Log.d(TAG, "Network");
         }
         //Activity
         if(so.getClass().getName().equals(ActivityObject.class.getName())){
-            Box timeseriesBox = BoxStore.getDefault().boxFor(ActivityTimeseries.class);
-            Box objectBox = BoxStore.getDefault().boxFor(ActivityObject.class);
+            Box timeseriesBox = Module.getBoxStore().boxFor(ActivityTimeseries.class);
+            Box objectBox = Module.getBoxStore().boxFor(ActivityObject.class);
             ActivityObject so_casted = (ActivityObject) so;
             ActivityTimeseries to = (ActivityTimeseries) timeseriesBox.get(getTimestampDay(so_casted.getTimestamp()));
             if(to == null){
                 to = new ActivityTimeseries(getTimestampDay(so_casted.getTimestamp()));
             }
-            objectBox.put(so_casted);
-            ToMany<ActivityObject> tmo = to.getValues();
-            tmo.add(so_casted);
-            to.setValues(tmo);
+            to.values.add(so_casted);
+            //to.values.add(new ActivityObject(so_casted.getTimestamp(),so_casted.getActivity()));
             timeseriesBox.put(to);
+            Log.d(TAG, "Activity");
         }
         //RunningApplication
         if(so.getClass().getName().equals(RunningApplicationObject.class.getName())){
-            Box timeseriesBox = BoxStore.getDefault().boxFor(RunningApplicationTimeseries.class);
-            Box objectBox = BoxStore.getDefault().boxFor(RunningApplicationObject.class);
+            Box timeseriesBox = Module.getBoxStore().boxFor(RunningApplicationTimeseries.class);
+            Box objectBox = Module.getBoxStore().boxFor(RunningApplicationObject.class);
             RunningApplicationObject so_casted = (RunningApplicationObject) so;
             RunningApplicationTimeseries to = (RunningApplicationTimeseries) timeseriesBox.get(getTimestampDay(so_casted.getTimestamp()));
             if(to == null){
                 to = new RunningApplicationTimeseries(getTimestampDay(so_casted.getTimestamp()));
             }
-            objectBox.put(so_casted);
+            /*objectBox.put(so_casted);
             ToMany<RunningApplicationObject> tmo = to.getValues();
             tmo.add(so_casted);
-            to.setValues(tmo);
+            to.setValues(tmo);*/
+            to.values.add(so_casted);
             timeseriesBox.put(to);
+            Log.d(TAG, "RunningApplication");
         }
         //ScreenOn
         if(so.getClass().getName().equals(ScreenOnObject.class.getName())){
-            Box timeseriesBox = BoxStore.getDefault().boxFor(ScreenOnTimeseries.class);
-            Box objectBox = BoxStore.getDefault().boxFor(ScreenOnObject.class);
+            Box timeseriesBox = Module.getBoxStore().boxFor(ScreenOnTimeseries.class);
+            Box objectBox = Module.getBoxStore().boxFor(ScreenOnObject.class);
             ScreenOnObject so_casted = (ScreenOnObject) so;
             ScreenOnTimeseries to = (ScreenOnTimeseries) timeseriesBox.get(getTimestampDay(so_casted.getTimestamp()));
             if(to == null){
                 to = new ScreenOnTimeseries(getTimestampDay(so_casted.getTimestamp()));
             }
-            objectBox.put(so_casted);
-            ToMany<ScreenOnObject> tmo = to.getValues();
-            tmo.add(so_casted);
-            to.setValues(tmo);
+            to.values.add(so_casted);
             timeseriesBox.put(to);
+            Log.d(TAG, "ScreenOn");
         }
         //Track
         if(so.getClass().getName().equals(TrackObject.class.getName())){
-            Box timeseriesBox = BoxStore.getDefault().boxFor(TrackTimeseries.class);
-            Box objectBox = BoxStore.getDefault().boxFor(TrackObject.class);
+            Box timeseriesBox = Module.getBoxStore().boxFor(TrackTimeseries.class);
+            Box objectBox = Module.getBoxStore().boxFor(TrackObject.class);
             TrackObject so_casted = (TrackObject) so;
             TrackTimeseries to = (TrackTimeseries) timeseriesBox.get(getTimestampDay(so_casted.getTimestamp()));
             if(to == null){
                 to = new TrackTimeseries(getTimestampDay(so_casted.getTimestamp()));
             }
-            objectBox.put(so_casted);
+            /*objectBox.put(so_casted);
             ToMany<TrackObject> tmo = to.getValues();
-            tmo.add(so_casted);
-            to.setValues(tmo);
+            tmo.add(so_casted);*/
+            to.values.add(so_casted);
             timeseriesBox.put(to);
+            Log.d(TAG, "Track");
         }
     }
 
     public void deleteSensorTimeseries(SensorTimeseries st){
         //GLocation
         if(st.getClass().getName().equals(GLocationTimeseries.class.getName())){
-            Box timeseriesBox = BoxStore.getDefault().boxFor(GLocationTimeseries.class);
-            Box objectBox = BoxStore.getDefault().boxFor(GLocationsObject.class);
+            Box timeseriesBox = Module.getBoxStore().boxFor(GLocationTimeseries.class);
+            Box objectBox = Module.getBoxStore().boxFor(GLocationsObject.class);
             GLocationTimeseries timeseries = (GLocationTimeseries) st;
             for(GLocationsObject so:timeseries.getValues()){
                 objectBox.remove(so);
@@ -134,8 +141,8 @@ public class ObjectBoxAdapter {
         }
         //Network
         if(st.getClass().getName().equals(NetworkTimeseries.class.getName())){
-            Box timeseriesBox = BoxStore.getDefault().boxFor(NetworkTimeseries.class);
-            Box objectBox = BoxStore.getDefault().boxFor(NetworkObject.class);
+            Box timeseriesBox = Module.getBoxStore().boxFor(NetworkTimeseries.class);
+            Box objectBox = Module.getBoxStore().boxFor(NetworkObject.class);
             NetworkTimeseries timeseries = (NetworkTimeseries) st;
             for(NetworkObject so:timeseries.getValues()){
                 objectBox.remove(so);
@@ -144,8 +151,8 @@ public class ObjectBoxAdapter {
         }
         //Activity
         if(st.getClass().getName().equals(ActivityTimeseries.class.getName())){
-            Box timeseriesBox = BoxStore.getDefault().boxFor(ActivityTimeseries.class);
-            Box objectBox = BoxStore.getDefault().boxFor(ActivityObject.class);
+            Box timeseriesBox = Module.getBoxStore().boxFor(ActivityTimeseries.class);
+            Box objectBox = Module.getBoxStore().boxFor(ActivityObject.class);
             ActivityTimeseries timeseries = (ActivityTimeseries) st;
             for(ActivityObject so:timeseries.getValues()){
                 objectBox.remove(so);
@@ -154,8 +161,8 @@ public class ObjectBoxAdapter {
         }
         //RunningApplication
         if(st.getClass().getName().equals(RunningApplicationTimeseries.class.getName())){
-            Box timeseriesBox = BoxStore.getDefault().boxFor(RunningApplicationTimeseries.class);
-            Box objectBox = BoxStore.getDefault().boxFor(RunningApplicationObject.class);
+            Box timeseriesBox = Module.getBoxStore().boxFor(RunningApplicationTimeseries.class);
+            Box objectBox = Module.getBoxStore().boxFor(RunningApplicationObject.class);
             RunningApplicationTimeseries timeseries = (RunningApplicationTimeseries) st;
             for(RunningApplicationObject so:timeseries.getValues()){
                 objectBox.remove(so);
@@ -164,8 +171,8 @@ public class ObjectBoxAdapter {
         }
         //ScreenOn
         if(st.getClass().getName().equals(ScreenOnTimeseries.class.getName())){
-            Box timeseriesBox = BoxStore.getDefault().boxFor(ScreenOnTimeseries.class);
-            Box objectBox = BoxStore.getDefault().boxFor(ScreenOnObject.class);
+            Box timeseriesBox = Module.getBoxStore().boxFor(ScreenOnTimeseries.class);
+            Box objectBox = Module.getBoxStore().boxFor(ScreenOnObject.class);
             ScreenOnTimeseries timeseries = (ScreenOnTimeseries) st;
             for(ScreenOnObject so:timeseries.getValues()){
                 objectBox.remove(so);
@@ -174,8 +181,8 @@ public class ObjectBoxAdapter {
         }
         //Track
         if(st.getClass().getName().equals(TrackTimeseries.class.getName())){
-            Box timeseriesBox = BoxStore.getDefault().boxFor(TrackTimeseries.class);
-            Box objectBox = BoxStore.getDefault().boxFor(TrackObject.class);
+            Box timeseriesBox = Module.getBoxStore().boxFor(TrackTimeseries.class);
+            Box objectBox = Module.getBoxStore().boxFor(TrackObject.class);
             TrackTimeseries timeseries = (TrackTimeseries) st;
             for(TrackObject so:timeseries.getValues()){
                 objectBox.remove(so);
@@ -195,17 +202,17 @@ public class ObjectBoxAdapter {
     }
 
     public void updateSensorTimeseries(SensorTimeseries st) {
-            Box timeseriesBox = BoxStore.getDefault().boxFor(st.getClass());
+            Box timeseriesBox = Module.getBoxStore().boxFor(st.getClass());
             timeseriesBox.put(st);
     }
 
     public void updateSensorObject(SensorObject so){
-        Box objectBox = BoxStore.getDefault().boxFor(so.getClass());
+        Box objectBox = Module.getBoxStore().boxFor(so.getClass());
         objectBox.put(so);
     }
 
     public List<GLocationTimeseries> getGLocationTimeseries(String timestampDay, boolean onlyNonUpdated){
-        Box timeseriesBox = BoxStore.getDefault().boxFor(GLocationTimeseries.class);
+        Box timeseriesBox = Module.getBoxStore().boxFor(GLocationTimeseries.class);
         List<GLocationTimeseries> gLocationTimeseriesList = timeseriesBox.getAll();
         List<GLocationTimeseries> gLocationTimeseriesListResult = new ArrayList<>();
         for(GLocationTimeseries gLocationTimeseries: gLocationTimeseriesList){
@@ -224,7 +231,7 @@ public class ObjectBoxAdapter {
     }
 
     public List<ActivityTimeseries> getActivityTimeseries(String timestampDay, boolean onlyNonUpdated){
-        Box timeseriesBox = BoxStore.getDefault().boxFor(ActivityTimeseries.class);
+        Box timeseriesBox = Module.getBoxStore().boxFor(ActivityTimeseries.class);
         List<ActivityTimeseries> activityTimeseriesList = timeseriesBox.getAll();
         List<ActivityTimeseries> activityTimeseriesListResult = new ArrayList<>();
         for(ActivityTimeseries activityTimeseries: activityTimeseriesList){
@@ -243,7 +250,7 @@ public class ObjectBoxAdapter {
     }
 
     public List<NetworkTimeseries> getNetworkTimeseries(String timestampDay, boolean onlyNonUpdated){
-        Box timeseriesBox = BoxStore.getDefault().boxFor(NetworkTimeseries.class);
+        Box timeseriesBox = Module.getBoxStore().boxFor(NetworkTimeseries.class);
         List<NetworkTimeseries> networkTimeseriesList = timeseriesBox.getAll();
         List<NetworkTimeseries> networkTimeseriesListResult = new ArrayList<>();
         for(NetworkTimeseries networkTimeseries: networkTimeseriesList){
@@ -262,7 +269,7 @@ public class ObjectBoxAdapter {
     }
 
     public List<RunningApplicationTimeseries> getRunningApplicationTimeseries(String timestampDay, boolean onlyNonUpdated){
-        Box timeseriesBox = BoxStore.getDefault().boxFor(RunningApplicationTimeseries.class);
+        Box timeseriesBox = Module.getBoxStore().boxFor(RunningApplicationTimeseries.class);
         List<RunningApplicationTimeseries> runningApplicationTimeseriesList = timeseriesBox.getAll();
         List<RunningApplicationTimeseries> runningApplicationTimeseriesListResult = new ArrayList<>();
         for(RunningApplicationTimeseries runningApplicationTimeseries: runningApplicationTimeseriesList){
@@ -281,7 +288,7 @@ public class ObjectBoxAdapter {
     }
 
     public List<ScreenOnTimeseries> getScreenOnTimeseries(String timestampDay, boolean onlyNonUpdated){
-        Box timeseriesBox = BoxStore.getDefault().boxFor(ScreenOnTimeseries.class);
+        Box timeseriesBox = Module.getBoxStore().boxFor(ScreenOnTimeseries.class);
         List<ScreenOnTimeseries> screenOnTimeseriesList = timeseriesBox.getAll();
         List<ScreenOnTimeseries> screenOnTimeseriesListResult = new ArrayList<>();
         for(ScreenOnTimeseries screenOnTimeseries: screenOnTimeseriesList){
@@ -300,7 +307,7 @@ public class ObjectBoxAdapter {
     }
 
     public List<TrackTimeseries> getTrackTimeseries(String timestampDay, boolean onlyNonUpdated){
-        Box timeseriesBox = BoxStore.getDefault().boxFor(TrackTimeseries.class);
+        Box timeseriesBox = Module.getBoxStore().boxFor(TrackTimeseries.class);
         List<TrackTimeseries> trackTimeseriesList = timeseriesBox.getAll();
         List<TrackTimeseries> trackTimeseriesListResult = new ArrayList<>();
         for(TrackTimeseries trackTimeseries: trackTimeseriesList){
@@ -319,7 +326,7 @@ public class ObjectBoxAdapter {
     }
 
     public List<GLocationTimeseries> getGLocationTimeseriesNonUpdated(){
-        Box timeseriesBox = BoxStore.getDefault().boxFor(GLocationTimeseries.class);
+        Box timeseriesBox = Module.getBoxStore().boxFor(GLocationTimeseries.class);
         List<GLocationTimeseries> gLocationTimeseriesList = timeseriesBox.getAll();
         List<GLocationTimeseries> gLocationTimeseriesListResult = new ArrayList<>();
         for(GLocationTimeseries gLocationTimeseries: gLocationTimeseriesList){
@@ -331,7 +338,7 @@ public class ObjectBoxAdapter {
     }
 
     public List<ActivityTimeseries> getActivityTimeseriesNonUpdated(){
-        Box timeseriesBox = BoxStore.getDefault().boxFor(ActivityTimeseries.class);
+        Box timeseriesBox = Module.getBoxStore().boxFor(ActivityTimeseries.class);
         List<ActivityTimeseries> activityTimeseriesList = timeseriesBox.getAll();
         List<ActivityTimeseries> activityTimeseriesListResult = new ArrayList<>();
         for(ActivityTimeseries activityTimeseries: activityTimeseriesList){
@@ -343,7 +350,7 @@ public class ObjectBoxAdapter {
     }
 
     public List<NetworkTimeseries> getNetworkTimeseriesNonUpdated(){
-        Box timeseriesBox = BoxStore.getDefault().boxFor(NetworkTimeseries.class);
+        Box timeseriesBox = Module.getBoxStore().boxFor(NetworkTimeseries.class);
         List<NetworkTimeseries> networkTimeseriesList = timeseriesBox.getAll();
         List<NetworkTimeseries> networkTimeseriesListResult = new ArrayList<>();
         for(NetworkTimeseries networkTimeseries: networkTimeseriesList){
@@ -355,7 +362,7 @@ public class ObjectBoxAdapter {
     }
 
     public List<RunningApplicationTimeseries> getRunningApplicationTimeseriesNonUpdated(){
-        Box timeseriesBox = BoxStore.getDefault().boxFor(RunningApplicationTimeseries.class);
+        Box timeseriesBox = Module.getBoxStore().boxFor(RunningApplicationTimeseries.class);
         List<RunningApplicationTimeseries> runningApplicationTimeseriesList = timeseriesBox.getAll();
         List<RunningApplicationTimeseries> runningApplicationTimeseriesListResult = new ArrayList<>();
         for(RunningApplicationTimeseries runningApplicationTimeseries: runningApplicationTimeseriesList){
@@ -367,7 +374,7 @@ public class ObjectBoxAdapter {
     }
 
     public List<ScreenOnTimeseries> getScreenOnTimeseriesNonUpdated(){
-        Box timeseriesBox = BoxStore.getDefault().boxFor(ScreenOnTimeseries.class);
+        Box timeseriesBox = Module.getBoxStore().boxFor(ScreenOnTimeseries.class);
         List<ScreenOnTimeseries> screenOnTimeseriesList = timeseriesBox.getAll();
         List<ScreenOnTimeseries> screenOnTimeseriesListResult = new ArrayList<>();
         for(ScreenOnTimeseries screenOnTimeseries: screenOnTimeseriesList){
@@ -379,7 +386,7 @@ public class ObjectBoxAdapter {
     }
 
     public List<TrackTimeseries> getTrackTimeseriesNonUpdated(){
-        Box timeseriesBox = BoxStore.getDefault().boxFor(TrackTimeseries.class);
+        Box timeseriesBox = Module.getBoxStore().boxFor(TrackTimeseries.class);
         List<TrackTimeseries> trackTimeseriesList = timeseriesBox.getAll();
         List<TrackTimeseries> trackTimeseriesListResult = new ArrayList<>();
         for(TrackTimeseries trackTimeseries: trackTimeseriesList){
@@ -388,5 +395,56 @@ public class ObjectBoxAdapter {
             }
         }
         return trackTimeseriesListResult;
+    }
+
+    public void deleteAllSensorTimeseriesOlder(long time) {
+        //GLocation
+        Box gLocBox = Module.getBoxStore().boxFor(GLocationTimeseries.class);
+        List<GLocationTimeseries> gLocList = gLocBox.getAll();
+        for(GLocationTimeseries gLoc: gLocList){
+            if(gLoc.getTimestamp() < time){
+                deleteSensorTimeseries(gLoc);
+            }
+        }
+        //Activity
+        Box actBox = Module.getBoxStore().boxFor(ActivityTimeseries.class);
+        List<ActivityTimeseries> actList = actBox.getAll();
+        for(ActivityTimeseries act: actList){
+            if(act.getTimestamp() < time){
+                deleteSensorTimeseries(act);
+            }
+        }
+        //Network
+        Box netBox = Module.getBoxStore().boxFor(NetworkTimeseries.class);
+        List<NetworkTimeseries> netList = netBox.getAll();
+        for(NetworkTimeseries net: netList){
+            if(net.getTimestamp() < time){
+                deleteSensorTimeseries(net);
+            }
+        }
+        //RunningApplication
+        Box runappBox = Module.getBoxStore().boxFor(RunningApplicationTimeseries.class);
+        List<RunningApplicationTimeseries> runappList = runappBox.getAll();
+        for(RunningApplicationTimeseries runapp: runappList){
+            if(runapp.getTimestamp() < time){
+                deleteSensorTimeseries(runapp);
+            }
+        }
+        //ScreenOn
+        Box screenBox = Module.getBoxStore().boxFor(ScreenOnTimeseries.class);
+        List<ScreenOnTimeseries> screenList = screenBox.getAll();
+        for(ScreenOnTimeseries screen: screenList){
+            if(screen.getTimestamp() < time){
+                deleteSensorTimeseries(screen);
+            }
+        }
+        //Track
+        Box trackBox = Module.getBoxStore().boxFor(TrackTimeseries.class);
+        List<TrackTimeseries> trackList = trackBox.getAll();
+        for(TrackTimeseries track: trackList){
+            if(track.getTimestamp() < time){
+                deleteSensorTimeseries(track);
+            }
+        }
     }
 }

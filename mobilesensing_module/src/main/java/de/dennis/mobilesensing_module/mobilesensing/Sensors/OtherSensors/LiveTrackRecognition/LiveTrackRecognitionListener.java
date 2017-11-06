@@ -9,6 +9,7 @@ import android.location.Location;
 import android.support.v4.app.NotificationCompat;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.EventBusException;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -35,7 +36,12 @@ public class LiveTrackRecognitionListener {
     }
 
     public void start(){
-        EventBus.getDefault().register(this);
+        try{
+            EventBus.getDefault().register(this);
+        }catch(EventBusException e){
+            e.printStackTrace();
+        }
+
     }
 
     // This method will be called when a new SensorDataEvent arrived
@@ -98,26 +104,6 @@ public class LiveTrackRecognitionListener {
                     // EventBus.getDefault().post(new SensorDataEvent(st));
                 }
             }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(TrackEndEvent event) {
-        if(event.getClass().equals(TrackEndEvent.class)){
-            GLocationsObject gLocationsObject = (GLocationsObject)event.data;
-            GregorianCalendar g = new GregorianCalendar();
-            g.setTimeInMillis(gLocationsObject.getTimestamp());
-            NotificationCompat.Builder mBuilder =   new NotificationCompat.Builder(Module.getContext())
-                    // notification icon.setSmallIcon(R.drawable.ic_launcher)
-                    .setContentTitle("Track Notification!") // title for notification
-                    .setContentText("Hello word") // message for notification
-                    .setAutoCancel(true); // clear notification after click
-            Intent intent = new Intent(Module.getContext(), PermissionActivity.class);
-            PendingIntent pi = PendingIntent.getActivity(Module.getContext(),0,intent,PendingIntent.FLAG_ONE_SHOT);
-            mBuilder.setContentIntent(pi);
-            NotificationManager mNotificationManager =
-                    (NotificationManager) Module.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(0, mBuilder.build());
-        }
     }
 
     public void stop() {

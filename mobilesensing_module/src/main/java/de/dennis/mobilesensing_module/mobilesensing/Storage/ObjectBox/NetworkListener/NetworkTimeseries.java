@@ -20,13 +20,15 @@ import io.objectbox.BoxStore;
  */
 @Entity
 public class NetworkTimeseries extends SensorTimeseries {
-    @Id(assignable = true)
+    @Id
+    public long id;
+    @Index
     protected long timestamp;
     @Index
-    protected String timestamp_day;
-    protected boolean uploaded;
+    public String timestamp_day;
+    public boolean uploaded;
     @Backlink
-    protected ToMany<NetworkObject> values = new ToMany<>(this, NetworkTimeseries_.values);
+    public ToMany<NetworkObject> values;
     /** Used to resolve relations */
     @Internal
     @Generated(1307364262)

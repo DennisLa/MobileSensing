@@ -4,6 +4,7 @@ import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocationL
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorObject;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
+import io.objectbox.annotation.Index;
 import io.objectbox.annotation.Relation;
 import io.objectbox.relation.ToOne;
 import io.objectbox.annotation.Generated;
@@ -15,11 +16,13 @@ import io.objectbox.BoxStore;
  */
 @Entity
 public class RunningApplicationObject extends SensorObject {
-    @Id(assignable = true)
-    protected long timestamp;
-    protected String applicationName;
+    @Id
+    public long id;
+    @Index
+    public long timestamp;
+    public String applicationName;
 
-    protected ToOne<RunningApplicationTimeseries> runningApplicationTimeseries = new ToOne<>(this, RunningApplicationObject_.runningApplicationTimeseries);
+    public ToOne<RunningApplicationTimeseries> runningApplicationTimeseries;
     /** Used to resolve relations */
     @Internal
     @Generated(1307364262)

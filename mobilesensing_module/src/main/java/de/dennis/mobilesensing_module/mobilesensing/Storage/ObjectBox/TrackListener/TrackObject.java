@@ -3,6 +3,7 @@ package de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.TrackList
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorObject;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
+import io.objectbox.annotation.Index;
 import io.objectbox.annotation.Relation;
 import io.objectbox.relation.ToOne;
 import io.objectbox.annotation.Generated;
@@ -14,11 +15,17 @@ import io.objectbox.BoxStore;
  */
 @Entity
 public class TrackObject extends SensorObject {
-    @Id(assignable = true)
-    protected long startTimestamp;
-    protected long endTimestamp;
+    @Id
+    public long id;
+    @Index
+    public long startTimestamp;
+    public long endTimestamp;
 
-    protected ToOne<TrackTimeseries> trackTimeseries = new ToOne<>(this, TrackObject_.trackTimeseries);
+    public boolean edited;
+
+    //TODO Rating einfügen
+
+    public ToOne<TrackTimeseries> trackTimeseries;
     /** Used to resolve relations */
     @Internal
     @Generated(1307364262)
@@ -27,6 +34,7 @@ public class TrackObject extends SensorObject {
     public TrackObject(long startTimestamp, long endTimestamp) {
         this.startTimestamp = startTimestamp;
         this.endTimestamp = endTimestamp;
+        this.edited = false;
     }
 
     @Generated(1786429799)
@@ -68,5 +76,13 @@ public class TrackObject extends SensorObject {
 
     public long getTimestamp() {
         return startTimestamp;
+    }
+
+    public boolean isEdited() {
+        return edited;
+    }
+
+    public void setEdited(boolean edited) {
+        this.edited = edited;
     }
 }
