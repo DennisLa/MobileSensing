@@ -14,8 +14,7 @@ import java.util.Date;
 
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ScreenOnListener.ScreenOnObject;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ScreenOn.ScreenOnObject;
 
 /**
  * Created by Dennis on 04.05.2017.

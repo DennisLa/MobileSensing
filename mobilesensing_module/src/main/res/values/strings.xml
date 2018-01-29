@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">MobileSensing_Module</string>
-    //Array with sensor names
-    <string-array name="Sensors">
-        <item>Location</item>
-        <item>Activity</item>
-    </string-array>
-</resources>

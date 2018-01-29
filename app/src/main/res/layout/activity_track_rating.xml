@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    tools:context="de.dennis.mobilesensing.UI.TrackRatingActivity">
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingActionButtonCheck"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_weight="0.48"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@drawable/ic_check_black_24dp"
+        tools:layout_editor_absoluteX="323dp"
+        tools:layout_editor_absoluteY="515dp" />
+
+    <LinearLayout
+        android:layout_width="368dp"
+        android:layout_height="587dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteY="-8dp"
+        tools:layout_editor_absoluteX="8dp">
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:layout_weight="0.48"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mapView"
+                android:orientation="vertical"
+                tools:layout_editor_absoluteX="6dp"
+                tools:layout_editor_absoluteY="269dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/imageButtonLeft"
+                        android:layout_width="60dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/roundbutton"
+                        app:srcCompat="@drawable/ic_chevron_left_black_24dp" />
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.02" />
+
+                    <LinearLayout
+                        android:layout_width="216dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="8.20"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textViewKM"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.49"
+                            android:text="0.0km"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/textViewDateTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.49"
+                            android:text="Datum"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.02" />
+
+                    <ImageButton
+                        android:id="@+id/imageButtonRight"
+                        android:layout_width="61dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/roundbutton"
+                        app:srcCompat="@drawable/ic_chevron_right_black_24dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Rating"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textView22"
+                    android:numStars="5"
+                    android:stepSize="0.5"
+                    tools:layout_editor_absoluteX="3dp"
+                    tools:layout_editor_absoluteY="277dp" />
+
+                <TextView
+                    android:id="@+id/textView23"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Rating 2"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+                <RatingBar
+                    android:id="@+id/ratingBar2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textView22"
+                    android:numStars="5"
+                    android:stepSize="0.5"
+                    tools:layout_editor_absoluteX="3dp"
+                    tools:layout_editor_absoluteY="277dp" />
+
+                <TextView
+                    android:id="@+id/textView24"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Rating 3"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+                <RatingBar
+                    android:id="@+id/ratingBar3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textView22"
+                    android:numStars="5"
+                    android:stepSize="0.5"
+                    tools:layout_editor_absoluteX="3dp"
+                    tools:layout_editor_absoluteY="277dp" />
+
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

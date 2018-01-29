@@ -1,10 +1,25 @@
 <resources>
-    <string name="app_name">Mobile Sensing</string>
+    <string name="app_name">Ganesha</string>
 
     <string-array name="gender_array">
         <item>Weiblich</item>
         <item>Männlich</item>
         <item>Anderes</item>
     </string-array>
+    <string name="title_activity_webview">WebviewActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Einstellungen</string>
+
+    <string-array name="navbar">
+        <item>Fahrten bewerten</item>
+        <item>Einstellungen</item>
+        <item>Abmelden</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

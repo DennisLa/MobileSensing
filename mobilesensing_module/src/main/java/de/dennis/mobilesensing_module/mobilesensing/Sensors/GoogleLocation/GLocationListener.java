@@ -22,8 +22,8 @@ import org.greenrobot.eventbus.EventBus;
 
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocationListener.GLocationsObject;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocation.GLocationsObject;
+import de.ms.ptenabler.locationtools.ObjectboxPtenablerUtilities;
 
 
 /**
@@ -102,8 +102,13 @@ public class GLocationListener implements GoogleApiClient.ConnectionCallbacks, G
                     //EventBus.getDefault().post(new MessageEvent(coordinates));
                     Log.d(TAG, coordinatesUpdate);
                     //New GLocationObject*****************************************************************
-                    GLocationsObject glo = new GLocationsObject(System.currentTimeMillis(),location.getLatitude(),location.getLongitude());
+                    GLocationsObject glo = new GLocationsObject(System.currentTimeMillis(),location.getLatitude(),location.getLongitude(), location.getSpeed());
                     //Send Event
+                    ObjectboxPtenablerUtilities.checkLocationInCluster(glo);
+                    SharedPreferences.Editor edit  = Module.getContext().getSharedPreferences("LastLocation", Context.MODE_PRIVATE).edit();
+                    edit.putFloat("LastLat", (float) location.getLatitude());
+                    edit.putFloat("LastLng", (float) location.getLongitude());
+                    edit.apply();
                     EventBus.getDefault().post(new SensorDataEvent(glo));
                     //**********************************************************************************
                     SharedPreferences prefsdata = Module.getContext().getSharedPreferences("Data", Context.MODE_PRIVATE);

@@ -18,7 +18,7 @@ import java.util.List;
 
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.RunningApplicationListener.RunningApplicationObject;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.RunningApplication.RunningApplicationObject;
 
 /**
  * Created by Dennis on 11.03.2017.

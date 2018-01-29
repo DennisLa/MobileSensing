@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Dennis on 07.04.2017.
@@ -21,7 +22,7 @@ public class UploadService {
         sender = PendingIntent.getBroadcast(context,1, i, 0);
 
         Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(c.getTimeInMillis() + 86400000); //Now + 1 day
+        c.setTimeInMillis(new Date().getTime() + 86400000); //Now + 1 day
         c.set(c.YEAR,c.MONTH,c.DATE,00,00,00);
         long firstTime = c.getTime().getTime();//start at 00:00:00 tomorrow
 

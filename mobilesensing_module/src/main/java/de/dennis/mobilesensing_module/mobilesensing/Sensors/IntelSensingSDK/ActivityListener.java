@@ -15,8 +15,7 @@ import java.util.ArrayList;
 
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ActivityListener.ActivityObject;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Activity.ActivityObject;
 
 /**
  * Created by Dennis on 06.03.2017.
@@ -116,7 +115,7 @@ public class ActivityListener implements ContextTypeListener {
                 }
                 int prob = (random+running+walking+incar+sedentary+random)/actSum;
                 Log.d("Minute_Actvity",activitiyName+" , "+ prob);
-                activityFinal =activitiyName+","+ prob;
+                activityFinal =activitiyName;
                 if(!prefs.getString("Activity","").equals(activitiyName))
                 {
                     //TODO
@@ -132,7 +131,7 @@ public class ActivityListener implements ContextTypeListener {
                 editor.putInt("Activity_Sedentary", 0);
 
                 //new Timeseries *******************************************************************
-                ActivityObject ao = new ActivityObject(System.currentTimeMillis(),activityFinal);
+                ActivityObject ao = new ActivityObject(System.currentTimeMillis(),activityFinal,prob);
                 //Send Event
                 EventBus.getDefault().post(new SensorDataEvent(ao));
                 //**********************************************************************************

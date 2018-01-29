@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="Einstellungen"
+    />
+
+    <item
+        android:id="@+id/trackRating"
+        android:icon="@drawable/ic_grade_black_24dp"
+        android:title="Fahrten bewerten"
+        />
+    <item
+        android:id="@+id/logout"
+        android:title="Abmelden"
+        />
+
+</menu>

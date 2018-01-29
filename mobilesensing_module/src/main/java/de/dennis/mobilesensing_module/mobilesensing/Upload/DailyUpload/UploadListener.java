@@ -5,25 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
-import com.estimote.sdk.utils.L;
-
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
-import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.UploadEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ActivityListener.ActivityTimeseries;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocationListener.GLocationTimeseries;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.NetworkListener.NetworkTimeseries;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.RunningApplicationListener.RunningApplicationObject;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.RunningApplicationListener.RunningApplicationTimeseries;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ScreenOnListener.ScreenOnTimeseries;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.TrackListener.TrackTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Activity.ActivityTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocation.GLocationTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Network.NetworkTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.RunningApplication.RunningApplicationTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ScreenOn.ScreenOnTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Track.TrackTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBoxAdapter;
 
 /**
@@ -43,7 +37,7 @@ public class UploadListener extends BroadcastReceiver {
         if(prefs.getBoolean("WLANUpload",false) && prefs.getBoolean("isWiFi",false))
         {
             upload = true;
-        }else if(!prefs.getBoolean("WLANUpload",false)){
+        }else if(!prefs.getBoolean("WLANUpload",false)) {
             upload = true;
         }
         if(upload){

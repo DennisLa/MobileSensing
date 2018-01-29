@@ -12,8 +12,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.NetworkListener.NetworkObject;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Network.NetworkObject;
 
 /**
  * Created by Dennis on 06.03.2017.

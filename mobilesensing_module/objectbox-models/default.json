@@ -17,7 +17,7 @@
     },
     {
       "id": "2:3861951799684370444",
-      "lastPropertyId": "4:4866019491880965923",
+      "lastPropertyId": "5:278955348652048273",
       "name": "ActivityObject",
       "properties": [
         {
@@ -37,13 +37,17 @@
           "id": "4:4866019491880965923",
           "indexId": "2:2495126365738233755",
           "name": "activityTimeseriesId"
+        },
+        {
+          "id": "5:278955348652048273",
+          "name": "probability"
         }
       ],
       "relations": []
     },
     {
       "id": "3:1109088840647277223",
-      "lastPropertyId": "4:5269081844389222110",
+      "lastPropertyId": "5:8950898549413498882",
       "name": "ActivityTimeseries",
       "properties": [
         {
@@ -63,13 +67,17 @@
         {
           "id": "4:5269081844389222110",
           "name": "uploaded"
+        },
+        {
+          "id": "5:8950898549413498882",
+          "name": "current"
         }
       ],
       "relations": []
     },
     {
       "id": "4:9054623740968002234",
-      "lastPropertyId": "5:4692546210118295948",
+      "lastPropertyId": "8:5284188823095480577",
       "name": "GLocationsObject",
       "properties": [
         {
@@ -93,13 +101,26 @@
           "id": "5:4692546210118295948",
           "indexId": "6:8535033189819315229",
           "name": "gLocationTimeseriesId"
+        },
+        {
+          "id": "6:4769037702503945032",
+          "name": "speed"
+        },
+        {
+          "id": "7:8225237261538582681",
+          "name": "isClustered"
+        },
+        {
+          "id": "8:5284188823095480577",
+          "indexId": "26:4931799892550450410",
+          "name": "parentCluster"
         }
       ],
       "relations": []
     },
     {
       "id": "5:5567432276252781873",
-      "lastPropertyId": "4:5256930429737536716",
+      "lastPropertyId": "5:8482645876165746394",
       "name": "GLocationTimeseries",
       "properties": [
         {
@@ -119,6 +140,10 @@
         {
           "id": "4:5256930429737536716",
           "name": "uploaded"
+        },
+        {
+          "id": "5:8482645876165746394",
+          "name": "current"
         }
       ],
       "relations": []
@@ -151,7 +176,7 @@
     },
     {
       "id": "7:8771299675608468951",
-      "lastPropertyId": "4:4844563474461268195",
+      "lastPropertyId": "5:3851483020662742785",
       "name": "NetworkTimeseries",
       "properties": [
         {
@@ -171,6 +196,10 @@
         {
           "id": "4:4844563474461268195",
           "name": "uploaded"
+        },
+        {
+          "id": "5:3851483020662742785",
+          "name": "current"
         }
       ],
       "relations": []
@@ -203,7 +232,7 @@
     },
     {
       "id": "9:7479723882674797915",
-      "lastPropertyId": "4:7246671891306161417",
+      "lastPropertyId": "5:8395130731924526543",
       "name": "RunningApplicationTimeseries",
       "properties": [
         {
@@ -223,6 +252,10 @@
         {
           "id": "4:7246671891306161417",
           "name": "uploaded"
+        },
+        {
+          "id": "5:8395130731924526543",
+          "name": "current"
         }
       ],
       "relations": []
@@ -255,7 +288,7 @@
     },
     {
       "id": "11:3136556121095471253",
-      "lastPropertyId": "4:7576617433293986579",
+      "lastPropertyId": "5:8514209205798459861",
       "name": "ScreenOnTimeseries",
       "properties": [
         {
@@ -275,6 +308,10 @@
         {
           "id": "4:7576617433293986579",
           "name": "uploaded"
+        },
+        {
+          "id": "5:8514209205798459861",
+          "name": "current"
         }
       ],
       "relations": []
@@ -311,7 +348,7 @@
     },
     {
       "id": "13:8137018706266906983",
-      "lastPropertyId": "4:5943200485659302389",
+      "lastPropertyId": "5:872697268161885278",
       "name": "TrackTimeseries",
       "properties": [
         {
@@ -331,6 +368,10 @@
         {
           "id": "4:5943200485659302389",
           "name": "uploaded"
+        },
+        {
+          "id": "5:872697268161885278",
+          "name": "current"
         }
       ],
       "relations": []
@@ -351,10 +392,46 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "15:1375198690120457570",
+      "lastPropertyId": "7:1974354463503694379",
+      "name": "ClusterObject",
+      "properties": [
+        {
+          "id": "1:383560225505696653",
+          "name": "id"
+        },
+        {
+          "id": "2:4982917924096800822",
+          "name": "date"
+        },
+        {
+          "id": "3:6241287825920472689",
+          "name": "firstseen"
+        },
+        {
+          "id": "4:3755153476754078262",
+          "name": "count"
+        },
+        {
+          "id": "5:6945038586349076611",
+          "name": "lat"
+        },
+        {
+          "id": "6:307310506126648129",
+          "name": "lng"
+        },
+        {
+          "id": "7:1974354463503694379",
+          "name": "metajson"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "14:4532596020875404819",
-  "lastIndexId": "25:7819188902988709777",
+  "lastEntityId": "15:1375198690120457570",
+  "lastIndexId": "26:4931799892550450410",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 4,

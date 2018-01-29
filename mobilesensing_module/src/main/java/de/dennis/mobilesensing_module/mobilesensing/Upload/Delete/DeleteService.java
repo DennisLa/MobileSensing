@@ -18,7 +18,7 @@ public class DeleteService {
     private PendingIntent sender;
     public DeleteService() {
     }
-    public void startUploadService(Context context, long interval) {
+    public void startDeleteService(Context context, long interval) {
         Intent i = new Intent(context, DeleteListener.class);
 
         sender = PendingIntent.getBroadcast(context,1, i, 0);
@@ -32,7 +32,7 @@ public class DeleteService {
         am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,
                 interval, sender);
     }
-    public void stopUploadService(){
+    public void stopDeleteService(){
         if(am != null && sender != null){
             am.cancel(sender);
         }
