@@ -100,12 +100,26 @@ public class ObjectboxPtenablerUtilities {
         ObjectBoxAdapter oba = new ObjectBoxAdapter();
         //long id = oba.updateSensorObject(new ClusterObject(toAdd.getId(),toAdd.getDate(),toAdd.getFirstseen(),toAdd.getCount(),toAdd.getLoc().lat,toAdd.getLoc().lon, toAdd.getMeta().toString()));
         long id = oba.updateSensorObject(convertClusteredLocationToClusterObject(toAdd));
+        List<UserLocation> updatedHull = ClusterManagement.getManager().getConvexHullofCluster(id);
+        ClusterMetaData cm = toAdd.getMeta();
+        for(UserLocation ul: updatedHull){
+            //new UserLocation(Location.coord((int)current[0],(int)current[1]),current[2],current[3])
+            long[] l = {(long)ul.getLoc().getLatAsDouble(),(long)ul.getLoc().getLonAsDouble(),ul.getDate(),ul.getParentCluster()};
+            cm.hull.add(l);
+        }
+        toAdd.setMeta(cm);
+        id = oba.updateSensorObject(convertClusteredLocationToClusterObject(toAdd));
         //Update Locations
         if(instances != null){
             for(Instance i: instances){
                 if(i instanceof UserLocation){
                     GLocationsObject gloc = convertUserLocationToGLocation((UserLocation) i);
                     gloc.parentCluster = id;
+                    if(id == -1){
+                        gloc.isClustered = false;
+                    }else{
+                        gloc.isClustered = true;
+                    }
                     oba.updateSensorObject(gloc);
                 }
             }
@@ -117,6 +131,11 @@ public class ObjectboxPtenablerUtilities {
         List<GLocationsObject> gLocs = glocationBox.find("parentCluster", id);
         for(GLocationsObject gLoc: gLocs){
             gLoc.parentCluster = new_id;
+            if(new_id == -1){
+                gLoc.isClustered = false;
+            }else{
+                gLoc.isClustered = true;
+            }
             glocationBox.put(gLoc);
         }
     }
@@ -136,24 +155,6 @@ public class ObjectboxPtenablerUtilities {
     private static ClusterObject convertClusteredLocationToClusterObject(ClusteredLocation toMerge) {
         ClusterObject co = new ClusterObject(toMerge.getId(),toMerge.getDate(),toMerge.getFirstseen(),toMerge.getCount(),toMerge.getLoc().lat/1000000.0,toMerge.getLoc().lon/1000000.0, toMerge.getMeta().toString());
         return co;
-    }
-
-    public static void saveClusterLocation(Location loc, Dataset instances, ClusterMetaData.ClusterType type) {
-        //ClusteredLocation cl =saveClusterLocation(loc, type);
-        ObjectBoxAdapter oba = new ObjectBoxAdapter();
-        //Box clusterBox = Module.getBoxStore().boxFor(ClusterObject.class);
-        //long id = clusterBox.put(new ClusterObject(new Date().getTime(), new Date().getTime(),1, loc.lat, loc.lon,new ClusterMetaData(type).toString()));
-        long id = oba.updateSensorObject(new ClusterObject(new Date().getTime(), new Date().getTime(),1, loc.lat/1000000.0, loc.lon/1000000.0,new ClusterMetaData(type).toString()));
-        //if(id!=null)setClusterIDOfLocations(ds, cl.getId());
-        //Update Locations
-        for(Instance i: instances){
-            if(i instanceof UserLocation){
-                GLocationsObject gloc = convertUserLocationToGLocation((UserLocation) i);
-                gloc.parentCluster = id;
-                oba.updateSensorObject(gloc);
-            }
-        }
-
     }
 
     public static void clearClusteredLocation(int olderThanXDays) {
@@ -214,5 +215,56 @@ public class ObjectboxPtenablerUtilities {
         int lat = prefs.getInt("LastLat", 35000000);
         int lon = prefs.getInt("LastLng",40000000);
         return Location.coord(lat,lon);
+    }
+
+    public static void saveClusterLocation(Location loc, Dataset instances, ClusterMetaData.ClusterType type, List<UserLocation> newHull) {
+        //ClusteredLocation cl =saveClusterLocation(loc, type);
+        ObjectBoxAdapter oba = new ObjectBoxAdapter();
+        //Box clusterBox = Module.getBoxStore().boxFor(ClusterObject.class);
+        //long id = clusterBox.put(new ClusterObject(new Date().getTime(), new Date().getTime(),1, loc.lat, loc.lon,new ClusterMetaData(type).toString()));
+        ClusterMetaData cm = new ClusterMetaData(type);
+        for(UserLocation ul: newHull){
+            //new UserLocation(Location.coord((int)current[0],(int)current[1]),current[2],current[3])
+            long[] l = {(long)ul.getLoc().getLatAsDouble(),(long)ul.getLoc().getLonAsDouble(),ul.getDate(),ul.getParentCluster()};
+            cm.hull.add(l);
+        }
+        long id = oba.updateSensorObject(new ClusterObject(new Date().getTime(), new Date().getTime(),1, loc.lat/1000000.0, loc.lon/1000000.0,cm.toString()));
+        //if(id!=null)setClusterIDOfLocations(ds, cl.getId());
+        //Update Locations
+        for(Instance i: instances){
+            if(i instanceof UserLocation){
+                GLocationsObject gloc = convertUserLocationToGLocation((UserLocation) i);
+                gloc.parentCluster = id;
+                if(id == -1){
+                    gloc.isClustered = false;
+                }else{
+                    gloc.isClustered = true;
+                }
+                oba.updateSensorObject(gloc);
+            }
+        }
+    }
+
+    public static void saveClusterLocation(Location loc, Dataset instances, ClusterMetaData.ClusterType type) {
+        //ClusteredLocation cl =saveClusterLocation(loc, type);
+        ObjectBoxAdapter oba = new ObjectBoxAdapter();
+        //Box clusterBox = Module.getBoxStore().boxFor(ClusterObject.class);
+        //long id = clusterBox.put(new ClusterObject(new Date().getTime(), new Date().getTime(),1, loc.lat, loc.lon,new ClusterMetaData(type).toString()));
+        long id = oba.updateSensorObject(new ClusterObject(new Date().getTime(), new Date().getTime(),1, loc.lat/1000000.0, loc.lon/1000000.0,new ClusterMetaData(type).toString()));
+        //if(id!=null)setClusterIDOfLocations(ds, cl.getId());
+        //Update Locations
+        for(Instance i: instances){
+            if(i instanceof UserLocation){
+                GLocationsObject gloc = convertUserLocationToGLocation((UserLocation) i);
+                gloc.parentCluster = id;
+                if(id == -1){
+                    gloc.isClustered = false;
+                }else{
+                    gloc.isClustered = true;
+                }
+                oba.updateSensorObject(gloc);
+            }
+        }
+
     }
 }

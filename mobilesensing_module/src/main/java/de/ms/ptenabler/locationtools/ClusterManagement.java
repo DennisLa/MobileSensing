@@ -257,7 +257,7 @@ public class ClusterManagement {
             }
             if (toAdd == null) {
                 //Utilities.openDBConnection().saveClusterLocation(loc, locs.get(loc), type);
-                ObjectboxPtenablerUtilities.saveClusterLocation(loc,locs.get(loc),type);
+                ObjectboxPtenablerUtilities.saveClusterLocation(loc,locs.get(loc),type, newHull);
             } else {
                 Log.d("PTEnabler", "Updating Clustered Location: ID " + toAdd.getId() + " Last Clustered: " + new Date(toAdd.getDate()).toLocaleString());
                 int lat = (loc.lat + toAdd.getLoc().lat) / 2;

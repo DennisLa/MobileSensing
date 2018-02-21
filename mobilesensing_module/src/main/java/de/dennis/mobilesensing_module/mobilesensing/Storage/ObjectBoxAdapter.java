@@ -515,6 +515,12 @@ public class ObjectBoxAdapter {
 
     }
 
+    public List<TrackObject> getAllTrackObjects() {
+        Box clusterBox = Module.getBoxStore().boxFor(TrackObject.class);
+        List<TrackObject> clusterList = clusterBox.getAll();
+        return clusterList;
+    }
+
     //Methods for Clustering
     public List<GLocationsObject> getUnclusteredGLocations(long since, long until) {
         Box locationBox = Module.getBoxStore().boxFor(GLocationsObject.class);

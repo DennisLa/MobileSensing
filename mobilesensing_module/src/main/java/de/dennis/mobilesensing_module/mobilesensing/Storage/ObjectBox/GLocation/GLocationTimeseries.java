@@ -37,7 +37,7 @@ public class GLocationTimeseries extends SensorTimeseries {
         this.timestamp = timestamp;
         GregorianCalendar g = new GregorianCalendar();
         g.setTimeInMillis(timestamp);
-        timestamp_day = g.get(GregorianCalendar.YEAR)+"-"+g.get(GregorianCalendar.MONTH)+"-"+g.get(GregorianCalendar.DAY_OF_MONTH)+"T"+"00:00:00.000Z";
+        timestamp_day = g.get(GregorianCalendar.YEAR)+"-"+g.get(GregorianCalendar.MONTH)+1+"-"+g.get(GregorianCalendar.DAY_OF_MONTH)+"T"+"00:00:00.000Z";
         uploaded = false;
     }
 

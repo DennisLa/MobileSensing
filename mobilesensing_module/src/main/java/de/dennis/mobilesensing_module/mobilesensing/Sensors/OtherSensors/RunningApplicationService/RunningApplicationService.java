@@ -17,13 +17,15 @@ public class RunningApplicationService {
     public void startSensingRunningApps(Context context,long interval) {
         Intent i = new Intent(context, RunningApplicationListener.class);
 
-        sender = PendingIntent.getBroadcast(context,1, i, 0);
+        //sender = PendingIntent.getBroadcast(context,1, i,0);
+        sender = PendingIntent.getBroadcast(context,1, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
         long firstTime = SystemClock.elapsedRealtime();
         firstTime += 5 * 1000;//start 5 seconds after first register.
 
         am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-        am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime,
+        //am.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, firstTime, interval, sender);
+        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, firstTime,
                 interval, sender);
     }
     public void stopSensingRunningApplications(){

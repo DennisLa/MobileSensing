@@ -68,6 +68,7 @@ public class ParseUploader {
           "values": []
             }
         */  try {
+            ObjectBoxAdapter oba = new ObjectBoxAdapter();
             //GLocation
             if (st.getClass().getName().equals(GLocationTimeseries.class.getName())) {
                 GLocationTimeseries glocTimeseries = (GLocationTimeseries) st;
@@ -116,6 +117,8 @@ public class ParseUploader {
                     values.put(value);
                 }
                 po.put("values",values);
+                glocTimeseries.setUploaded(true);
+                oba.updateSensorTimeseries(glocTimeseries);
                 po.saveInBackground(updateSensorTimeseriesUpdated(glocTimeseries));
             }
             //Network
@@ -145,6 +148,8 @@ public class ParseUploader {
                     values.put(value);
                 }
                 po.put("values",values);
+                netTimeseries.setUploaded(true);
+                oba.updateSensorTimeseries(netTimeseries);
                 po.saveInBackground(updateSensorTimeseriesUpdated(netTimeseries));
             }
             //Activity
@@ -174,6 +179,8 @@ public class ParseUploader {
                     values.put(value);
                 }
                 po.put("values",values);
+                actTimeseries.setUploaded(true);
+                oba.updateSensorTimeseries(actTimeseries);
                 po.saveInBackground(updateSensorTimeseriesUpdated(actTimeseries));
             }
             //RunningApplication
@@ -203,6 +210,8 @@ public class ParseUploader {
                     values.put(value);
                 }
                 po.put("values",values);
+                rapTimeseries.setUploaded(true);
+                oba.updateSensorTimeseries(rapTimeseries);
                 po.saveInBackground(updateSensorTimeseriesUpdated(rapTimeseries));
             }
             //ScreenOn
@@ -232,6 +241,8 @@ public class ParseUploader {
                     values.put(value);
                 }
                 po.put("values",values);
+                scrTimeseries.setUploaded(true);
+                oba.updateSensorTimeseries(scrTimeseries);
                 po.saveInBackground(updateSensorTimeseriesUpdated(scrTimeseries));
             }
             //Track
@@ -261,10 +272,12 @@ public class ParseUploader {
                     values.put(value);
                 }
                 po.put("values",values);
+                trackTimeseries.setUploaded(true);
+                oba.updateSensorTimeseries(trackTimeseries);
                 po.saveInBackground(updateSensorTimeseriesUpdated(trackTimeseries));
             }
         }catch(Exception e){
-
+            undoUpdated(st);
         }
     }
 
@@ -273,49 +286,52 @@ public class ParseUploader {
             @Override
             public void done(ParseException e) {
                 if(e == null){
-                    ObjectBoxAdapter oba = new ObjectBoxAdapter();
-
-                    //GLocation
-                    if (st.getClass().getName().equals(GLocationTimeseries.class.getName())) {
-                        GLocationTimeseries glt = (GLocationTimeseries) st;
-                        glt.setUploaded(true);
-                        oba.updateSensorTimeseries(glt);
-                    }
-                    //Network
-                    if (st.getClass().getName().equals(NetworkTimeseries.class.getName())) {
-                        NetworkTimeseries nts = (NetworkTimeseries) st;
-                        nts.setUploaded(true);
-                        oba.updateSensorTimeseries(nts);
-                    }
-                    //Activity
-                    if (st.getClass().getName().equals(ActivityTimeseries.class.getName())) {
-                        ActivityTimeseries act = (ActivityTimeseries) st;
-                        act.setUploaded(true);
-                        oba.updateSensorTimeseries(act);
-                    }
-                    //RunningApplication
-                    if (st.getClass().getName().equals(RunningApplicationTimeseries.class.getName())) {
-                        RunningApplicationTimeseries rap = (RunningApplicationTimeseries) st;
-                        rap.setUploaded(true);
-                        oba.updateSensorTimeseries(rap);
-                    }
-                    //ScreenOn
-                    if (st.getClass().getName().equals(ScreenOnTimeseries.class.getName())) {
-                        ScreenOnTimeseries scr = (ScreenOnTimeseries) st;
-                        scr.setUploaded(true);
-                        oba.updateSensorTimeseries(scr);
-                    }
-                    //Track
-                    if (st.getClass().getName().equals(TrackTimeseries.class.getName())) {
-                        TrackTimeseries track = (TrackTimeseries) st;
-                        track.setUploaded(true);
-                        oba.updateSensorTimeseries(track);
-                    }
                    // da.deleteTimeseries(st.getTimestamp_day(),st.getSensor_info().getSensor_name());
                 }else{
                     //TODO
+                    undoUpdated(st);
                 }
             }
         };
+    }
+    public void undoUpdated(SensorTimeseries st){
+        ObjectBoxAdapter oba = new ObjectBoxAdapter();
+
+        //GLocation
+        if (st.getClass().getName().equals(GLocationTimeseries.class.getName())) {
+            GLocationTimeseries glt = (GLocationTimeseries) st;
+            glt.setUploaded(false);
+            oba.updateSensorTimeseries(glt);
+        }
+        //Network
+        if (st.getClass().getName().equals(NetworkTimeseries.class.getName())) {
+            NetworkTimeseries nts = (NetworkTimeseries) st;
+            nts.setUploaded(false);
+            oba.updateSensorTimeseries(nts);
+        }
+        //Activity
+        if (st.getClass().getName().equals(ActivityTimeseries.class.getName())) {
+            ActivityTimeseries act = (ActivityTimeseries) st;
+            act.setUploaded(false);
+            oba.updateSensorTimeseries(act);
+        }
+        //RunningApplication
+        if (st.getClass().getName().equals(RunningApplicationTimeseries.class.getName())) {
+            RunningApplicationTimeseries rap = (RunningApplicationTimeseries) st;
+            rap.setUploaded(false);
+            oba.updateSensorTimeseries(rap);
+        }
+        //ScreenOn
+        if (st.getClass().getName().equals(ScreenOnTimeseries.class.getName())) {
+            ScreenOnTimeseries scr = (ScreenOnTimeseries) st;
+            scr.setUploaded(false);
+            oba.updateSensorTimeseries(scr);
+        }
+        //Track
+        if (st.getClass().getName().equals(TrackTimeseries.class.getName())) {
+            TrackTimeseries track = (TrackTimeseries) st;
+            track.setUploaded(false);
+            oba.updateSensorTimeseries(track);
+        }
     }
 }

@@ -20,6 +20,7 @@ import de.dennis.mobilesensing.R;
 import de.dennis.mobilesensing_module.mobilesensing.SensingManager.SensingManager;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Activity.ActivityTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Cluster.ClusterObject;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Track.TrackObject;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBoxAdapter;
 import de.ms.ptenabler.locationtools.ClusterService;
 
@@ -49,8 +50,13 @@ public class SettingsActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+               /* ObjectBoxAdapter oba = new ObjectBoxAdapter();
+                List<ClusterObject> cl = oba.getAllClusterObjects();
                 Intent service = new Intent(getApplicationContext(), ClusterService.class);
-                getApplicationContext().startService(service);
+                getApplicationContext().startService(service);*/
+                ObjectBoxAdapter oba = new ObjectBoxAdapter();
+                List<TrackObject> track = oba.getAllTrackObjects();
+                Log.d("sdfg","sdf");
                 /*Application.getSensingManager().setSensingSetting(SensingManager.SensorNames.GPS,swtGPS.isChecked());
                 Application.getSensingManager().setSensingSetting(SensingManager.SensorNames.Network,swtNetwork.isChecked());
                 Application.getSensingManager().setSensingSetting(SensingManager.SensorNames.Call,swtCall.isChecked());

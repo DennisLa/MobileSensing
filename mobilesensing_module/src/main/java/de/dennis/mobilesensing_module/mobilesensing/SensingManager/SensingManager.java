@@ -82,13 +82,11 @@ public class SensingManager {
         prefs = Module.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
         //Init Intel SDK
         mSensing = new Sensing(Module.getContext(), new SensingListener());
-        mGLocationListener = new GLocationListener(Module.getContext(),60*1000*5,60*1000); //context,interval, fastest interval |Changed Interval to 1 Min
+        mGLocationListener = new GLocationListener(Module.getContext(),prefs.getInt("GPSSlow",60*1000*5),prefs.getInt("GPSSlow",60*1000)); //context,interval, fastest interval |Changed Interval to 1 Min
         mLiveTrackRecognitionListener = new LiveTrackRecognitionListener();
         mDeleteService = new DeleteService();
         initSensing(false);
         sel = new StorageEventListener();
-        //
-        Log.d("APPLICATION","test");
     }
     public void checkPermissions(){
         SharedPreferences prefs = Module.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
@@ -138,7 +136,6 @@ public class SensingManager {
                 mGLocationListener.startLocationUpdates();
                // mSensing.enableSensing(ContextType.LOCATION, null);
                 Log.d(TAG,"GPS-Tracking enabled");
-                Toast.makeText(Module.getContext(), "GPS Sensor activated", Toast.LENGTH_SHORT).show();
                 locationStarted =true;
             }else{
                 if (locationStarted) {
@@ -163,18 +160,6 @@ public class SensingManager {
                     mSensing.disableSensing(ContextType.ACTIVITY_RECOGNITION);
                     Log.d(TAG, "Activity-Tracking disabled");
                 }
-                //enable Device Position
-                /*if(prefs.getBoolean("DevicePosition",false)){
-                    DevicePositionOptionBuilder optBui;
-                    optBui = new DevicePositionOptionBuilder();
-                    optBui.setSensorHubContinuousFlag(ContinuousFlag.NOPAUSE_ON_SLEEP);
-                    settings = optBui.toBundle();
-                    mSensing.enableSensing(ContextType.DEVICE_POSITION, settings);
-                    Log.d(TAG, "DevicePosition-Tracking enabled");
-                }else{
-                    mSensing.disableSensing(ContextType.DEVICE_POSITION);
-                    Log.d(TAG, "DevicePosition-Tracking disabled");
-                }*/
                 //enable Network Type
                 if(prefs.getBoolean(SensorNames.Network.name(),false)&&
                         checkSelfPermission(Module.getContext(),Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED&&
@@ -182,17 +167,16 @@ public class SensingManager {
                         checkSelfPermission(Module.getContext(),Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED
                         ){
                     settings = new Bundle();
-                    settings.putLong("TIME_WINDOW", 3*1000);
+                    settings.putLong("TIME_WINDOW",prefs.getInt("NetworkInt",10*1000));
                     mSensing.enableSensing(ContextType.NETWORK, settings);
                     Log.d(TAG, "Network-Tracking enabled");
-                    Toast.makeText(Module.getContext(), "Network Sensor activated", Toast.LENGTH_SHORT).show();
                 }else{
                     mSensing.disableSensing(ContextType.NETWORK);
                     Log.d(TAG, "Network-Tracking disabled");
                 }
                 //enable Running Applications
                 if(prefs.getBoolean(SensorNames.Apps.name(),false)){
-                    mRunningAppService.startSensingRunningApps(Module.getContext(), 20 * 1000);
+                    mRunningAppService.startSensingRunningApps(Module.getContext(), prefs.getInt("AppInt",10*1000));
                     Log.d(TAG, "App-Tracking enabled");
                 }else{
                     mRunningAppService.stopSensingRunningApplications();
@@ -200,7 +184,7 @@ public class SensingManager {
                 }
                 //enable ScreenOn
                 if(prefs.getBoolean(SensorNames.ScreenOn.name(),false)){
-                    mScreenOnService.startSensingScreenStatus(Module.getContext(),20*1000);
+                    mScreenOnService.startSensingScreenStatus(Module.getContext(),prefs.getInt("ScreenInt",10*1000));
                     Log.d(TAG, "Screen enabled");
                 }else{
                     mScreenOnService.stopSensingScreenStatus();
@@ -281,9 +265,34 @@ public class SensingManager {
 
     //Settings
     public void setSensingSetting(SensorNames name, boolean run){
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean(name.toString(),run);
-            editor.apply();
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(name.toString(),run);
+        editor.apply();
+    }
+
+    public void setAdvancedGPSSettings(int slowInterval, int fastInterval){
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("GPSSlow",slowInterval);
+        editor.putInt("GPSFast",fastInterval);
+        editor.apply();
+    }
+
+    public void setAdvancedNetworkSettings(int interval){
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("NetworkInt",interval);
+        editor.apply();
+    }
+
+    public void setAdvancedRunningAppSettings(int interval){
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("AppInt",interval);
+        editor.apply();
+    }
+
+    public void setAdvancedScreenOnSettings(int interval){
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("ScreenInt",interval);
+        editor.apply();
     }
 
     public enum SensorNames{
