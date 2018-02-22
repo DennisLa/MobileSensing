@@ -70,6 +70,8 @@ public class ParseUploader {
         */  try {
             ObjectBoxAdapter oba = new ObjectBoxAdapter();
             //GLocation
+            //TODO Classname
+            //TODO Add UID
             if (st.getClass().getName().equals(GLocationTimeseries.class.getName())) {
                 GLocationTimeseries glocTimeseries = (GLocationTimeseries) st;
                 ParseObject po = new ParseObject("Location");

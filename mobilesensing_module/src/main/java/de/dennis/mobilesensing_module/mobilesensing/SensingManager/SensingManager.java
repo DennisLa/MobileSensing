@@ -167,7 +167,7 @@ public class SensingManager {
                         checkSelfPermission(Module.getContext(),Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED
                         ){
                     settings = new Bundle();
-                    settings.putLong("TIME_WINDOW",prefs.getInt("NetworkInt",10*1000));
+                    settings.putLong("TIME_WINDOW",prefs.getInt("NetworkInt",60*1000));
                     mSensing.enableSensing(ContextType.NETWORK, settings);
                     Log.d(TAG, "Network-Tracking enabled");
                 }else{
@@ -176,7 +176,7 @@ public class SensingManager {
                 }
                 //enable Running Applications
                 if(prefs.getBoolean(SensorNames.Apps.name(),false)){
-                    mRunningAppService.startSensingRunningApps(Module.getContext(), prefs.getInt("AppInt",10*1000));
+                    mRunningAppService.startSensingRunningApps(Module.getContext(), prefs.getInt("AppInt",20*1000));
                     Log.d(TAG, "App-Tracking enabled");
                 }else{
                     mRunningAppService.stopSensingRunningApplications();
@@ -184,7 +184,7 @@ public class SensingManager {
                 }
                 //enable ScreenOn
                 if(prefs.getBoolean(SensorNames.ScreenOn.name(),false)){
-                    mScreenOnService.startSensingScreenStatus(Module.getContext(),prefs.getInt("ScreenInt",10*1000));
+                    mScreenOnService.startSensingScreenStatus(Module.getContext(),prefs.getInt("ScreenInt",20*1000));
                     Log.d(TAG, "Screen enabled");
                 }else{
                     mScreenOnService.stopSensingScreenStatus();

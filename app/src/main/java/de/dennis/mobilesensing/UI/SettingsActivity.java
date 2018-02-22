@@ -50,21 +50,14 @@ public class SettingsActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* ObjectBoxAdapter oba = new ObjectBoxAdapter();
-                List<ClusterObject> cl = oba.getAllClusterObjects();
-                Intent service = new Intent(getApplicationContext(), ClusterService.class);
-                getApplicationContext().startService(service);*/
-                ObjectBoxAdapter oba = new ObjectBoxAdapter();
-                List<TrackObject> track = oba.getAllTrackObjects();
-                Log.d("sdfg","sdf");
-                /*Application.getSensingManager().setSensingSetting(SensingManager.SensorNames.GPS,swtGPS.isChecked());
+                Application.getSensingManager().setSensingSetting(SensingManager.SensorNames.GPS,swtGPS.isChecked());
                 Application.getSensingManager().setSensingSetting(SensingManager.SensorNames.Network,swtNetwork.isChecked());
                 Application.getSensingManager().setSensingSetting(SensingManager.SensorNames.Call,swtCall.isChecked());
                 Application.getSensingManager().setSensingSetting(SensingManager.SensorNames.Apps,swtApps.isChecked());
                 Application.getSensingManager().setSensingSetting(SensingManager.SensorNames.Activity,swtActivity.isChecked());
                 Application.getSensingManager().setSensingSetting(SensingManager.SensorNames.ScreenOn,swtScreenOn.isChecked());
                 Application.getSensingManager().setSensingSetting(SensingManager.SensorNames.WLANUpload,swtWLANUpload.isChecked());
-                Application.getSensingManager().startSensing();*/
+                Application.getSensingManager().startSensing();
 
             }
         });
