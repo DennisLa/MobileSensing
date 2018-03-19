@@ -28,6 +28,10 @@ import com.intel.context.option.deviceposition.DevicePositionOptionBuilder;
 import com.intel.context.sensing.ContextTypeListener;
 import com.intel.context.sensing.InitCallback;
 
+import org.greenrobot.eventbus.EventBus;
+
+import de.dennis.mobilesensing_module.mobilesensing.EventBus.MissingPermissionsEvent;
+import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.PermissionActivity;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.GoogleLocation.GLocationListener;
@@ -116,11 +120,12 @@ public class SensingManager {
             }
         }
         if(flag){
-            Intent intent = new Intent(Module.getContext(), PermissionActivity.class);
+            /*Intent intent = new Intent(Module.getContext(), PermissionActivity.class);
             intent.putStringArrayListExtra("PermissionList",permissionList);
             Context context = Module.getContext();
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            Module.getContext().startActivity(intent);
+            Module.getContext().startActivity(intent);*/
+            EventBus.getDefault().post(new MissingPermissionsEvent(permissionList));
         }
     }
     public void startSensing()

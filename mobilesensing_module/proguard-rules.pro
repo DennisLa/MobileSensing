@@ -14,6 +14,8 @@
 
 -dontoptimize
 -dontshrink
+# Objectbox
+-keep class io.objectbox.** { *; }
 
 # Greenrobot Eventbus
 -keepattributes *Annotation*
