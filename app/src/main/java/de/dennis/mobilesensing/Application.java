@@ -8,6 +8,7 @@ import com.parse.ParseUser;
 
 import org.greenrobot.eventbus.EventBus;
 
+import de.dennis.mobilesensing.UI.MissingPermissionListener;
 import de.dennis.mobilesensing.Uploader.ParseUploader;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.SensingManager.SensingManager;
@@ -22,12 +23,11 @@ public class Application extends MultiDexApplication {
     private static UploadManager uplMang;
     private static ParseUploader uploader;
 
-
-
     @Override
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
+        MissingPermissionListener mpl = new MissingPermissionListener();
         //TODO
         Parse.initialize(new Parse.Configuration.Builder(this)
                 /*.applicationId("SensingApp")
