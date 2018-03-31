@@ -83,7 +83,7 @@ public class ParseUploader {
             if (st.getClass().getName().equals(GLocationTimeseries.class.getName())) {
                 GLocationTimeseries glocTimeseries = (GLocationTimeseries) st;
                 ParseObject po = new ParseObject("SensingUpload");
-                po.put("id","mobilesensing.ganesha.location");
+                po.put("sensorid","mobilesensing.ganesha.location");
                 po.put("basetime",glocTimeseries.getTimestamp_day());
                 po.put("parent", new JSONArray());
                 po.put("meta", new JSONObject());
@@ -143,7 +143,7 @@ public class ParseUploader {
             if (st.getClass().getName().equals(NetworkTimeseries.class.getName())) {
                 NetworkTimeseries netTimeseries = (NetworkTimeseries) st;
                 ParseObject po = new ParseObject("SensingUpload");
-                po.put("id","mobilesensing.ganesha.network");
+                po.put("sensorid","mobilesensing.ganesha.network");
                 po.put("basetime",netTimeseries.getTimestamp_day());
                 po.put("parent", new JSONArray());
                 po.put("meta", new JSONObject());
@@ -181,7 +181,7 @@ public class ParseUploader {
             if (st.getClass().getName().equals(ActivityTimeseries.class.getName())) {
                 ActivityTimeseries actTimeseries = (ActivityTimeseries) st;
                 ParseObject po = new ParseObject("SensingUpload");
-                po.put("id","mobilesensing.ganesha.activity");
+                po.put("sensorid","mobilesensing.ganesha.activity");
                 po.put("basetime",actTimeseries.getTimestamp_day());
                 po.put("parent", new JSONArray());
                 po.put("meta", new JSONObject());
@@ -223,7 +223,7 @@ public class ParseUploader {
             if (st.getClass().getName().equals(RunningApplicationTimeseries.class.getName())) {
                 RunningApplicationTimeseries rapTimeseries = (RunningApplicationTimeseries) st;
                 ParseObject po = new ParseObject("SensingUpload");
-                po.put("id","mobilesensing.ganesha.app");
+                po.put("sensorid","mobilesensing.ganesha.app");
                 po.put("basetime",rapTimeseries.getTimestamp_day());
                 po.put("parent", new JSONArray());
                 po.put("meta", new JSONObject());
@@ -261,7 +261,7 @@ public class ParseUploader {
             if (st.getClass().getName().equals(ScreenOnTimeseries.class.getName())) {
                 ScreenOnTimeseries scrTimeseries = (ScreenOnTimeseries) st;
                 ParseObject po = new ParseObject("SensingUpload");
-                po.put("id","mobilesensing.ganesha.screen");
+                po.put("sensorid","mobilesensing.ganesha.screen");
                 po.put("basetime",scrTimeseries.getTimestamp_day());
                 po.put("parent", new JSONArray());
                 po.put("meta", new JSONObject());
@@ -299,7 +299,7 @@ public class ParseUploader {
             if (st.getClass().getName().equals(TrackTimeseries.class.getName())) {
                 TrackTimeseries trackTimeseries = (TrackTimeseries) st;
                 ParseObject po = new ParseObject("SensingUpload");
-                po.put("id","mobilesensing.ganesha.track");
+                po.put("sensorid","mobilesensing.ganesha.track");
                 po.put("basetime",trackTimeseries.getTimestamp_day());
                 po.put("parent", new JSONArray());
                 po.put("meta", new JSONObject());
