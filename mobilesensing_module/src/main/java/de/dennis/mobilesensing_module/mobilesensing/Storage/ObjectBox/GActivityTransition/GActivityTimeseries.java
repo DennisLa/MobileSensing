@@ -1,4 +1,4 @@
-package de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Activity;
+package de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GActivityTransition;
 
 import java.util.GregorianCalendar;
 
@@ -9,23 +9,21 @@ import io.objectbox.annotation.Id;
 import io.objectbox.annotation.Index;
 import io.objectbox.relation.ToMany;
 
-
 /**
- * Created by Dennis on 01.10.2017.
+ * Created by Dennis on 31.03.2018.
  */
 @Entity
-public class ActivityTimeseries extends SensorTimeseries {
+public class GActivityTimeseries extends SensorTimeseries {
     @Id
     public long id;
+
     @Backlink
-    public ToMany<ActivityObject> values;
+    public ToMany<GActivityObject> values;
 
-
-    public ActivityTimeseries(long timestamp) {
+    public GActivityTimeseries(long timestamp) {
         super(timestamp);
     }
-
-    public ActivityTimeseries(){
+    public GActivityTimeseries(){
 
     }
 }

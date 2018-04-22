@@ -23,7 +23,6 @@ import de.dennis.mobilesensing.R;
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.UploadEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Activity.ActivityTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBoxAdapter;
-import de.dennis.mobilesensing_module.mobilesensing.Upload.DailyUpload.UploadListener;
 
 
 /**
@@ -43,11 +42,6 @@ public class MainActivity extends AppCompatActivity {
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ObjectBoxAdapter oba = new ObjectBoxAdapter();
-                List<ActivityTimeseries> activityTimeseries = oba.getActivityTimeseriesNonUpdated();
-                for(ActivityTimeseries act: activityTimeseries){
-                    EventBus.getDefault().post(new UploadEvent(act));
-                }
             }
         });
         btnSettings = (ImageButton) findViewById(R.id.btnSettings);

@@ -16,6 +16,8 @@ import java.util.List;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Cluster.ClusterObject;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocation.GLocationsObject;
+//import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocation.GLocationsObject_;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocation.GLocationsObject_;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBoxAdapter;
 import de.ms.ptenabler.Message.ClusterMessage;
 import de.schildbach.pte.dto.Location;
@@ -23,6 +25,7 @@ import de.schildbach.pte.dto.LocationType;
 import de.schildbach.pte.dto.Point;
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
+import io.objectbox.Property;
 
 /**
  * Created by Dennis on 14.11.2017.
@@ -31,7 +34,7 @@ import io.objectbox.BoxStore;
 public class ObjectboxPtenablerUtilities {
 
     public static void checkLocationInCluster(GLocationsObject gLocationsObject){
-        Location loc = new Location(LocationType.COORD,gLocationsObject.getId()+"",new Point((int)(gLocationsObject.getLat()*1000000), (int) (gLocationsObject.getLng()*1000000)));
+        Location loc = new Location(LocationType.COORD,gLocationsObject.id+"",new Point((int)(gLocationsObject.lat*1000000), (int) (gLocationsObject.lng*1000000)));
         ArrayList<ClusteredLocation> clocs = (ArrayList<ClusteredLocation>)ClusterManagement.getManager().getClusteredLocationsFromCache(false);
         ClusteredLocation newCluster=null;
         for(ClusteredLocation cl:clocs){
@@ -93,7 +96,7 @@ public class ObjectboxPtenablerUtilities {
     }
 
     private static UserLocation convertGLocationToUserLoaction(GLocationsObject gloc) {
-        return new UserLocation(new Location(LocationType.COORD,gloc.getId()+"",new Point((int)(gloc.getLat()*1000000), (int) (gloc.getLng()*1000000))),gloc.getTimestamp(),gloc.parentCluster);
+        return new UserLocation(new Location(LocationType.COORD,gloc.id+"",new Point((int)(gloc.lat*1000000), (int) (gloc.lng*1000000))),gloc.timestamp,gloc.parentCluster);
     }
 
     public static void updateSensorObjectAndLocations(ClusteredLocation toAdd, Dataset instances) {
@@ -127,8 +130,9 @@ public class ObjectboxPtenablerUtilities {
 }
 
     public static void updateParentClusterofLocations(long id, long new_id) {
-        Box glocationBox = Module.getBoxStore().boxFor(GLocationsObject.class);
-        List<GLocationsObject> gLocs = glocationBox.find("parentCluster", id);
+        Box gLocationBox = Module.getBoxStore().boxFor(GLocationsObject.class);
+        //List<GLocationsObject> gLocs = null;
+        List<GLocationsObject> gLocs = gLocationBox.query().equal(GLocationsObject_.parentCluster, id).build().find();
         for(GLocationsObject gLoc: gLocs){
             gLoc.parentCluster = new_id;
             if(new_id == -1){
@@ -136,7 +140,7 @@ public class ObjectboxPtenablerUtilities {
             }else{
                 gLoc.isClustered = true;
             }
-            glocationBox.put(gLoc);
+            gLocationBox.put(gLoc);
         }
     }
 
@@ -173,10 +177,11 @@ public class ObjectboxPtenablerUtilities {
 
     public static List<UserLocation> getAllHistoryLocsofCluster(long cid, long start, long end) {
         Box gLocationBox = Module.getBoxStore().boxFor(GLocationsObject.class);
-        List<GLocationsObject> gLocs = gLocationBox.find("parentCluster",cid);
+        //List<GLocationsObject> gLocs = null;
+        List<GLocationsObject> gLocs = gLocationBox.query().equal(GLocationsObject_.parentCluster, cid).build().find();
         List<UserLocation> locs = new ArrayList<>();
         for(GLocationsObject gLoc: gLocs){
-            if(gLoc.getTimestamp() >= start && gLoc.getTimestamp() <= end){
+            if(gLoc.timestamp >= start && gLoc.timestamp <= end){
                 locs.add(convertGLocationToUserLoaction(gLoc));
             }
         }
@@ -188,13 +193,13 @@ public class ObjectboxPtenablerUtilities {
         List<UserLocation> locs = new ArrayList<>();
         if(descending){
             for(int i = 0; i < gLocs.size();i++){
-                if(gLocs.get(i).getTimestamp() > since && gLocs.get(i).getTimestamp() < until){
+                if(gLocs.get(i).timestamp > since && gLocs.get(i).timestamp < until){
                     locs.add(convertGLocationToUserLoaction(gLocs.get(i)));
                 }
             }
         }else{
             for(int i = gLocs.size()-1; i >=0;i--){
-                if(gLocs.get(i).getTimestamp() > since && gLocs.get(i).getTimestamp() < until){
+                if(gLocs.get(i).timestamp > since && gLocs.get(i).timestamp < until){
                     locs.add(convertGLocationToUserLoaction(gLocs.get(i)));
                 }
             }

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MobileSensing.iml" filepath="$PROJECT_DIR$/MobileSensing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MobileSensing - Kopie.iml" filepath="$PROJECT_DIR$/MobileSensing - Kopie.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://D:\Projekte\GitHub\MobileSensing\locationtools\locationtools.iml" filepath="D:\Projekte\GitHub\MobileSensing\locationtools\locationtools.iml" />
       <module fileurl="file://$PROJECT_DIR$/mobilesensing_module/mobilesensing_module.iml" filepath="$PROJECT_DIR$/mobilesensing_module/mobilesensing_module.iml" />
