@@ -1,8 +1,5 @@
 package de.dennis.mobilesensing.Uploader;
 
-import android.util.Log;
-
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -12,13 +9,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.UploadEvent;
-import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Activity.ActivityObject;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Activity.ActivityTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GActivityTransition.GActivityObject;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GActivityTransition.GActivityTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocation.GLocationTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocation.GLocationsObject;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Network.NetworkObject;
@@ -31,7 +28,6 @@ import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTime
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Track.TrackObject;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Track.TrackTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBoxAdapter;
-import io.objectbox.Box;
 
 /**
  * Created by Dennis on 17.09.2017.
@@ -337,6 +333,52 @@ public class ParseUploader {
                 oba.updateSensorTimeseries(trackTimeseries);
                 po.saveInBackground(updateSensorTimeseriesUpdated(trackTimeseries));
             }
+            //GActivityTimeseries
+            if (st.getClass().getName().equals(GActivityTimeseries.class.getName())) {
+                GActivityTimeseries gActTimeseries = (GActivityTimeseries) st;
+                ParseObject po = new ParseObject("SensingUpload");
+                po.put("sensorid","mobilesensing.ganesha.gActivityTransition");
+                po.put("basetime",gActTimeseries.getTimestamp_day());
+                po.put("parent", new JSONArray());
+                po.put("meta", new JSONObject());
+                po.put("name", "gActivityTransition");
+                po.put("icon", "Icons/smarthome/default_18.png");
+                JSONArray ja = new JSONArray();
+                JSONObject jo = new JSONObject();
+                jo.put("name", "StartTimestamp");
+                jo.put("type","Number");
+                ja.put(jo);
+                jo.put("name", "EndTimestamp");
+                jo.put("type","Number");
+                ja.put(jo);
+                jo.put("name", "ActivityName");
+                jo.put("type","String");
+                ja.put(jo);
+                po.put("valueTypes",ja );
+                po.put("user", ParseUser.getCurrentUser().getUsername());
+                JSONArray values = new JSONArray();
+                for(GActivityObject gActObject: gActTimeseries.getValues()){
+                    /*
+                     {
+                    "date" : 12345678
+                    "value" : [WIFI
+                    ]
+                    }
+                     */
+                    JSONObject object = new JSONObject();
+                    object.put("date",gActObject.getTimestamp());
+                    JSONArray valueArray = new JSONArray();
+                    valueArray.put(gActObject.getTimestamp());
+                    valueArray.put(gActObject.getEndtime());
+                    valueArray.put(gActObject.getActivity());
+                    object.put("value",valueArray);
+                    values.put(object);
+                }
+                po.put("values",values);
+                gActTimeseries.setUploaded(true);
+                oba.updateSensorTimeseries(gActTimeseries);
+                po.saveInBackground(updateSensorTimeseriesUpdated(gActTimeseries));
+            }
         }catch(Exception e){
             undoUpdated(st);
         }
@@ -393,6 +435,12 @@ public class ParseUploader {
             TrackTimeseries track = (TrackTimeseries) st;
             track.setUploaded(false);
             oba.updateSensorTimeseries(track);
+        }
+        //GActivityTransition
+        if (st.getClass().getName().equals(GActivityTimeseries.class.getName())) {
+            GActivityTimeseries gAct = (GActivityTimeseries) st;
+            gAct.setUploaded(false);
+            oba.updateSensorTimeseries(gAct);
         }
     }
 }

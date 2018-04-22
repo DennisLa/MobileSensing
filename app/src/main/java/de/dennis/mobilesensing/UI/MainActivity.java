@@ -23,7 +23,6 @@ import de.dennis.mobilesensing.R;
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.UploadEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Activity.ActivityTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBoxAdapter;
-import de.dennis.mobilesensing_module.mobilesensing.Upload.DailyUpload.UploadListener;
 
 
 /**

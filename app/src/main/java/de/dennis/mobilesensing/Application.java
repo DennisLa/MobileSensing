@@ -39,7 +39,7 @@ public class Application extends MultiDexApplication {
         );
         Module.init(context, "USERNAME");
         sensMang = Module.getSensingManager();
-        sensMang.setSensingSetting(SensingManager.SensorNames.Activity,true);
+        sensMang.setSensingSetting(SensingManager.SensorNames.Activity,false);
         sensMang.setSensingSetting(SensingManager.SensorNames.GPS,true);
         sensMang.setSensingSetting(SensingManager.SensorNames.WLANUpload,true);
         sensMang.setSensingSetting(SensingManager.SensorNames.ScreenOn,true);
@@ -47,6 +47,7 @@ public class Application extends MultiDexApplication {
         sensMang.setSensingSetting(SensingManager.SensorNames.Network,true);
         sensMang.setSensingSetting(SensingManager.SensorNames.Track,true);
         sensMang.setSensingSetting(SensingManager.SensorNames.Cluster,true);
+        sensMang.setSensingSetting(SensingManager.SensorNames.GActivity,true);
         uplMang = Module.getUploadManager();
         startSensing();
     }

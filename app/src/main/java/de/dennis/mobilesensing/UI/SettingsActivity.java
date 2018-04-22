@@ -5,24 +5,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import de.dennis.mobilesensing.Application;
 import de.dennis.mobilesensing.R;
 import de.dennis.mobilesensing_module.mobilesensing.SensingManager.SensingManager;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Activity.ActivityTimeseries;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Cluster.ClusterObject;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Track.TrackObject;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GActivityTransition.GActivityTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBoxAdapter;
-import de.ms.ptenabler.locationtools.ClusterService;
 
 
 public class SettingsActivity extends AppCompatActivity {
@@ -43,8 +37,8 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         prefs = Application.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
         //
-        //ObjectBoxAdapter oba = new ObjectBoxAdapter();
-        //List<ClusterObject> cl = oba.getAllClusterObjects();
+        ObjectBoxAdapter oba = new ObjectBoxAdapter();
+        List<GActivityTimeseries> list = oba.getGActivityTimeseriesNonUpdated();
         //Button to save settings
         btnSave = (Button) findViewById(R.id.btnSaveSettings);
         btnSave.setOnClickListener(new View.OnClickListener() {

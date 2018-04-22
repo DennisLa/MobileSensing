@@ -11,6 +11,8 @@ import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Activity.ActivityObject;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Activity.ActivityTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Cluster.ClusterObject;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GActivityTransition.GActivityObject;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GActivityTransition.GActivityTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocation.GLocationTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocation.GLocationsObject;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Network.NetworkObject;
@@ -34,6 +36,30 @@ public class ObjectBoxAdapter {
 
     public void saveSensorObject(SensorObject so){
         Log.d("SAVESENSOROBJECT","New Object: "+so.getClass().getSimpleName()+ " Time: "+ new Date().toGMTString());
+        //GActivity
+        if(so.getClass().getName().equals(GActivityObject.class.getName())){
+            Box timeseriesBox = Module.getBoxStore().boxFor(GActivityTimeseries.class);
+            Box objectBox = Module.getBoxStore().boxFor(GActivityObject.class);
+            GActivityObject so_casted = (GActivityObject) so;
+            GActivityTimeseries to = null;//= (GLocationTimeseries) timeseriesBox.get(getTimestampDay(so_casted.getTimestamp()));
+            List<GActivityTimeseries>lst = timeseriesBox.getAll();
+            for(GActivityTimeseries ts: lst){
+                if(ts.getTimestamp() == getTimestampDay(so_casted.getTimestamp())){
+                    to = ts;
+                }
+            }
+            if(to == null){
+                to = new GActivityTimeseries(getTimestampDay(so_casted.getTimestamp()));
+                to.setCurrent(true);
+                for(GActivityTimeseries ts: lst){
+                    ts.setCurrent(false);
+                    timeseriesBox.put(ts);
+                }
+            }
+            to.values.add(so_casted);
+            timeseriesBox.put(to);
+            Log.d(TAG, "GActivity");
+        }
         //GLocation
         if(so.getClass().getName().equals(GLocationsObject.class.getName())){
             Box timeseriesBox = Module.getBoxStore().boxFor(GLocationTimeseries.class);
@@ -195,6 +221,16 @@ public class ObjectBoxAdapter {
     }
 
     public void deleteSensorTimeseries(SensorTimeseries st){
+        //GActivity
+        if(st.getClass().getName().equals(GActivityTimeseries.class.getName())){
+            Box timeseriesBox = Module.getBoxStore().boxFor(GActivityTimeseries.class);
+            Box objectBox = Module.getBoxStore().boxFor(GActivityObject.class);
+            GActivityTimeseries timeseries = (GActivityTimeseries) st;
+            for(GActivityObject so:timeseries.getValues()){
+                objectBox.remove(so);
+            }
+            timeseriesBox.remove(st);
+        }
         //GLocation
         if(st.getClass().getName().equals(GLocationTimeseries.class.getName())){
             Box timeseriesBox = Module.getBoxStore().boxFor(GLocationTimeseries.class);
@@ -294,6 +330,24 @@ public class ObjectBoxAdapter {
             }
         }
         return gLocationTimeseriesListResult;
+    }
+    public List<GActivityTimeseries> getGActivityTimeseries(String timestampDay, boolean onlyNonUpdated){
+        Box timeseriesBox = Module.getBoxStore().boxFor(GActivityTimeseries.class);
+        List<GActivityTimeseries> gActivityTimeseriesList = timeseriesBox.getAll();
+        List<GActivityTimeseries> gActivityTimeseriesListResult = new ArrayList<>();
+        for(GActivityTimeseries gActivityTimeseries: gActivityTimeseriesList){
+
+            if(onlyNonUpdated && !gActivityTimeseries.isUploaded()){
+                if(gActivityTimeseries.getTimestamp_day().equals(timestampDay)){
+                    gActivityTimeseriesListResult.add(gActivityTimeseries);
+                }
+            }else if(!onlyNonUpdated){
+                if(gActivityTimeseries.getTimestamp_day().equals(timestampDay)){
+                    gActivityTimeseriesListResult.add(gActivityTimeseries);
+                }
+            }
+        }
+        return gActivityTimeseriesListResult;
     }
 
     public List<ActivityTimeseries> getActivityTimeseries(String timestampDay, boolean onlyNonUpdated){
@@ -403,6 +457,18 @@ public class ObjectBoxAdapter {
         return gLocationTimeseriesListResult;
     }
 
+    public List<GActivityTimeseries> getGActivityTimeseriesNonUpdated(){
+        Box timeseriesBox = Module.getBoxStore().boxFor(GActivityTimeseries.class);
+        List<GActivityTimeseries> gActivityTimeseriesList = timeseriesBox.getAll();
+        List<GActivityTimeseries> gActivityTimeseriesListResult = new ArrayList<>();
+        for(GActivityTimeseries gActivityTimeseries: gActivityTimeseriesList){
+            if(!gActivityTimeseries.isUploaded()&& !gActivityTimeseries.isCurrent()){
+                gActivityTimeseriesListResult.add(gActivityTimeseries);
+            }
+        }
+        return gActivityTimeseriesListResult;
+    }
+
     public List<ActivityTimeseries> getActivityTimeseriesNonUpdated(){
         Box timeseriesBox = Module.getBoxStore().boxFor(ActivityTimeseries.class);
         List<ActivityTimeseries> activityTimeseriesList = timeseriesBox.getAll();
@@ -470,6 +536,14 @@ public class ObjectBoxAdapter {
         for(GLocationTimeseries gLoc: gLocList){
             if(gLoc.getTimestamp() < time){
                 deleteSensorTimeseries(gLoc);
+            }
+        }
+        //GActivity
+        Box gActivityBox = Module.getBoxStore().boxFor(GActivityTimeseries.class);
+        List<GActivityTimeseries> gActivityList = gLocBox.getAll();
+        for(GActivityTimeseries gActivity: gActivityList){
+            if(gActivity.getTimestamp() < time){
+                deleteSensorTimeseries(gActivity);
             }
         }
         //Activity

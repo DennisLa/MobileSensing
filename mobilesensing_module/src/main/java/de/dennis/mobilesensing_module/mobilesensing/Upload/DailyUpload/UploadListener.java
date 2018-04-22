@@ -13,6 +13,7 @@ import java.util.List;
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.UploadEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Activity.ActivityTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GActivityTransition.GActivityTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocation.GLocationTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Network.NetworkTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.RunningApplication.RunningApplicationTimeseries;
@@ -42,6 +43,10 @@ public class UploadListener extends BroadcastReceiver {
         }
         if(upload){
             ObjectBoxAdapter oba = new ObjectBoxAdapter();
+            List<GActivityTimeseries> gActivityTimeseries = oba.getGActivityTimeseriesNonUpdated();
+            for(GActivityTimeseries act: gActivityTimeseries){
+                EventBus.getDefault().post(new UploadEvent(act));
+            }
             List<ActivityTimeseries> activityTimeseries = oba.getActivityTimeseriesNonUpdated();
             for(ActivityTimeseries act: activityTimeseries){
                 EventBus.getDefault().post(new UploadEvent(act));
