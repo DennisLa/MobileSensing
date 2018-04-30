@@ -14,6 +14,7 @@ import java.util.Date;
 
 import de.dennis.mobilesensing_module.mobilesensing.SensingManager.SensingManager;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.Customer;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.MyObjectBox;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.Order;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.StorageEventListener;
 import de.dennis.mobilesensing_module.mobilesensing.Upload.UploadManager;
@@ -38,7 +39,7 @@ public class Module extends MultiDexApplication {
         context = app_context;
         userName = user_Name;
         // ObjectBox
-        //boxStore = MyObjectBox.builder().androidContext(context).build();
+        boxStore = MyObjectBox.builder().androidContext(context).build();
         sensingManager = new SensingManager();
         uploadManager = new UploadManager();
 

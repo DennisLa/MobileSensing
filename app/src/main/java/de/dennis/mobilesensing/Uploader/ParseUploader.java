@@ -1,5 +1,8 @@
 package de.dennis.mobilesensing.Uploader;
 
+import android.util.Log;
+
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -9,13 +12,13 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.UploadEvent;
+import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Activity.ActivityObject;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Activity.ActivityTimeseries;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GActivityTransition.GActivityObject;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GActivityTransition.GActivityTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocation.GLocationTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocation.GLocationsObject;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Network.NetworkObject;
@@ -28,6 +31,7 @@ import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTime
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Track.TrackObject;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Track.TrackTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBoxAdapter;
+import io.objectbox.Box;
 
 /**
  * Created by Dennis on 17.09.2017.
@@ -80,7 +84,7 @@ public class ParseUploader {
                 GLocationTimeseries glocTimeseries = (GLocationTimeseries) st;
                 ParseObject po = new ParseObject("SensingUpload");
                 po.put("sensorid","mobilesensing.ganesha.location");
-                po.put("basetime",glocTimeseries.timestamp_day);
+                po.put("basetime",glocTimeseries.getTimestamp_day());
                 po.put("parent", new JSONArray());
                 po.put("meta", new JSONObject());
                 po.put("name", "location");
@@ -93,7 +97,7 @@ public class ParseUploader {
                 po.put("valueTypes",ja );
                 po.put("user", ParseUser.getCurrentUser().getUsername());
                 JSONArray values = new JSONArray();
-                for(GLocationsObject gLocationsObject: glocTimeseries.values){
+                for(GLocationsObject gLocationsObject: glocTimeseries.getValues()){
                     /*
                      {
                     "date" : 12345678
@@ -112,15 +116,15 @@ public class ParseUploader {
                     }
                      */
                     JSONObject object = new JSONObject();
-                    object.put("date",gLocationsObject.timestamp);
+                    object.put("date",gLocationsObject.getTimestamp());
                     JSONArray valueArray = new JSONArray();
                     JSONObject valueObject = new JSONObject();
                     valueObject.put("type","Feature");
                     JSONObject geo = new JSONObject();
                     geo.put("type","Point");
                     JSONArray coords = new JSONArray();
-                    coords.put(gLocationsObject.lng);
-                    coords.put(gLocationsObject.lat);
+                    coords.put(gLocationsObject.getLng());
+                    coords.put(gLocationsObject.getLat());
                     geo.put("coordinates",coords);
                     valueObject.put("geometry",geo);
                     JSONObject props = new JSONObject();
@@ -131,7 +135,7 @@ public class ParseUploader {
                     values.put(object);
                 }
                 po.put("values",values);
-                glocTimeseries.uploaded = true;
+                glocTimeseries.setUploaded(true);
                 oba.updateSensorTimeseries(glocTimeseries);
                 po.saveInBackground(updateSensorTimeseriesUpdated(glocTimeseries));
             }
@@ -140,7 +144,7 @@ public class ParseUploader {
                 NetworkTimeseries netTimeseries = (NetworkTimeseries) st;
                 ParseObject po = new ParseObject("SensingUpload");
                 po.put("sensorid","mobilesensing.ganesha.network");
-                po.put("basetime",netTimeseries.timestamp_day);
+                po.put("basetime",netTimeseries.getTimestamp_day());
                 po.put("parent", new JSONArray());
                 po.put("meta", new JSONObject());
                 po.put("name", "network");
@@ -153,7 +157,7 @@ public class ParseUploader {
                 po.put("valueTypes",ja );
                 po.put("user", ParseUser.getCurrentUser().getUsername());
                 JSONArray values = new JSONArray();
-                for(NetworkObject networkObject: netTimeseries.values){
+                for(NetworkObject networkObject: netTimeseries.getValues()){
                     /*
                      {
                     "date" : 12345678
@@ -162,14 +166,14 @@ public class ParseUploader {
                     }
                      */
                     JSONObject object = new JSONObject();
-                    object.put("date",networkObject.timestamp);
+                    object.put("date",networkObject.getTimestamp());
                     JSONArray valueArray = new JSONArray();
-                    valueArray.put(networkObject.networkType);
+                    valueArray.put(networkObject.getNetworkType());
                     object.put("value",valueArray);
                     values.put(object);
                 }
                 po.put("values",values);
-                netTimeseries.uploaded = true;
+                netTimeseries.setUploaded(true);
                 oba.updateSensorTimeseries(netTimeseries);
                 po.saveInBackground(updateSensorTimeseriesUpdated(netTimeseries));
             }
@@ -178,7 +182,7 @@ public class ParseUploader {
                 ActivityTimeseries actTimeseries = (ActivityTimeseries) st;
                 ParseObject po = new ParseObject("SensingUpload");
                 po.put("sensorid","mobilesensing.ganesha.activity");
-                po.put("basetime",actTimeseries.timestamp_day);
+                po.put("basetime",actTimeseries.getTimestamp_day());
                 po.put("parent", new JSONArray());
                 po.put("meta", new JSONObject());
                 po.put("name", "activity");
@@ -194,7 +198,7 @@ public class ParseUploader {
                 po.put("valueTypes",ja );
                 po.put("user", ParseUser.getCurrentUser().getUsername());
                 JSONArray values = new JSONArray();
-                for(ActivityObject actObject: actTimeseries.values){
+                for(ActivityObject actObject: actTimeseries.getValues()){
                     /*
                      {
                     "date" : 12345678
@@ -203,7 +207,7 @@ public class ParseUploader {
                     }
                      */
                     JSONObject object = new JSONObject();
-                    object.put("date",actObject.timestamp);
+                    object.put("date",actObject.getTimestamp());
                     JSONArray valueArray = new JSONArray();
                     valueArray.put(actObject.activity);
                     valueArray.put(actObject.probability);
@@ -211,7 +215,7 @@ public class ParseUploader {
                     values.put(object);
                 }
                 po.put("values",values);
-                actTimeseries.uploaded = true;
+                actTimeseries.setUploaded(true);
                 oba.updateSensorTimeseries(actTimeseries);
                 po.saveInBackground(updateSensorTimeseriesUpdated(actTimeseries));
             }
@@ -220,7 +224,7 @@ public class ParseUploader {
                 RunningApplicationTimeseries rapTimeseries = (RunningApplicationTimeseries) st;
                 ParseObject po = new ParseObject("SensingUpload");
                 po.put("sensorid","mobilesensing.ganesha.app");
-                po.put("basetime",rapTimeseries.timestamp_day);
+                po.put("basetime",rapTimeseries.getTimestamp_day());
                 po.put("parent", new JSONArray());
                 po.put("meta", new JSONObject());
                 po.put("name", "app");
@@ -233,7 +237,7 @@ public class ParseUploader {
                 po.put("valueTypes",ja );
                 po.put("user", ParseUser.getCurrentUser().getUsername());
                 JSONArray values = new JSONArray();
-                for(RunningApplicationObject rapObject: rapTimeseries.values){
+                for(RunningApplicationObject rapObject: rapTimeseries.getValues()){
                     /*
                      {
                     "date" : 12345678
@@ -242,14 +246,14 @@ public class ParseUploader {
                     }
                      */
                     JSONObject object = new JSONObject();
-                    object.put("date",rapObject.timestamp);
+                    object.put("date",rapObject.getTimestamp());
                     JSONArray valueArray = new JSONArray();
                     valueArray.put(rapObject.applicationName);
                     object.put("value",valueArray);
                     values.put(object);
                 }
                 po.put("values",values);
-                rapTimeseries.uploaded = true;
+                rapTimeseries.setUploaded(true);
                 oba.updateSensorTimeseries(rapTimeseries);
                 po.saveInBackground(updateSensorTimeseriesUpdated(rapTimeseries));
             }
@@ -258,7 +262,7 @@ public class ParseUploader {
                 ScreenOnTimeseries scrTimeseries = (ScreenOnTimeseries) st;
                 ParseObject po = new ParseObject("SensingUpload");
                 po.put("sensorid","mobilesensing.ganesha.screen");
-                po.put("basetime",scrTimeseries.timestamp_day);
+                po.put("basetime",scrTimeseries.getTimestamp_day());
                 po.put("parent", new JSONArray());
                 po.put("meta", new JSONObject());
                 po.put("name", "screen");
@@ -271,7 +275,7 @@ public class ParseUploader {
                 po.put("valueTypes",ja );
                 po.put("user", ParseUser.getCurrentUser().getUsername());
                 JSONArray values = new JSONArray();
-                for(ScreenOnObject scrObject: scrTimeseries.values){
+                for(ScreenOnObject scrObject: scrTimeseries.getValues()){
                     /*
                      {
                     "date" : 12345678
@@ -280,14 +284,14 @@ public class ParseUploader {
                     }
                      */
                     JSONObject object = new JSONObject();
-                    object.put("date",scrObject.timestamp);
+                    object.put("date",scrObject.getTimestamp());
                     JSONArray valueArray = new JSONArray();
-                    valueArray.put(scrObject.screenOn);
+                    valueArray.put(scrObject.getScreenOn());
                     object.put("value",valueArray);
                     values.put(object);
                 }
                 po.put("values",values);
-                scrTimeseries.uploaded = true;
+                scrTimeseries.setUploaded(true);
                 oba.updateSensorTimeseries(scrTimeseries);
                 po.saveInBackground(updateSensorTimeseriesUpdated(scrTimeseries));
             }
@@ -296,7 +300,7 @@ public class ParseUploader {
                 TrackTimeseries trackTimeseries = (TrackTimeseries) st;
                 ParseObject po = new ParseObject("SensingUpload");
                 po.put("sensorid","mobilesensing.ganesha.track");
-                po.put("basetime",trackTimeseries.timestamp_day);
+                po.put("basetime",trackTimeseries.getTimestamp_day());
                 po.put("parent", new JSONArray());
                 po.put("meta", new JSONObject());
                 po.put("name", "track");
@@ -312,7 +316,7 @@ public class ParseUploader {
                 po.put("valueTypes",ja );
                 po.put("user", ParseUser.getCurrentUser().getUsername());
                 JSONArray values = new JSONArray();
-                for(TrackObject trackObject: trackTimeseries.values){
+                for(TrackObject trackObject: trackTimeseries.getValues()){
                     /*
                      {
                     "date" : 12345678
@@ -321,63 +325,17 @@ public class ParseUploader {
                     }
                      */
                     JSONObject object = new JSONObject();
-                    object.put("date",trackObject.timestamp);
+                    object.put("date",trackObject.getTimestamp());
                     JSONArray valueArray = new JSONArray();
-                    valueArray.put(trackObject.timestamp);
-                    valueArray.put(trackObject.endTimestamp);
+                    valueArray.put(trackObject.getStartTimestamp());
+                    valueArray.put(trackObject.getEndTimestamp());
                     object.put("value",valueArray);
                     values.put(object);
                 }
                 po.put("values",values);
-                trackTimeseries.uploaded = true;
+                trackTimeseries.setUploaded(true);
                 oba.updateSensorTimeseries(trackTimeseries);
                 po.saveInBackground(updateSensorTimeseriesUpdated(trackTimeseries));
-            }
-            //GActivityTimeseries
-            if (st.getClass().getName().equals(GActivityTimeseries.class.getName())) {
-                GActivityTimeseries gActTimeseries = (GActivityTimeseries) st;
-                ParseObject po = new ParseObject("SensingUpload");
-                po.put("sensorid","mobilesensing.ganesha.gActivityTransition");
-                po.put("basetime",gActTimeseries.timestamp_day);
-                po.put("parent", new JSONArray());
-                po.put("meta", new JSONObject());
-                po.put("name", "gActivityTransition");
-                po.put("icon", "Icons/smarthome/default_18.png");
-                JSONArray ja = new JSONArray();
-                JSONObject jo = new JSONObject();
-                jo.put("name", "StartTimestamp");
-                jo.put("type","Number");
-                ja.put(jo);
-                jo.put("name", "EndTimestamp");
-                jo.put("type","Number");
-                ja.put(jo);
-                jo.put("name", "ActivityName");
-                jo.put("type","String");
-                ja.put(jo);
-                po.put("valueTypes",ja );
-                po.put("user", ParseUser.getCurrentUser().getUsername());
-                JSONArray values = new JSONArray();
-                for(GActivityObject gActObject: gActTimeseries.values){
-                    /*
-                     {
-                    "date" : 12345678
-                    "value" : [WIFI
-                    ]
-                    }
-                     */
-                    JSONObject object = new JSONObject();
-                    object.put("date",gActObject.timestamp);
-                    JSONArray valueArray = new JSONArray();
-                    valueArray.put(gActObject.timestamp);
-                    valueArray.put(gActObject.endtime);
-                    valueArray.put(gActObject.activity);
-                    object.put("value",valueArray);
-                    values.put(object);
-                }
-                po.put("values",values);
-                gActTimeseries.uploaded = true;
-                oba.updateSensorTimeseries(gActTimeseries);
-                po.saveInBackground(updateSensorTimeseriesUpdated(gActTimeseries));
             }
         }catch(Exception e){
             undoUpdated(st);
@@ -399,7 +357,42 @@ public class ParseUploader {
     }
     public void undoUpdated(SensorTimeseries st){
         ObjectBoxAdapter oba = new ObjectBoxAdapter();
-        st.uploaded = false;
-        oba.updateSensorTimeseries(st);
+
+        //GLocation
+        if (st.getClass().getName().equals(GLocationTimeseries.class.getName())) {
+            GLocationTimeseries glt = (GLocationTimeseries) st;
+            glt.setUploaded(false);
+            oba.updateSensorTimeseries(glt);
+        }
+        //Network
+        if (st.getClass().getName().equals(NetworkTimeseries.class.getName())) {
+            NetworkTimeseries nts = (NetworkTimeseries) st;
+            nts.setUploaded(false);
+            oba.updateSensorTimeseries(nts);
+        }
+        //Activity
+        if (st.getClass().getName().equals(ActivityTimeseries.class.getName())) {
+            ActivityTimeseries act = (ActivityTimeseries) st;
+            act.setUploaded(false);
+            oba.updateSensorTimeseries(act);
+        }
+        //RunningApplication
+        if (st.getClass().getName().equals(RunningApplicationTimeseries.class.getName())) {
+            RunningApplicationTimeseries rap = (RunningApplicationTimeseries) st;
+            rap.setUploaded(false);
+            oba.updateSensorTimeseries(rap);
+        }
+        //ScreenOn
+        if (st.getClass().getName().equals(ScreenOnTimeseries.class.getName())) {
+            ScreenOnTimeseries scr = (ScreenOnTimeseries) st;
+            scr.setUploaded(false);
+            oba.updateSensorTimeseries(scr);
+        }
+        //Track
+        if (st.getClass().getName().equals(TrackTimeseries.class.getName())) {
+            TrackTimeseries track = (TrackTimeseries) st;
+            track.setUploaded(false);
+            oba.updateSensorTimeseries(track);
+        }
     }
 }

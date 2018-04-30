@@ -1,6 +1,5 @@
 package de.dennis.mobilesensing_module.mobilesensing.Sensors.GoogleLocation;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -49,6 +48,8 @@ public class GLocationListener implements GoogleApiClient.ConnectionCallbacks, G
 
     public GLocationListener(Context c, long interval, long fastestInterval)
     {
+
+
         mContext = c;
         try {
             buildGoogleApiClient();
@@ -84,7 +85,6 @@ public class GLocationListener implements GoogleApiClient.ConnectionCallbacks, G
         location = LocationServices.FusedLocationApi.getLastLocation(mGAC);
 
     }
-    @SuppressLint("RestrictedApi")
     protected void createLocationRequest(long interval, long fastestInterval) {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(interval);

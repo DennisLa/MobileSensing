@@ -13,17 +13,43 @@ import io.objectbox.relation.ToOne;
 public class ActivityObject extends SensorObject {
     @Id
     public long id;
+    @Index
+    public long timestamp;
     public String activity;
     public int probability;
 
-    public ToOne<ActivityTimeseries> sensorTimeseries;
+    public ToOne<ActivityTimeseries> activityTimeseries;
 
     public ActivityObject(long timestamp, String activity, int probability) {
-        super(timestamp, ActivityTimeseries.class.getName());
+        this.timestamp = timestamp;
         this.activity = activity;
         this.probability = probability;
     }
 
     public ActivityObject() {
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getActivity() {
+        return activity;
+    }
+
+    public void setActivity(String activity) {
+        activity = activity;
+    }
+
+    public ToOne<ActivityTimeseries> getActivityTimeseries() {
+        return activityTimeseries;
+    }
+
+    public void setActivityTimeseries(ToOne<ActivityTimeseries> activityTimeseries) {
+        this.activityTimeseries = activityTimeseries;
     }
 }
