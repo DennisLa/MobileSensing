@@ -33,7 +33,7 @@ public class TrackEventReciever {
     public void onMessageEvent(TrackEndEvent event) {
         TrackObject trackObject = (TrackObject) event.data;
         GregorianCalendar g = new GregorianCalendar();
-        g.setTimeInMillis(trackObject.getTimestamp());
+        g.setTimeInMillis(trackObject.timestamp);
         NotificationCompat.Builder mBuilder =   new NotificationCompat.Builder(Module.getContext())
                 // notification icon.setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle("Neue Fahrten!") // title for notification

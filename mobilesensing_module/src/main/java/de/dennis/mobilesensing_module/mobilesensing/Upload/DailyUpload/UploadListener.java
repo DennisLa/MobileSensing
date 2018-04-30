@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -13,12 +14,15 @@ import java.util.List;
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.UploadEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Activity.ActivityTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GActivityTransition.GActivityTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.GLocation.GLocationTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Network.NetworkTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.RunningApplication.RunningApplicationTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.ScreenOn.ScreenOnTimeseries;
+import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Track.TrackTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBoxAdapter;
+import de.dennis.mobilesensing_module.R;
 
 /**
  * Created by Dennis on 07.04.2017.
@@ -42,6 +46,19 @@ public class UploadListener extends BroadcastReceiver {
         }
         if(upload){
             ObjectBoxAdapter oba = new ObjectBoxAdapter();
+            Resources res = Module.getContext().getResources();
+            String[] arr = res.getStringArray(R.array.sensor_names);
+            for(int i = 0; i < arr.length; i++){
+                List<SensorTimeseries> st = oba.getSensorTimeseriesNonUpdated(arr[i]);
+                for(SensorTimeseries s: st){
+                    EventBus.getDefault().post(new UploadEvent(s));
+                }
+            }
+            /*for(getSt)
+            List<GActivityTimeseries> gActivityTimeseries = oba.getGActivityTimeseriesNonUpdated();
+            for(GActivityTimeseries act: gActivityTimeseries){
+                EventBus.getDefault().post(new UploadEvent(act));
+            }
             List<ActivityTimeseries> activityTimeseries = oba.getActivityTimeseriesNonUpdated();
             for(ActivityTimeseries act: activityTimeseries){
                 EventBus.getDefault().post(new UploadEvent(act));
@@ -65,7 +82,7 @@ public class UploadListener extends BroadcastReceiver {
             List<TrackTimeseries> trackTimeseries = oba.getTrackTimeseriesNonUpdated();
             for(TrackTimeseries track: trackTimeseries){
                 EventBus.getDefault().post(new UploadEvent(track));
-            }
+            }*/
         }
     }
 }

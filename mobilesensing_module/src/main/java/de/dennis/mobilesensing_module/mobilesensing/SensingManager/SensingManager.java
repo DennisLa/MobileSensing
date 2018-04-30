@@ -1,20 +1,14 @@
 package de.dennis.mobilesensing_module.mobilesensing.SensingManager;
 
 import android.Manifest;
-import android.app.Application;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
-import android.app.Activity;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 
 import com.intel.context.Sensing;
 import com.intel.context.error.ContextError;
@@ -24,16 +18,14 @@ import com.intel.context.option.ContinuousFlag;
 import com.intel.context.option.activity.ActivityOptionBuilder;
 import com.intel.context.option.activity.Mode;
 import com.intel.context.option.activity.ReportType;
-import com.intel.context.option.deviceposition.DevicePositionOptionBuilder;
 import com.intel.context.sensing.ContextTypeListener;
 import com.intel.context.sensing.InitCallback;
 
 import org.greenrobot.eventbus.EventBus;
 
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.MissingPermissionsEvent;
-import de.dennis.mobilesensing_module.mobilesensing.EventBus.SensorDataEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
-import de.dennis.mobilesensing_module.mobilesensing.PermissionActivity;
+import de.dennis.mobilesensing_module.mobilesensing.Sensors.GoogleActivity.GActivityRecognition;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.GoogleLocation.GLocationListener;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.IntelSensingSDK.ActivityListener;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.IntelSensingSDK.NetworkListener;
@@ -42,16 +34,10 @@ import de.dennis.mobilesensing_module.mobilesensing.Sensors.OtherSensors.Cluster
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.OtherSensors.LiveTrackRecognition.LiveTrackRecognitionListener;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.OtherSensors.RunningApplicationService.RunningApplicationService;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.OtherSensors.ScreenOnService.ScreenOnService;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Cluster.ClusterObject;
-import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBoxAdapter;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.StorageEventListener;
-import de.dennis.mobilesensing_module.mobilesensing.Upload.Delete.DeleteListener;
 import de.dennis.mobilesensing_module.mobilesensing.Upload.Delete.DeleteService;
-import de.ms.ptenabler.locationtools.ClusterService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
@@ -70,6 +56,7 @@ public class SensingManager {
     private ContextTypeListener mCallListener;
     private GLocationListener mGLocationListener;
     private ScreenOnService mScreenOnService;
+    private GActivityRecognition mGActivity;
     private LiveTrackRecognitionListener mLiveTrackRecognitionListener;
     private boolean locationStarted=false;
     private StorageEventListener sel;
@@ -100,6 +87,9 @@ public class SensingManager {
         if (prefs.getBoolean(SensorNames.GPS.name(),false)) {
             permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
             openActivity = true;
+        }
+        if (prefs.getBoolean(SensorNames.GActivity.name(),false)) {
+            permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
         }
         if (prefs.getBoolean(SensorNames.Network.name(),false)) {
             permissionList.add(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -134,6 +124,17 @@ public class SensingManager {
         SharedPreferences prefs = Module.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
         try {
             Bundle settings;
+            //enable Google Activity Sensing
+            if(prefs.getBoolean(SensorNames.GActivity.name(),false)&& checkSelfPermission(Module.getContext(),Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            {
+                mGActivity = new GActivityRecognition();
+                mGActivity.requestActivityTransitionUpdates(Module.getContext());
+                mGActivity.requestActivityUpdates(Module.getContext());
+                // mSensing.enableSensing(ContextType.LOCATION, null);
+                Log.d(TAG,"GActivity enabled");
+            }else{
+                mGActivity.stopService();
+            }
             //enable Location Sensing
             if(prefs.getBoolean(SensorNames.GPS.name(),false)&& checkSelfPermission(Module.getContext(),Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
             {
@@ -301,6 +302,6 @@ public class SensingManager {
     }
 
     public enum SensorNames{
-        GPS,Network,Call,Apps,Activity,ScreenOn,WLANUpload,Track,Cluster
+        GPS,Network,Call,Apps,Activity,ScreenOn,WLANUpload,Track,Cluster,GActivity
     }
 }

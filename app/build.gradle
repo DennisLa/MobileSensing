@@ -46,6 +46,6 @@ dependencies {
     compile 'com.jaredrummler:android-processes:1.0.9'
     compile 'com.android.support:design:23.4.0'
     //compile 'com.baasbox:baasbox-android:0.9.0'
-    compile 'com.google.android.gms:play-services-location:11.0.4'
+    //compile 'com.google.android.gms:play-services-location:11.0.4'
     compile project(path: ':mobilesensing_module')
 }
