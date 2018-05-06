@@ -428,10 +428,70 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "16:6857991997682356408",
+      "lastPropertyId": "5:2095849991070316606",
+      "name": "GActivityObject",
+      "properties": [
+        {
+          "id": "1:2158995571213726967",
+          "name": "id"
+        },
+        {
+          "id": "2:1222652570160107109",
+          "indexId": "27:7065377235522662590",
+          "name": "timestamp"
+        },
+        {
+          "id": "3:7729102955849016389",
+          "name": "endtime"
+        },
+        {
+          "id": "4:1514779493616239981",
+          "name": "activity"
+        },
+        {
+          "id": "5:2095849991070316606",
+          "indexId": "28:2261259579194347675",
+          "name": "gActivityTimeseriesId"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "17:4037092707828161395",
+      "lastPropertyId": "5:2580001975470659071",
+      "name": "GActivityTimeseries",
+      "properties": [
+        {
+          "id": "1:101990784084463751",
+          "name": "id"
+        },
+        {
+          "id": "2:1983516008334892167",
+          "indexId": "29:6382700201673727845",
+          "name": "timestamp"
+        },
+        {
+          "id": "3:8857744631552371542",
+          "indexId": "30:4250535475811342630",
+          "name": "timestamp_day"
+        },
+        {
+          "id": "4:7805638101156819684",
+          "name": "uploaded"
+        },
+        {
+          "id": "5:2580001975470659071",
+          "name": "current"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "15:1375198690120457570",
-  "lastIndexId": "26:4931799892550450410",
+  "lastEntityId": "17:4037092707828161395",
+  "lastIndexId": "30:4250535475811342630",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 4,

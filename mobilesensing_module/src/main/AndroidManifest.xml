@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <!-- Required for Intel Architecture -->
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="intel.aware.permission.ACCESS_AWARESERVICE" />
@@ -30,6 +31,14 @@
         <receiver android:name="de.dennis.mobilesensing_module.mobilesensing.Sensors.OtherSensors.ScreenOnService.ScreenOnListener"/>
         <receiver android:name="de.dennis.mobilesensing_module.mobilesensing.Sensors.GoogleActivity.GActivityListener"/>
         <receiver android:name="de.dennis.mobilesensing_module.mobilesensing.Sensors.GoogleActivity.GActivityTransitionListener"/>
+
+        <receiver
+            android:name=".mobilesensing.BootReciever"
+            android:label="BootReciever">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
         <service
             android:name="de.ms.ptenabler.locationtools.ClusterService"
