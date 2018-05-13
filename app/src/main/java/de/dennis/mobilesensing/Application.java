@@ -1,5 +1,7 @@
 package de.dennis.mobilesensing;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
@@ -8,6 +10,7 @@ import com.parse.ParseUser;
 
 import org.greenrobot.eventbus.EventBus;
 
+import de.dennis.mobilesensing.Notification.NotificationListener;
 import de.dennis.mobilesensing.UI.MissingPermissionListener;
 import de.dennis.mobilesensing.Uploader.ParseUploader;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
@@ -22,6 +25,7 @@ public class Application extends MultiDexApplication {
     private static SensingManager sensMang;
     private static UploadManager uplMang;
     private static ParseUploader uploader;
+    private static NotificationListener notificationListener;
 
     @Override
     public void onCreate() {
@@ -63,6 +67,7 @@ public class Application extends MultiDexApplication {
                 sensMang.startSensing();
                 uplMang.setDailyUpload(context);
                 uploader = new ParseUploader();
+                notificationListener = new NotificationListener();
             }
         }
     }
