@@ -55,6 +55,7 @@ public class NotificationListener {
         mBuilder.setPriority(Notification.PRIORITY_MAX);
 
 
+
         NotificationManager mNotificationManager =
                 (NotificationManager) Application.getContext().getSystemService(NOTIFICATION_SERVICE);
 

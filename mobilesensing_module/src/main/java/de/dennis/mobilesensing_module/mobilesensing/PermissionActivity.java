@@ -41,8 +41,6 @@ public class PermissionActivity extends AppCompatActivity {
                 permissions[i] = permissionsList.get(i);
             }
 
-            //TODO insert permissionString from Sensingmanager
-
             boolean flag = false;
             for (int i = 0; i < permissions.length; i++) {
 

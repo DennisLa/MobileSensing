@@ -22,8 +22,6 @@ public class TrackObject extends SensorObject {
 
     public boolean edited;
 
-    //TODO Rating einfügen
-
     public ToOne<TrackTimeseries> trackTimeseries;
     /** Used to resolve relations */
     @Internal

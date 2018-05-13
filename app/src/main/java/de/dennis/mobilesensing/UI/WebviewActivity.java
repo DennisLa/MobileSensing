@@ -82,7 +82,6 @@ public class WebviewActivity extends AppCompatActivity
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
         mWebView.setWebViewClient(new WebViewClient());
-        //TODO WEBVIEW
         mWebView.loadUrl("https://myopendash.de/");
         //mWebView.loadUrl("https://google.de/");
 
@@ -142,7 +141,6 @@ public class WebviewActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        //TODO
         if (id == R.id.trackRating) {
             Intent i = new Intent(Application.getContext(), TrackRatingActivity.class);
             startActivity(i);

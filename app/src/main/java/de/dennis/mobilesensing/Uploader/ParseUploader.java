@@ -47,7 +47,8 @@ public class ParseUploader {
     }
 
     public void uploadToParse(SensorTimeseries st)
-        {
+    {
+        //TODO When new Sensor -> Add Sensor here to Upload Sensor in wanted format
         /*
             {
           "id": "owcore.test.energy",
@@ -73,7 +74,8 @@ public class ParseUploader {
                 }
           ]
             }
-        */  try {
+        */
+        try {
             ObjectBoxAdapter oba = new ObjectBoxAdapter();
             //GLocation
             if (st.getClass().getName().equals(GLocationTimeseries.class.getName())) {
@@ -391,7 +393,6 @@ public class ParseUploader {
                 if(e == null){
                    // da.deleteTimeseries(st.getTimestamp_day(),st.getSensor_info().getSensor_name());
                 }else{
-                    //TODO
                     undoUpdated(st);
                 }
             }

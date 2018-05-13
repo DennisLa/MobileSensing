@@ -35,6 +35,7 @@ public class ObjectBoxAdapter {
     final String TAG = "ObjectBoxAdapter";
 
     public void saveSensorObject(SensorObject so){
+        //TODO When new Sensor -> Add Sensor here
         Log.d("SAVESENSOROBJECT","New Object: "+so.getClass().getSimpleName()+ " Time: "+ new Date().toGMTString());
         //GActivity
         if(so.getClass().getName().equals(GActivityObject.class.getName())){
@@ -221,6 +222,7 @@ public class ObjectBoxAdapter {
     }
 
     public void deleteSensorTimeseries(SensorTimeseries st){
+        //TODO When new Sensor -> Add Sensor here
         //GActivity
         if(st.getClass().getName().equals(GActivityTimeseries.class.getName())){
             Box timeseriesBox = Module.getBoxStore().boxFor(GActivityTimeseries.class);
@@ -530,6 +532,7 @@ public class ObjectBoxAdapter {
     }
 
     public void deleteAllSensorTimeseriesOlder(long time) {
+        //TODO When new Sensor -> Add Sensor here
         //GLocation
         Box gLocBox = Module.getBoxStore().boxFor(GLocationTimeseries.class);
         List<GLocationTimeseries> gLocList = gLocBox.getAll();

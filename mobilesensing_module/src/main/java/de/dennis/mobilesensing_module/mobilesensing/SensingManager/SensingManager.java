@@ -120,6 +120,7 @@ public class SensingManager {
     }
     public void startSensing()
     {
+        //TODO When new Sensor -> Add Sensor here to Start Sensor AND Add Permission Check of Sensor
         checkPermissions();
         SharedPreferences prefs = Module.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
         try {
@@ -302,6 +303,7 @@ public class SensingManager {
     }
 
     public enum SensorNames{
+        //TODO When new Sensor -> Add Sensor Name Here to be Able to Start Sensor
         GPS,Network,Call,Apps,Activity,ScreenOn,WLANUpload,Track,Cluster,GActivity
     }
 }

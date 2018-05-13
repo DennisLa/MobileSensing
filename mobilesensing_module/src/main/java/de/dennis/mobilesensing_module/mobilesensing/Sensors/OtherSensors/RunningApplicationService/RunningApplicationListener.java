@@ -38,7 +38,7 @@ public class RunningApplicationListener extends BroadcastReceiver {
                 String runningApp = "";
                 if(!prefs.getString("RunningApp","").equals(runningApp))
                 {
-                    //TODO StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(runningApp, d.getTime()));
+
                     RunningApplicationObject rap = new RunningApplicationObject(d.getTime(),runningApp);
                     EventBus.getDefault().post(new SensorDataEvent(rap));
                     SharedPreferences.Editor editor = prefs.edit();
@@ -52,7 +52,6 @@ public class RunningApplicationListener extends BroadcastReceiver {
                 String runningApp = top;
                 if(!prefs.getString("RunningApp","").equals(runningApp))
                 {
-                    //TODO StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(top,x.getTime()));
                     RunningApplicationObject rap = new RunningApplicationObject(x.getTime(),runningApp);
                     EventBus.getDefault().post(new SensorDataEvent(rap));
                     SharedPreferences.Editor editor = prefs.edit();
@@ -71,7 +70,6 @@ public class RunningApplicationListener extends BroadcastReceiver {
                 String runningApp = "";
                 if(!prefs.getString("RunningApp","").equals(runningApp))
                 {
-                    //TODO StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(runningApp, d.getTime()));
                     RunningApplicationObject rap = new RunningApplicationObject(d.getTime(),runningApp);
                     EventBus.getDefault().post(new SensorDataEvent(rap));
                     SharedPreferences.Editor editor = prefs.edit();
@@ -88,7 +86,6 @@ public class RunningApplicationListener extends BroadcastReceiver {
                     String runningApp = processes.get(i).getPackageName();
                     if(!prefs.getString("RunningApp","").equals(runningApp))
                     {
-                        //TODO StorageHelper.openDBConnection().save2RunningAppication(new RunningApplication(processes.get(i).getPackageName(), x.getTime()));
                         RunningApplicationObject rap = new RunningApplicationObject(x.getTime(),processes.get(i).getPackageName());
                         EventBus.getDefault().post(new SensorDataEvent(rap));
                         SharedPreferences.Editor editor = prefs.edit();

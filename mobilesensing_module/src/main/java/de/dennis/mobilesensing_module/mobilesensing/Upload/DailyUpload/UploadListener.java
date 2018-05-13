@@ -42,6 +42,7 @@ public class UploadListener extends BroadcastReceiver {
             upload = true;
         }
         if(upload){
+            //TODO When new Sensor -> Add Sensor here to send Upload
             ObjectBoxAdapter oba = new ObjectBoxAdapter();
             List<GActivityTimeseries> gActivityTimeseries = oba.getGActivityTimeseriesNonUpdated();
             for(GActivityTimeseries act: gActivityTimeseries){

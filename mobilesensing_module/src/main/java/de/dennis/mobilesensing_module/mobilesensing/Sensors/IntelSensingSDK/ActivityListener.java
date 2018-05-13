@@ -118,7 +118,6 @@ public class ActivityListener implements ContextTypeListener {
                 activityFinal =activitiyName;
                 if(!prefs.getString("Activity","").equals(activitiyName))
                 {
-                    //TODO
                     editor.putString("Activity", activitiyName);
                 }
                 editor.putLong("Activity_Time",state.getTimestamp());

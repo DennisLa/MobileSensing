@@ -76,8 +76,6 @@ public class TrackRatingActivity extends AppCompatActivity implements OnMapReady
     protected void onStart() {
         super.onStart();
         ObjectBoxAdapter oba = new ObjectBoxAdapter();
-        //TODO trackList = getTracksNotEdited();
-        //TODO Load first Track
     }
 
     @Override

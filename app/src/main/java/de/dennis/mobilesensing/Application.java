@@ -32,7 +32,6 @@ public class Application extends MultiDexApplication {
         super.onCreate();
         context = getApplicationContext();
         MissingPermissionListener mpl = new MissingPermissionListener();
-        //TODO
         Parse.initialize(new Parse.Configuration.Builder(this)
                 /*.applicationId("SensingApp")
                 .server("http://141.99.12.45:1337/parse/")

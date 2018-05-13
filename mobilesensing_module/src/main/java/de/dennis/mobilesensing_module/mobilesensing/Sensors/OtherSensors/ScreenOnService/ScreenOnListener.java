@@ -30,7 +30,6 @@ public class ScreenOnListener extends BroadcastReceiver{
         if(!prefs.getBoolean("ScreenOn",false)==isScreenOn)
         {
             Log.d("SCREENON_Listener","Screen on: "+isScreenOn);
-            //TODO StorageHelper.openDBConnection().save2ScreenOnHistory(new ScreenOn(d.getTime(),isScreenOn));
             SharedPreferences.Editor editor = prefs.edit();
 
             //new Timeseries *******************************************************************
