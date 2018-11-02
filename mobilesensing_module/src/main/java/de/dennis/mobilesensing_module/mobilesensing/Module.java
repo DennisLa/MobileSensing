@@ -35,12 +35,12 @@ public class Module extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
     }
-    public static void init(Context app_context, String user_Name){
+    public static void init(Context app_context, boolean persist){
         context = app_context;
-        userName = user_Name;
+        //userName = user_Name;
         // ObjectBox
         boxStore = MyObjectBox.builder().androidContext(context).build();
-        sensingManager = new SensingManager();
+        sensingManager = new SensingManager(persist);
         uploadManager = new UploadManager();
 
     }

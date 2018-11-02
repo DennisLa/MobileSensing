@@ -69,7 +69,8 @@ public class SensingManager {
     private SharedPreferences prefs;
 
 
-    public SensingManager() {
+
+    public SensingManager(boolean persist) {
         prefs = Module.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
         //Init Intel SDK
         mSensing = new Sensing(Module.getContext(), new SensingListener());
@@ -77,7 +78,9 @@ public class SensingManager {
         mLiveTrackRecognitionListener = new LiveTrackRecognitionListener();
         mDeleteService = new DeleteService();
         initSensing(false);
-        sel = new StorageEventListener();
+        if(persist){
+            sel = new StorageEventListener();
+        }
     }
     public void checkPermissions(){
         SharedPreferences prefs = Module.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
@@ -134,7 +137,10 @@ public class SensingManager {
                 // mSensing.enableSensing(ContextType.LOCATION, null);
                 Log.d(TAG,"GActivity enabled");
             }else{
-                mGActivity.stopService();
+                if(mGActivity != null){
+                    mGActivity.stopService();
+                }
+                Log.d(TAG,"GActivity disabled");
             }
             //enable Location Sensing
             if(prefs.getBoolean(SensorNames.GPS.name(),false)&& checkSelfPermission(Module.getContext(),Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)

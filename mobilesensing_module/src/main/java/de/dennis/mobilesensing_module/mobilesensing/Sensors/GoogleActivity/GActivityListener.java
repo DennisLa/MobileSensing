@@ -43,7 +43,7 @@ public class GActivityListener extends BroadcastReceiver {
                     break;
             }
             Log.d("Activity Google",actName+" "+result.getMostProbableActivity().getConfidence());
-           ActivityObject act = new ActivityObject(result.getTime(),actName,result.getMostProbableActivity().getConfidence());
+            ActivityObject act = new ActivityObject(result.getTime(),actName,result.getMostProbableActivity().getConfidence());
             EventBus.getDefault().post(new SensorDataEvent(act));
         }
     }
