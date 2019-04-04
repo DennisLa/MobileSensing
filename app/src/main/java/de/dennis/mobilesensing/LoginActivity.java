@@ -45,44 +45,54 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         btnLogin = (Button) findViewById(R.id.btnLogin);
+
+        //minor change -- to be deleted when connected to database later.
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String email = txtEmail.getText().toString();
-                final String password = txtPassword.getText().toString();
-                if(email.equals("") || password.equals(""))
-                {
-                    Toast.makeText(Application.getContext(),"Bitte füllen Sie alle Felder aus!",Toast.LENGTH_LONG);
-                }else{
-                    BaasUser user = BaasUser.withUserName(email)
-                            .setPassword(password);
-                    user.login(new BaasHandler<BaasUser>() {
-                        @Override
-                        public void handle(BaasResult<BaasUser> result) {
-                            if(result.isSuccess()) {
-                                Log.d("LOG", "The user is currently logged in: " + result.value());
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.putString("Username",email);
-                                editor.putString("Password",password);
-                                try {
-                                    editor.putString("Session",result.get().getToken());
-                                    Log.d("LOGIN_TOKEN",result.get().getToken());
-                                } catch (BaasException e) {
-                                    e.printStackTrace();
-                                }
-                                editor.apply();
-                                Intent i = new Intent(Application.getContext(), MainActivity.class);
-                                startActivity(i);
-                                finish();
-                            } else {
-                                Log.e("LOG","Show error",result.error());
-                                Toast.makeText(Application.getContext(),"Email oder Benutzername sind falsch!", Toast.LENGTH_LONG);
-                            }
-                        }
-                    });
-                }
+                Intent i = new Intent(Application.getContext(), MapsActivity.class);
+                startActivity(i);
             }
         });
+//        btnLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                final String email = txtEmail.getText().toString();
+//                final String password = txtPassword.getText().toString();
+//                if(email.equals("") || password.equals(""))
+//                {
+//                    Toast.makeText(Application.getContext(),"Bitte füllen Sie alle Felder aus!",Toast.LENGTH_LONG);
+//                }else{
+//                    BaasUser user = BaasUser.withUserName(email)
+//                            .setPassword(password);
+//                    user.login(new BaasHandler<BaasUser>() {
+//                        @Override
+//                        public void handle(BaasResult<BaasUser> result) {
+//                            if(result.isSuccess()) {
+//                                Log.d("LOG", "The user is currently logged in: " + result.value());
+//                                SharedPreferences.Editor editor = prefs.edit();
+//                                editor.putString("Username",email);
+//                                editor.putString("Password",password);
+//                                try {
+//                                    editor.putString("Session",result.get().getToken());
+//                                    Log.d("LOGIN_TOKEN",result.get().getToken());
+//                                } catch (BaasException e) {
+//                                    e.printStackTrace();
+//                                }
+//                                editor.apply();
+//                                Intent i = new Intent(Application.getContext(), MainActivity.class);
+//                                startActivity(i);
+//                                finish();
+//                            } else {
+//                                Log.e("LOG","Show error",result.error());
+//                                Toast.makeText(Application.getContext(),"Email oder Benutzername sind falsch!", Toast.LENGTH_LONG);
+//                            }
+//                        }
+//                    });
+//                }
+//            }
+//        });
 
     }
 }

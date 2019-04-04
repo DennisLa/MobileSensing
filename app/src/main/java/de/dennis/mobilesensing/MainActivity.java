@@ -41,8 +41,10 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
                 Intent i = new Intent(Application.getContext(), UploadListener.class);
                 sendBroadcast(i);*/
-                List<wLocation> myList =  StorageHelper.openDBConnection().getAllHistoryLocs(0, 1593452902194L, false);
-                Log.d("TEST", myList.get(0).getTimestamp()+"");
+//                List<wLocation> myList =  StorageHelper.openDBConnection().getAllHistoryLocs(0, 1593452902194L, false);
+//                Log.d("TEST", myList.get(0).getTimestamp()+"");
+                Intent i = new Intent(Application.getContext(), MapsActivity.class);
+                startActivity(i);
             }
         });
         btnSettings = (ImageButton) findViewById(R.id.btnSettings);
@@ -73,12 +75,12 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         SharedPreferences prefs = Application.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
         String Session = prefs.getString("Session", null);
-        if(Session == null)
-        {
-            Intent i = new Intent(Application.getContext(), LoginActivity.class);
-            startActivity(i);
-            finish();
-        }
+//        if(Session == null)
+//        {
+//            Intent i = new Intent(Application.getContext(), LoginActivity.class);
+//            startActivity(i);
+//            finish();
+//        }
     }
 
     @Override
