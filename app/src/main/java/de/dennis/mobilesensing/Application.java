@@ -43,14 +43,14 @@ public class Application extends MultiDexApplication {
         Module.init(context, "USERNAME");
         sensMang = Module.getSensingManager();
         sensMang.setSensingSetting(SensingManager.SensorNames.Activity,false);
-        sensMang.setSensingSetting(SensingManager.SensorNames.GPS,true);
-        sensMang.setSensingSetting(SensingManager.SensorNames.WLANUpload,true);
-        sensMang.setSensingSetting(SensingManager.SensorNames.ScreenOn,true);
-        sensMang.setSensingSetting(SensingManager.SensorNames.Apps,true);
+        sensMang.setSensingSetting(SensingManager.SensorNames.GPS,false);
+        sensMang.setSensingSetting(SensingManager.SensorNames.WLANUpload,false);
+        sensMang.setSensingSetting(SensingManager.SensorNames.ScreenOn,false);
+        sensMang.setSensingSetting(SensingManager.SensorNames.Apps,false);
         sensMang.setSensingSetting(SensingManager.SensorNames.Network,true);
-        sensMang.setSensingSetting(SensingManager.SensorNames.Track,true);
-        sensMang.setSensingSetting(SensingManager.SensorNames.Cluster,true);
-        sensMang.setSensingSetting(SensingManager.SensorNames.GActivity,true);
+        sensMang.setSensingSetting(SensingManager.SensorNames.Track,false);
+        sensMang.setSensingSetting(SensingManager.SensorNames.Cluster,false);
+        sensMang.setSensingSetting(SensingManager.SensorNames.GActivity,false);
         uplMang = Module.getUploadManager();
         startSensing();
     }
