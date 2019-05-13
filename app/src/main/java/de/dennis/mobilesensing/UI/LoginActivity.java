@@ -10,6 +10,7 @@ import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,29 +64,36 @@ public class LoginActivity extends AppCompatActivity {
                 final String password = txtPassword.getText().toString();
                 if(email.equals("") || password.equals(""))
                 {
-                    Toast.makeText(Application.getContext(),"Bitte füllen Sie alle Felder aus!",Toast.LENGTH_LONG);
+                    Toast.makeText(Application.getContext(),"Bitte füllen Sie alle Felder aus!",Toast.LENGTH_LONG).show();
                 }else{
+                    //some dumb content for the moment
                     mProgressDialog.show();
-                    ParseUser.logInInBackground(email, password, new LogInCallback() {
-                        public void done(ParseUser user, ParseException e) {
-                            if (user != null) {
-                                // Hooray! The user is logged in.
-                                SharedPreferences.Editor editor = prefs.edit();
-                                editor.putString("Username",email);
-                                editor.putString("Password",password);
-                                editor.putString("Session",user.getSessionToken());
-                                editor.apply();
-                                mProgressDialog.dismiss();
-                                Intent i = new Intent(Application.getContext(), WebviewActivity.class);
-                                startActivity(i);
-                                finish();
-                            } else {
-                                // Signup failed. Look at the ParseException to see what happened.
-                                mProgressDialog.dismiss();
-                                Toast.makeText(Application.getContext(),e.getMessage(), Toast.LENGTH_LONG);
-                            }
-                        }
-                    });
+//                    Intent i = new Intent(Application.getContext(), WebviewActivity.class);
+                    Intent i = new Intent(Application.getContext(), MapsActivity.class);
+                    startActivity(i);
+                    finish();
+                    mProgressDialog.dismiss();
+//                    mProgressDialog.show();
+//                    ParseUser.logInInBackground(email, password, new LogInCallback() {
+//                        public void done(ParseUser user, ParseException e) {
+//                            if (user != null) {
+//                                // Hooray! The user is logged in.
+//                                SharedPreferences.Editor editor = prefs.edit();
+//                                editor.putString("Username",email);
+//                                editor.putString("Password",password);
+//                                editor.putString("Session",user.getSessionToken());
+//                                editor.apply();
+//                                mProgressDialog.dismiss();
+//                                Intent i = new Intent(Application.getContext(), WebviewActivity.class);
+//                                startActivity(i);
+//                                finish();
+//                            } else {
+//                                // Signup failed. Look at the ParseException to see what happened.
+//                                mProgressDialog.dismiss();
+//                                Toast.makeText(Application.getContext(),e.getMessage(), Toast.LENGTH_LONG);
+//                            }
+//                        }
+//                    });
                     //Baas Box Login
                     /*
                     BaasUser user = BaasUser.withUserName(email)

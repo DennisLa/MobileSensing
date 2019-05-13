@@ -6,6 +6,7 @@ import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
 import com.parse.Parse;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,10 +37,16 @@ public class Application extends MultiDexApplication {
                 /*.applicationId("SensingApp")
                 .server("http://141.99.12.45:1337/parse/")
                 .build()*/
-                .applicationId("1234567890")
+                .applicationId("123456789")
                 .server("http://transport.wineme.fb5.uni-siegen.de/parse")
+//                .server("https://parseapi.back4app.com")
                 .build()
         );
+        ParseObject gameScore = new ParseObject("GameScore");
+        gameScore.put("score", 1337);
+        gameScore.put("playerName", "Sean Plott");
+        gameScore.put("cheatMode", false);
+        gameScore.saveInBackground();
         Module.init(context, "USERNAME");
         sensMang = Module.getSensingManager();
         sensMang.setSensingSetting(SensingManager.SensorNames.Activity,false);

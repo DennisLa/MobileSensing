@@ -12,6 +12,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Einstellungen</string>
+    <string name="menu_maps">Maps</string>
+    <string name="menu_data">Data</string>
+    <string name="menu_chats">Chats</string>
 
     <string-array name="navbar">
         <item>Fahrten bewerten</item>
@@ -20,5 +23,8 @@
     </string-array>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_chats">ChatsActivity</string>
+    <string name="title_activity_data">DataActivity</string>
 
 </resources>

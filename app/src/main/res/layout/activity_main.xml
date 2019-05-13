@@ -1,9 +1,20 @@
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0099cc"
     tools:context="de.dennis.mobilesensing.UI.MainActivity">
+
+    <android.support.design.widget.BottomNavigationView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/bottomNavView_Bar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom"
+        android:background="@color/white"
+        app:menu="@menu/my_navigation_items" />
 
     <TextView
         android:layout_width="164dp"
@@ -36,12 +47,14 @@
             android:layout_toStartOf="@+id/btnSettings" />
 
         <Button
+            android:id="@+id/btnTest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Test"
-            android:id="@+id/btnTest"
+            android:layout_alignStart="@+id/btnLogout"
             android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/btnLogout" />
+            android:layout_marginStart="4dp"
+            android:layout_marginBottom="103dp"
+            android:text="Test" />
 
     </RelativeLayout>
 </FrameLayout>

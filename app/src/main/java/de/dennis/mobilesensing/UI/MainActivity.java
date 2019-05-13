@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -38,6 +41,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.checkPermissions();
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Intent i;
+                switch (item.getItemId()) {
+                    case R.id.menu_maps:
+                        i = new Intent(MainActivity.this, MapsActivity.class);
+                        MainActivity.this.startActivity(i);
+                        break;
+                    case R.id.menu_data:
+                        i = new Intent(MainActivity.this, RegisterActivity.class);
+                        MainActivity.this.startActivity(i);
+                        break;
+                    case R.id.menu_chats:
+                        i = new Intent(MainActivity.this, LoginActivity.class);
+                        MainActivity.this.startActivity(i);
+                        break;
+                }
+                return true;
+            }
+        });
         btnTest = (Button) findViewById(R.id.btnTest);
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override

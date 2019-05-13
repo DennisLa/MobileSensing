@@ -51,8 +51,6 @@ public class RegisterActivity extends AppCompatActivity {
         txtPasswordRepeat = (TextView) findViewById(R.id.txtPasswordRepeat);
         //txtSurname
         txtSurname = (TextView) findViewById(R.id.txtSurname);
-        //txtName
-        txtName = (TextView) findViewById(R.id.txtName);
         //txtDate
         txtDate = (TextView) findViewById(R.id.txtBirthdate);
         //txtGender
