@@ -33,18 +33,26 @@ public class Application extends MultiDexApplication {
         super.onCreate();
         context = getApplicationContext();
         MissingPermissionListener mpl = new MissingPermissionListener();
-        Parse.initialize(new Parse.Configuration.Builder(this)
-                /*.applicationId("SensingApp")
-                .server("http://141.99.12.45:1337/parse/")
-                .build()*/
-                .applicationId("123456789")
-                .server("http://transport.wineme.fb5.uni-siegen.de/parse")
+//        Parse.initialize(new Parse.Configuration.Builder(this)
+//                /*.applicationId("SensingApp")
+//                .server("http://141.99.12.45:1337/parse/")
+//                .build()*/
+//                .applicationId("123456789")
+//                .server("http://transport.wineme.fb5.uni-siegen.de/parse")
 //                .server("https://parseapi.back4app.com")
+//                .build()
+//        );
+
+        Parse.initialize(new Parse.Configuration.Builder(this)
+                .applicationId("yZaq7fXs1LeiWRIg92FOEV9J9eUSEAQismJCT0Sd")
+                .clientKey("OSxhE2jTKgaG779sHHB3nRCg3BUk5Dn7Wi8ko0hn")
+                .server("https://parseapi.back4app.com")
                 .build()
         );
+
         ParseObject gameScore = new ParseObject("GameScore");
-        gameScore.put("score", 1337);
-        gameScore.put("playerName", "Sean Plott");
+        gameScore.put("score", 17);
+        gameScore.put("playerName", "Saja Plott");
         gameScore.put("cheatMode", false);
         gameScore.saveInBackground();
         Module.init(context, "USERNAME");
