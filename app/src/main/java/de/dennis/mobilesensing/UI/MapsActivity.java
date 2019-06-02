@@ -41,12 +41,15 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 import com.parse.ParseObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.dennis.mobilesensing.R;
+import de.dennis.mobilesensing.models.ClusterMarker;
+import de.dennis.mobilesensing.util.ClusterManagerRenderer;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
@@ -64,6 +67,12 @@ public class MapsActivity extends FragmentActivity implements
     private LocationManager locationManager;
     private LocationListener locationListener;
     List <Marker> markerList;
+    private ClusterManager<ClusterMarker> mClusterManager;
+    private ClusterManagerRenderer mClusterManagerRenderer;
+    private ArrayList<ClusterMarker> mClusterMarkers = new ArrayList<>();
+    private ArrayList<de.dennis.mobilesensing.models.Location> locationsList = new ArrayList<>();
+    //change this to locations in database
+    private static final String TAG = "MapsActivity";
 
 
     @Override
@@ -74,6 +83,7 @@ public class MapsActivity extends FragmentActivity implements
 //        gameScore.put("password", "1337");
 //        gameScore.put("email", "saja@gmail.com");
 //        gameScore.saveInBackground();
+
         FloatingActionButton fab = findViewById(R.id.add_new_location);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,36 +138,28 @@ public class MapsActivity extends FragmentActivity implements
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
 
+//        markerList = new ArrayList<>();
+//        Drawable personPin = getResources().getDrawable(R.drawable.map_marker);
+//        BitmapDescriptor markerIcon = getMarkerIconFromDrawable(personPin);
+//        Marker mZoo = mMap.addMarker(new MarkerOptions()
+//                .position(new LatLng(52.249906, 8.070234))
+//                .icon(markerIcon));
+//        markerList.add(mZoo);
+//        Marker mSportPark = mMap.addMarker(new MarkerOptions()
+//                .position(new LatLng(52.255764, 8.066930))
+//                .icon(markerIcon));
+//        markerList.add(mSportPark);
+//
+//        for (Marker m : markerList){
+//            LatLng latLng = new LatLng((m.getPosition()).latitude, m.getPosition().longitude);
+//            //mMap.addMarker(new MarkerOptions().position(latLng));
+
         markerList = new ArrayList<>();
-        Drawable personPin = getResources().getDrawable(R.drawable.map_marker);
-        BitmapDescriptor markerIcon = getMarkerIconFromDrawable(personPin);
-        Marker mZoo = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(52.249906, 8.070234))
-                .icon(markerIcon));
-        markerList.add(mZoo);
-        Marker mSportPark = mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(52.255764, 8.066930))
-                .icon(markerIcon));
-        markerList.add(mSportPark);
-
-        for (Marker m : markerList){
-            LatLng latLng = new LatLng((m.getPosition()).latitude, m.getPosition().longitude);
-            //mMap.addMarker(new MarkerOptions().position(latLng));
-
-        }
-//        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-//        locationListener = new LocationListener() {
-//            @Override
-//            public void onLocationChanged(Location location) {
-//                //should change the location to a new location but it's not working probably
-//                mMap.clear();
-//                Log.d("in in", location.toString());
-//                LatLng newLocation = new LatLng(location.getAltitude(), location.getLongitude());
-//                mMap.addMarker(new MarkerOptions().position(newLocation).title("NewLocation"));
-//                mMap.moveCamera(CameraUpdateFactory.newLatLng(newLocation));
-//                Log.d("new location", newLocation.toString());
-//            }
-//        };
+        locationsList.add(new de.dennis.mobilesensing.models.Location(
+                new LatLng(52.249906, 8.070234)));
+        locationsList.add(new de.dennis.mobilesensing.models.Location(
+                new LatLng(52.255764, 8.066930)));
+        addMapMarkers();
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
         {
@@ -165,6 +167,51 @@ public class MapsActivity extends FragmentActivity implements
             mMap.setMyLocationEnabled(true);
         }
     }
+
+
+    private void addMapMarkers() {
+
+        if (mMap != null) {
+
+            if (mClusterManager == null) {
+                mClusterManager = new ClusterManager<ClusterMarker>(this.getApplicationContext(), mMap);
+            }
+            if (mClusterManagerRenderer == null) {
+                mClusterManagerRenderer = new ClusterManagerRenderer(
+                        this,
+                        mMap,
+                        mClusterManager
+                );
+                mClusterManager.setRenderer(mClusterManagerRenderer);
+            }
+
+            for (de.dennis.mobilesensing.models.Location mLocation : locationsList) {
+                Log.i(TAG, "addMapMarkers: location: ");
+                try {
+                    String snippet = "is it working?";
+                    int avatar = R.drawable.logo; // set the default avatar
+                    ClusterMarker newClusterMarker = new ClusterMarker(
+                            mLocation.getPosition(),
+                            //new LatLng(52.249906, 8.070234),
+                            "title",
+                            snippet,
+                            avatar
+                    );
+                    mClusterMarkers.add(newClusterMarker);
+                    mClusterManager.addItem(newClusterMarker);
+                }
+
+                catch (NullPointerException e) {
+                    Log.e(TAG, "addMapMarkers: NullPointerException: " );
+                    e.printStackTrace();
+                }
+            }
+            mClusterManager.cluster();
+//            setCameraView();
+            // mMap.moveCamera(CameraUpdateFactory.newLatLng(newLocation));
+        }
+    }
+
 
     public boolean checkUserLocationPermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
