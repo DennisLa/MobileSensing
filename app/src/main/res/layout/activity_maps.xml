@@ -39,7 +39,7 @@
         android:layout_marginBottom="100dp"
         android:clickable="true"
         android:scaleType="center"
-        android:backgroundTint="@color/colorPrimaryDark"
+        app:backgroundTint="@color/colorPrimaryDark"
         android:tint="@color/white"
         />
 </FrameLayout>
