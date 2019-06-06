@@ -26,5 +26,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_chats">ChatsActivity</string>
     <string name="title_activity_data">DataActivity</string>
+    <string name="title_activity_location_description">Map</string>
 
 </resources>

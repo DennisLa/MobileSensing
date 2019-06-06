@@ -10,11 +10,11 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -30,7 +30,6 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,11 +41,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
-import com.parse.ParseObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.dennis.mobilesensing.Application;
 import de.dennis.mobilesensing.R;
 import de.dennis.mobilesensing.models.ClusterMarker;
 import de.dennis.mobilesensing.util.ClusterManagerRenderer;
@@ -86,11 +85,12 @@ public class MapsActivity extends FragmentActivity implements
 
         FloatingActionButton fab = findViewById(R.id.add_new_location);
         fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
+           public void onClick(View v) {
+               Intent i = new Intent(Application.getContext(), LocationDescriptionActivity.class);
+               startActivity(i);
+               finish();
+//               setContentView(R.layout.location_description);
+           }
         });
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
@@ -337,6 +337,18 @@ public class MapsActivity extends FragmentActivity implements
                 .zoom(17).build();
         //Zoom in and animate the camera.
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+        // delay
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Call Activity after 5s = 5000ms
+                Intent i = new Intent(Application.getContext(), LocationDescriptionActivity.class);
+                startActivity(i);
+                finish();
+            }
+        }, 2000);
         return true;
     }
 }
