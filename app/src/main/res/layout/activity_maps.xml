@@ -26,7 +26,8 @@
         android:layout_height="56dp"
         android:layout_gravity="bottom"
         android:background="@color/white"
-        app:menu="@menu/my_navigation_items" />
+        app:menu="@menu/my_navigation_items"
+    />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_new_location"
@@ -42,5 +43,5 @@
         android:scaleType="center"
         app:backgroundTint="@color/colorPrimaryDark"
         android:tint="@color/white"
-        />
+    />
 </FrameLayout>

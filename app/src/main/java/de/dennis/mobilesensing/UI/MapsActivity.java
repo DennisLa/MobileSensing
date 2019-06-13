@@ -86,7 +86,7 @@ public class MapsActivity extends FragmentActivity implements
         FloatingActionButton fab = findViewById(R.id.add_new_location);
         fab.setOnClickListener(new View.OnClickListener() {
            public void onClick(View v) {
-               Intent i = new Intent(Application.getContext(), LocationDescriptionActivity.class);
+               Intent i = new Intent(Application.getContext(), AddNewLocationActivity.class);
                startActivity(i);
                finish();
 //               setContentView(R.layout.location_description);

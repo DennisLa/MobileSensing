@@ -7,7 +7,7 @@ android:layout_height="match_parent"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 android:background="#0099cc"
 tools:context="de.dennis.mobilesensing.UI.LocationDescriptionActivity">
-    
+
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -15,6 +15,16 @@ tools:context="de.dennis.mobilesensing.UI.LocationDescriptionActivity">
         android:orientation="vertical"
         android:weightSum="100"
         android:background="@color/white">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            style="@style/HeaderBar"
+            app:theme="@style/AppTheme.AppBarOverlay"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:elevation="4dp"
+            />
 
         <RelativeLayout
             android:layout_width="match_parent"

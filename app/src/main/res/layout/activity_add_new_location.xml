@@ -1,0 +1,183 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:background="#0099cc"
+tools:context="de.dennis.mobilesensing.UI.AddNewLocationActivity">
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="100"
+    android:background="@color/white">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_weight="90"
+        android:id="@+id/map_container"
+        >
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            style="@style/HeaderBar"
+            app:theme="@style/AppTheme.AppBarOverlay"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:elevation="4dp"
+        />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:alpha="0.5"
+            android:id="@+id/search_container"
+            android:layout_below="@+id/my_toolbar"
+            >
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:hint="Search Location Here"
+                android:textColorLink="@color/colorPrimaryDark"
+                android:textSize="14dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:paddingLeft="15dp"
+            />
+
+            <Button
+                android:id="@+id/search_button"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@android:drawable/ic_menu_search"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:padding="4dp"
+                android:background="@android:color/transparent"
+            />
+            <!--android:onClick="onMapSearch"-->
+
+        </LinearLayout>
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:map="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/locationDescMap"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/search_container"
+            tools:context=".UI.LocationDescriptionActivity">
+        </fragment>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Location Name"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/LocationName"
+            android:textColor="@color/colorPrimaryDark"
+            android:background="@drawable/edittext_rounded_corners_border"
+            android:padding="15dp"
+            android:textSize="14dp"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:hint="Beschreibung"
+            android:inputType="text|textMultiLine"
+            android:gravity="top"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/LocationName"
+            android:id="@+id/description"
+            android:textColorLink="@color/colorPrimaryDark"
+            android:background="@drawable/edittext_rounded_corners_border"
+            android:padding="15dp"
+            android:textSize="14dp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/description"
+            android:id="@+id/attachPic">
+
+            <Button
+                android:id="@+id/btnAddPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/description"
+                android:background="@drawable/roundbutton"
+                android:text="  Foto machen"
+                android:textColor="@color/white"
+                android:gravity="left|center"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="false"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="7dp"
+                android:drawableLeft="@android:drawable/ic_menu_camera"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"
+            />
+
+            <Button
+                android:id="@+id/btnOpenGalary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btnAddPhoto"
+                android:background="@drawable/roundbutton"
+                android:text="  Foto Auswählen"
+                android:textColor="#fff"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="false"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="15dp"
+                android:drawableLeft="@android:drawable/ic_menu_gallery"
+                android:paddingRight="15dp"
+                android:paddingLeft="15dp"
+            />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSaveLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/attachPic"
+            android:background="@drawable/roundbutton"
+            android:text="sparen"
+            android:textColor="@color/white"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="7dp"
+            android:drawableLeft="@android:drawable/ic_input_add"
+            android:drawableTint="@color/white"
+            android:gravity="center"
+        />
+
+    </RelativeLayout>
+</LinearLayout>
+
+</FrameLayout>
