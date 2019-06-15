@@ -1,15 +1,17 @@
 package de.dennis.mobilesensing.models;
 
-import android.widget.ImageView;
-
 import com.google.android.gms.maps.model.LatLng;
 
 public class Location {
     private LatLng position;
+    private String title;
+    private  String description;
     //private ImageView imageView;
 
-    public Location(LatLng position) {
+    public Location(LatLng position, String title, String description) {
         this.position = position;
+        this.description = description;
+        this.title = title;
         //this.imageView = imageView;
     }
 

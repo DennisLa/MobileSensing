@@ -41,6 +41,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,9 +74,11 @@ public class MapsActivity extends FragmentActivity implements
     private ClusterManager<ClusterMarker> mClusterManager;
     private ClusterManagerRenderer mClusterManagerRenderer;
     private ArrayList<ClusterMarker> mClusterMarkers = new ArrayList<>();
-    private ArrayList<de.dennis.mobilesensing.models.Location> locationsList = new ArrayList<>();
+    private List<de.dennis.mobilesensing.models.Location> locationsList = new ArrayList<>();
     //change this to locations in database
     private static final String TAG = "MapsActivity";
+    List<ParseObject> listOfLocationParseObj;
+
 
 
     @Override
@@ -155,10 +162,47 @@ public class MapsActivity extends FragmentActivity implements
 //            //mMap.addMarker(new MarkerOptions().position(latLng));
 
         markerList = new ArrayList<>();
-        locationsList.add(new de.dennis.mobilesensing.models.Location(
-                new LatLng(52.249906, 8.070234)));
-        locationsList.add(new de.dennis.mobilesensing.models.Location(
-                new LatLng(52.255764, 8.066930)));
+//        locationsList.add(new de.dennis.mobilesensing.models.Location(
+//                new LatLng(52.249906, 8.070234), "ZOO", ""));
+//        locationsList.add(new de.dennis.mobilesensing.models.Location(
+//                new LatLng(52.255764, 8.066930), "pARK", ""));
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Location");
+        try {
+            listOfLocationParseObj = query.find();
+            listOfLocationParseObj.get(0).getDouble("Latitude");
+            for (int i=0; i<listOfLocationParseObj.size(); i++) {
+                Double latitude = listOfLocationParseObj.get(i).getDouble("Latitude");
+                Double longitude = listOfLocationParseObj.get(i).getDouble("Longitude");
+                String title = listOfLocationParseObj.get(i).getString("Title");
+                String description = listOfLocationParseObj.get(i).getString("Description");
+                boolean addedSuccessfully = locationsList.add(
+                        new de.dennis.mobilesensing.models.Location(new LatLng(latitude, longitude),
+                                title,
+                                description));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            public void done(List<ParseObject> locations, ParseException e) {
+//                if (e == null) {
+//                    // your logic here
+//                    for (int i=0; i<locations.size(); i++) {
+//                        Double latitude = locations.get(i).getDouble("Latitude");
+//                        Double longitude = locations.get(i).getDouble("Longitude");
+//                        String title = locations.get(i).getString("Title");
+//                        String description = locations.get(i).getString("Description");
+//                        boolean addedSuccessfully = locationsList.add(
+//                                new de.dennis.mobilesensing.models.Location(new LatLng(latitude, longitude),
+//                                        title,
+//                                        description));
+//                    }
+//                } else {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
         addMapMarkers();
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)

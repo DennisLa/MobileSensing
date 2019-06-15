@@ -8,20 +8,29 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
+import java.util.List;
+import de.dennis.mobilesensing.models.Location;
 import de.dennis.mobilesensing.Application;
 import de.dennis.mobilesensing.R;
 
 public class LocationDescriptionActivity extends AppCompatActivity {
 
+    final static ArrayList<Location> locationsList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_description);
+
+        final TextView t = (TextView) findViewById(R.id.activityTitleChat);
 
         // toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -44,11 +53,7 @@ public class LocationDescriptionActivity extends AppCompatActivity {
         });
 
 
-//        ParseObject location = new ParseObject("Location");
-//        gameScore.put("score", 17);
-//        gameScore.put("playerName", "Saja from Location description");
-//        gameScore.put("cheatMode", false);
-//        location.saveInBackground();
+
 
 //        ParseQuery<ParseObject> query = ParseQuery.getQuery("Location");
 //        query.getInBackground("a6oNjMky4F", new GetCallback<ParseObject>() {
@@ -69,6 +74,5 @@ public class LocationDescriptionActivity extends AppCompatActivity {
 //            }
 //        });
 
-        TextView t = (TextView) findViewById(R.id.activityTitleChat);
     }
 }
