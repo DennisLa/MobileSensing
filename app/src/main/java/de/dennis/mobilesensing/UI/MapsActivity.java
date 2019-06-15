@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -74,7 +75,7 @@ public class MapsActivity extends FragmentActivity implements
     private ClusterManager<ClusterMarker> mClusterManager;
     private ClusterManagerRenderer mClusterManagerRenderer;
     private ArrayList<ClusterMarker> mClusterMarkers = new ArrayList<>();
-    private List<de.dennis.mobilesensing.models.Location> locationsList = new ArrayList<>();
+    private ArrayList<de.dennis.mobilesensing.models.Location> locationsList = new ArrayList<>();
     //change this to locations in database
     private static final String TAG = "MapsActivity";
     List<ParseObject> listOfLocationParseObj;
@@ -184,25 +185,6 @@ public class MapsActivity extends FragmentActivity implements
         } catch (ParseException e) {
             e.printStackTrace();
         }
-//        query.findInBackground(new FindCallback<ParseObject>() {
-//            public void done(List<ParseObject> locations, ParseException e) {
-//                if (e == null) {
-//                    // your logic here
-//                    for (int i=0; i<locations.size(); i++) {
-//                        Double latitude = locations.get(i).getDouble("Latitude");
-//                        Double longitude = locations.get(i).getDouble("Longitude");
-//                        String title = locations.get(i).getString("Title");
-//                        String description = locations.get(i).getString("Description");
-//                        boolean addedSuccessfully = locationsList.add(
-//                                new de.dennis.mobilesensing.models.Location(new LatLng(latitude, longitude),
-//                                        title,
-//                                        description));
-//                    }
-//                } else {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
         addMapMarkers();
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
@@ -375,7 +357,7 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
+    public boolean onMarkerClick(final Marker marker) {
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(marker.getPosition().latitude, marker.getPosition().longitude))
                 .zoom(17).build();
@@ -389,6 +371,18 @@ public class MapsActivity extends FragmentActivity implements
             public void run() {
                 // Call Activity after 5s = 5000ms
                 Intent i = new Intent(Application.getContext(), LocationDescriptionActivity.class);
+//                i.putParcelableArrayListExtra("List",  locationsList);
+                i.putExtra("latitude", marker.getPosition().latitude);
+                i.putExtra("longitude", marker.getPosition().longitude);
+                for (int k =0 ; k<locationsList.size(); k++){
+                    if (locationsList.get(k).getPosition().latitude ==  marker.getPosition().latitude
+                            && locationsList.get(k).getPosition().longitude ==  marker.getPosition().longitude) {
+                        i.putExtra("title", locationsList.get(k).getTitle());
+                        i.putExtra("description", locationsList.get(k).getDescription());
+                    }
+                }
+
+//                i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(i);
                 finish();
             }

@@ -28,8 +28,8 @@ tools:context="de.dennis.mobilesensing.UI.LocationDescriptionActivity">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="45"
+            android:layout_height="90dp"
+            android:layout_weight="55"
             android:id="@+id/map_container">
 
             <fragment xmlns:android="http://schemas.android.com/apk/res/android"
