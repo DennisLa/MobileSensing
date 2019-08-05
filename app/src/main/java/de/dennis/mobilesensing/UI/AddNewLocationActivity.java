@@ -49,6 +49,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements OnMapRe
     private static final String TAG = "MapActivity";
     private EditText mSearchText;
     LatLng latLng;
+    double lat, lng =0 ;
 
 
 
@@ -59,8 +60,36 @@ public class AddNewLocationActivity extends AppCompatActivity implements OnMapRe
 
         final Button btnSaveNewLocation = (Button) findViewById(R.id.btnSaveLocation);
         final Button btnGallary = (Button) findViewById(R.id.btnOpenGalary);
+        final Button LocationSearch = (Button) findViewById(R.id.search_button);
         final EditText locationNameEditText = (EditText) findViewById(R.id.LocationName);
         final EditText descriptionEditText = (EditText) findViewById(R.id.description);
+        final EditText searchInput = (EditText) findViewById(R.id.input_search);
+
+        Intent i = getIntent();
+        final int image = i.getIntExtra("image", R.drawable.pic_default);
+        String locationName = i.getStringExtra("LocationName");
+        String locationDescription = i.getStringExtra("LocationDescription");
+        String searchString = i.getStringExtra("searchInput");
+        lat = i.getDoubleExtra("Latitude", 52.2779659); // osnabruck coordination
+        lng = i.getDoubleExtra("Longitude", 7.9853896);
+
+        if (locationName != null) locationNameEditText.setText(locationName);
+        if (locationDescription != null) descriptionEditText.setText(locationDescription);
+        if (searchString != null) {
+            searchInput.setText(searchString);
+            LocationSearch.post(new Runnable(){
+                @Override
+                public void run() {
+                    LocationSearch.performClick();
+                }
+            });
+        }
+        if (locationName != null || locationDescription !=  null || searchString != null)
+        {
+            // if the picture is already choosen, change the color of the gallary button, and the text
+            btnGallary.setText("Foto wurde erfolgreich ausgewählt");
+//            btnGallary.setBackgroundColor(R.color.green);
+        }
 
         btnSaveNewLocation.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -75,7 +104,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements OnMapRe
                     location.put("Description", description);
                     location.put("Latitude", latLng.latitude);
                     location.put("Longitude", latLng.longitude);
-                    location.put("Photo", R.drawable.register); // test
+                    location.put("Photo", image);
                     location.saveInBackground();
                     goBack();
                 }
@@ -84,7 +113,14 @@ public class AddNewLocationActivity extends AppCompatActivity implements OnMapRe
 
         btnGallary.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                Intent i = new Intent(Application.getContext(), GallaryActivity.class);
+                i.putExtra("LocationName", locationNameEditText.getText().toString());
+                i.putExtra("LocationDescription", descriptionEditText.getText().toString());
+                i.putExtra("Latitude", latLng.latitude);
+                i.putExtra("Longitude", latLng.longitude);
+                i.putExtra("searchInput", searchInput.getText().toString());
+                startActivity(i);
+                finish();
             }
         });
 
@@ -116,7 +152,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements OnMapRe
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         //osnabruck coordination
-        LatLng latLng = new LatLng(52.2779659,7.9853896);
+        LatLng latLng = new LatLng(lat,lng);
         moveCamera(latLng, 9);
     }
 

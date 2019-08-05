@@ -68,16 +68,16 @@ tools:context="de.dennis.mobilesensing.UI.AddNewLocationActivity">
                 android:textColorLink="@color/colorPrimaryDark"/>
 
             <Button
-            android:id="@+id/search_button"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@android:drawable/ic_menu_search"
-            android:layout_alignRight="@+id/input_search"
-            android:gravity="center"
-            android:paddingRight="8dp"
-            android:layout_marginEnd="3dp"
-            android:background="@color/bootstrap_gray_lightest"
-            android:onClick="onMapSearch"
+                android:id="@+id/search_button"
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@android:drawable/ic_menu_search"
+                android:layout_alignRight="@+id/input_search"
+                android:gravity="center"
+                android:paddingRight="8dp"
+                android:layout_marginEnd="3dp"
+                android:background="@color/bootstrap_gray_lightest"
+                android:onClick="onMapSearch"
             />
 
         </RelativeLayout>
@@ -142,7 +142,7 @@ tools:context="de.dennis.mobilesensing.UI.AddNewLocationActivity">
                 android:layout_height="match_parent"
                 android:layout_below="@+id/btnAddPhoto"
                 android:background="@drawable/roundbutton"
-                android:text=" Galerie"
+                android:text=" Bitte wählen ein Foto aus"
                 android:textColor="#fff"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="false"

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="15dp"
+        android:text="Bitte wählen Sie ein Foto aus:"
+        android:textSize="20dp"
+        android:id="@+id/textView1"
+        android:fontFamily="sans-serif-light"
+        android:layout_margin="15dp"
+        android:textColor="#000" />
+
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="wrap_content"
+        android:layout_height="500dp"
+        android:layout_below="@+id/textView1"
+        android:columnWidth="80dp"
+        android:horizontalSpacing="33dp"
+        android:numColumns="auto_fit"
+        android:padding="15dp"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="15dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/gridView"
+        android:text=" © Icons made by www.flaticon.com/authors/freepik from www.flaticon.com/"
+        android:textSize="8dp"
+        android:paddingLeft="30dp"
+        />
+</LinearLayout>
