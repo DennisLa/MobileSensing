@@ -58,6 +58,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements OnMapRe
         setContentView(R.layout.activity_add_new_location);
 
         final Button btnSaveNewLocation = (Button) findViewById(R.id.btnSaveLocation);
+        final Button btnGallary = (Button) findViewById(R.id.btnOpenGalary);
         final EditText locationNameEditText = (EditText) findViewById(R.id.LocationName);
         final EditText descriptionEditText = (EditText) findViewById(R.id.description);
 
@@ -74,9 +75,16 @@ public class AddNewLocationActivity extends AppCompatActivity implements OnMapRe
                     location.put("Description", description);
                     location.put("Latitude", latLng.latitude);
                     location.put("Longitude", latLng.longitude);
+                    location.put("Photo", R.drawable.register); // test
                     location.saveInBackground();
                     goBack();
                 }
+            }
+        });
+
+        btnGallary.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
             }
         });
 

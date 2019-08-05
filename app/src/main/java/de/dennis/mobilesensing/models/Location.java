@@ -8,15 +8,24 @@ import com.google.android.gms.maps.model.LatLng;
 public class Location implements Parcelable {
     private LatLng position;
     private String title;
-    private  String description;
-
-
+    private String description;
+    private int image;
 //private ImageView imageView;
 
     public Location(LatLng position, String title, String description) {
         this.position = position;
         this.description = description;
         this.title = title;
+
+        //this.imageView = imageView;
+    }
+
+    public Location(LatLng position, String title, String description, int image) {
+        this.position = position;
+        this.description = description;
+        this.title = title;
+        this.image = image;
+
         //this.imageView = imageView;
     }
 
@@ -77,11 +86,20 @@ public class Location implements Parcelable {
         this.title = title;
     }
 
-//    public ImageView getImageView() {
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
+    }
+
+    //    public ImageView getImageView() {
 //        return imageView;
 //    }
 //
 //    public void setImageView(ImageView imageView) {
 //        this.imageView = imageView;
 //    }
+
 }

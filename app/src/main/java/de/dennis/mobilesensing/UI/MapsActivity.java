@@ -177,10 +177,12 @@ public class MapsActivity extends FragmentActivity implements
                 Double longitude = listOfLocationParseObj.get(i).getDouble("Longitude");
                 String title = listOfLocationParseObj.get(i).getString("Title");
                 String description = listOfLocationParseObj.get(i).getString("Description");
+                int image = listOfLocationParseObj.get(i).getInt("Photo");
                 boolean addedSuccessfully = locationsList.add(
                         new de.dennis.mobilesensing.models.Location(new LatLng(latitude, longitude),
                                 title,
-                                description));
+                                description,
+                                image));
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -193,7 +195,6 @@ public class MapsActivity extends FragmentActivity implements
             mMap.setMyLocationEnabled(true);
         }
     }
-
 
     private void addMapMarkers() {
 
@@ -215,13 +216,17 @@ public class MapsActivity extends FragmentActivity implements
                 Log.i(TAG, "addMapMarkers: location: ");
                 try {
                     String snippet = "is it working?";
-                    int avatar = R.drawable.logo; // set the default avatar
+                    int icon;
+                    if (mLocation.getImage() == 0)
+                        icon = R.drawable.logo; // set the default avatar
+                    else
+                        icon = mLocation.getImage();
                     ClusterMarker newClusterMarker = new ClusterMarker(
                             mLocation.getPosition(),
                             //new LatLng(52.249906, 8.070234),
                             "title",
                             snippet,
-                            avatar
+                            icon
                     );
                     mClusterMarkers.add(newClusterMarker);
                     mClusterManager.addItem(newClusterMarker);
