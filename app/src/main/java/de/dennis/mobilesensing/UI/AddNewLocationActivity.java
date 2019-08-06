@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +50,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements OnMapRe
     private GoogleMap mMap;
     private static final String TAG = "MapActivity";
     private EditText mSearchText;
-    LatLng latLng;
+    LatLng latLng = new LatLng(52.2779659, 7.9853896);
     double lat, lng =0 ;
 
 
@@ -66,7 +68,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements OnMapRe
         final EditText searchInput = (EditText) findViewById(R.id.input_search);
 
         Intent i = getIntent();
-        final int image = i.getIntExtra("image", R.drawable.pic_default);
+        final int image = i.getIntExtra("image", R.drawable.a_pic_default);
         String locationName = i.getStringExtra("LocationName");
         String locationDescription = i.getStringExtra("LocationDescription");
         String searchString = i.getStringExtra("searchInput");
@@ -88,7 +90,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements OnMapRe
         {
             // if the picture is already choosen, change the color of the gallary button, and the text
             btnGallary.setText("Foto wurde erfolgreich ausgewählt");
-//            btnGallary.setBackgroundColor(R.color.green);
+            btnGallary.setBackgroundResource(R.drawable.roundgreenbutton);
         }
 
         btnSaveNewLocation.setOnClickListener(new View.OnClickListener() {

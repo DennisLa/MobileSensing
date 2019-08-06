@@ -145,28 +145,7 @@ public class MapsActivity extends FragmentActivity implements
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
-
-//        markerList = new ArrayList<>();
-//        Drawable personPin = getResources().getDrawable(R.drawable.map_marker);
-//        BitmapDescriptor markerIcon = getMarkerIconFromDrawable(personPin);
-//        Marker mZoo = mMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(52.249906, 8.070234))
-//                .icon(markerIcon));
-//        markerList.add(mZoo);
-//        Marker mSportPark = mMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(52.255764, 8.066930))
-//                .icon(markerIcon));
-//        markerList.add(mSportPark);
-//
-//        for (Marker m : markerList){
-//            LatLng latLng = new LatLng((m.getPosition()).latitude, m.getPosition().longitude);
-//            //mMap.addMarker(new MarkerOptions().position(latLng));
-
         markerList = new ArrayList<>();
-//        locationsList.add(new de.dennis.mobilesensing.models.Location(
-//                new LatLng(52.249906, 8.070234), "ZOO", ""));
-//        locationsList.add(new de.dennis.mobilesensing.models.Location(
-//                new LatLng(52.255764, 8.066930), "pARK", ""));
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Location");
         try {

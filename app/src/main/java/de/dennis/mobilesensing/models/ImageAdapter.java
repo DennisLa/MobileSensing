@@ -13,20 +13,20 @@ public class ImageAdapter extends BaseAdapter {
     private Context context;
 
     public Integer[] images = {
-            R.drawable.pic_1, R.drawable.pic_2,
-            R.drawable.pic_3, R.drawable.pic_4,
-            R.drawable.pic_5, R.drawable.pic_6,
-            R.drawable.pic_7, R.drawable.pic_8,
-            R.drawable.pic_9, R.drawable.pic_10,
-            R.drawable.pic_11, R.drawable.pic_21,
-            R.drawable.pic_12, R.drawable.pic_22,
-            R.drawable.pic_13, R.drawable.pic_23,
-            R.drawable.pic_14, R.drawable.pic_24,
-            R.drawable.pic_15, R.drawable.pic_16,
-            R.drawable.pic_17, R.drawable.pic_18,
-            R.drawable.pic_19, R.drawable.pic_20,
-            R.drawable.pic_25, R.drawable.pic_26,
-            R.drawable.pic_default
+            R.drawable.a_pic_1, R.drawable.a_pic_2,
+            R.drawable.a_pic_3, R.drawable.a_pic_4,
+            R.drawable.a_pic_5, R.drawable.a_pic_6,
+            R.drawable.a_pic_7, R.drawable.a_pic_8,
+            R.drawable.a_pic_9, R.drawable.a_pic_10,
+            R.drawable.a_pic_11, R.drawable.a_pic_21,
+            R.drawable.a_pic_12, R.drawable.a_pic_22,
+            R.drawable.a_pic_13, R.drawable.a_pic_23,
+            R.drawable.a_pic_14, R.drawable.a_pic_24,
+            R.drawable.a_pic_15, R.drawable.a_pic_16,
+            R.drawable.a_pic_17, R.drawable.a_pic_18,
+            R.drawable.a_pic_19, R.drawable.a_pic_20,
+            R.drawable.a_pic_25, R.drawable.a_pic_26,
+            R.drawable.a_pic_default
     };
 
     public ImageAdapter (Context c) {
