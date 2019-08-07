@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +61,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements OnMapRe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_location);
 
-        final Button btnSaveNewLocation = (Button) findViewById(R.id.btnSaveLocation);
+        final ImageView btnSaveNewLocation = (ImageView) findViewById(R.id.btnSaveLocation);
         final Button btnGallary = (Button) findViewById(R.id.btnOpenGalary);
         final Button LocationSearch = (Button) findViewById(R.id.search_button);
         final EditText locationNameEditText = (EditText) findViewById(R.id.LocationName);
@@ -134,6 +135,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements OnMapRe
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

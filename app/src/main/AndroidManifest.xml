@@ -29,7 +29,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UI.GallaryActivity"></activity>
+        <activity android:name=".UI.LocationChatActivity"></activity>
+        <activity android:name=".UI.GallaryActivity" />
         <activity android:name=".UI.AddNewLocationActivity" />
         <activity android:name=".UI.LocationDescriptionActivity" />
         <!--

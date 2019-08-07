@@ -77,14 +77,16 @@ public class ChatsActivity extends AppCompatActivity {
 
         ListViewAdapter adapter = new ListViewAdapter(this, locationsList, mTitle);
         listView.setAdapter(adapter);
-
-
+        
         // now set item click on list view
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position ==  0) {
                     Toast.makeText(ChatsActivity.this, "Facebook Description", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(Application.getContext(), LocationChatActivity.class);
+                    startActivity(i);
+                    finish();
                 }
             }
         });
@@ -123,6 +125,7 @@ public class ChatsActivity extends AppCompatActivity {
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
