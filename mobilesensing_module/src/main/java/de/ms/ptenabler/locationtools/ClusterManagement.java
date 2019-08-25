@@ -456,9 +456,10 @@ public class ClusterManagement {
 
         Trajectory[] trajects = new Trajectory[daysBefore];
         for(int i= 0; i< daysBefore; i++){
-            long startTime = start-(1000l*3600l*24l*(i+1));
-            long endTime = start-(1000l*3600l*24l*i);
-
+//            long startTime = start-(1000l*3600l*24l*(i+1));
+//            long endTime = start-(1000l*3600l*24l*i);
+            long startTime = start-(300l*(i+1));
+            long endTime = start-(300l*i);
             trajects[i] = getTrajectory(startTime, endTime).cleanTrajectory(minDurationThreshold);
         }
         return trajects;
@@ -469,8 +470,10 @@ public class ClusterManagement {
     }
 
     public  Set<PropableNextLocationResult> getPropableLocationForDate(Date x, boolean includeCurPosCluster) {
-        //List<UserLocation> all = Utilities.openDBConnection().getAllHistoryLocs(new Date().getTime()-(1000l*3600l*24l*14l), new Date().getTime());
-        List<UserLocation> all = ObjectboxPtenablerUtilities.getAllHistoryLocs(new Date().getTime()-(1000l*3600l*24l*14l), new Date().getTime(),true);
+        // was already commented out
+        // List<UserLocation> all = Utilities.openDBConnection().getAllHistoryLocs(new Date().getTime()-(1000l*3600l*24l*14l), new Date().getTime());
+//        List<UserLocation> all = ObjectboxPtenablerUtilities.getAllHistoryLocs(new Date().getTime()-(1000l*3600l*24l*14l), new Date().getTime(),true);
+        List<UserLocation> all = ObjectboxPtenablerUtilities.getAllHistoryLocs(new Date().getTime()-(300l*14l), new Date().getTime(),true);
         Calendar toLookFor = Calendar.getInstance();
         toLookFor.setTimeInMillis(x.getTime());
         Calendar loccal = Calendar.getInstance();
@@ -530,7 +533,9 @@ public class ClusterManagement {
 
     public Map<Long,TimeValueMatrix> getTimeProbability(int slicesOfDay, int daysInPast){
         TimeValueMatrix all = new TimeValueMatrix(slicesOfDay);
-        long pointInPast = new Date().getTime()-(1000l*3600l*24l*daysInPast);
+//        long pointInPast = new Date().getTime()-(1000l*3600l*24l*daysInPast);
+        long pointInPast = new Date().getTime()-(300l*daysInPast);
+
         //for(UserLocation uloc:Utilities.openDBConnection().getAllHistoryLocs(pointInPast, new Date().getTime())){
         for(UserLocation uloc:ObjectboxPtenablerUtilities.getAllHistoryLocs(pointInPast, new Date().getTime(),true)){
             all.addTimeEvent(uloc.getDate());

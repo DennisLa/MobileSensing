@@ -452,7 +452,7 @@ public class ObjectBoxAdapter {
         List<GLocationTimeseries> gLocationTimeseriesList = timeseriesBox.getAll();
         List<GLocationTimeseries> gLocationTimeseriesListResult = new ArrayList<>();
         for(GLocationTimeseries gLocationTimeseries: gLocationTimeseriesList){
-            if(!gLocationTimeseries.isUploaded()&& !gLocationTimeseries.isCurrent()){
+            if(!gLocationTimeseries.isUploaded()&& gLocationTimeseries.isCurrent()){
                 gLocationTimeseriesListResult.add(gLocationTimeseries);
             }
         }
@@ -464,7 +464,7 @@ public class ObjectBoxAdapter {
         List<GActivityTimeseries> gActivityTimeseriesList = timeseriesBox.getAll();
         List<GActivityTimeseries> gActivityTimeseriesListResult = new ArrayList<>();
         for(GActivityTimeseries gActivityTimeseries: gActivityTimeseriesList){
-            if(!gActivityTimeseries.isUploaded()&& !gActivityTimeseries.isCurrent()){
+            if(!gActivityTimeseries.isUploaded()&& gActivityTimeseries.isCurrent()){
                 gActivityTimeseriesListResult.add(gActivityTimeseries);
             }
         }
@@ -476,7 +476,7 @@ public class ObjectBoxAdapter {
         List<ActivityTimeseries> activityTimeseriesList = timeseriesBox.getAll();
         List<ActivityTimeseries> activityTimeseriesListResult = new ArrayList<>();
         for(ActivityTimeseries activityTimeseries: activityTimeseriesList){
-            if(!activityTimeseries.isUploaded() && !activityTimeseries.isCurrent()){
+            if(!activityTimeseries.isUploaded() && activityTimeseries.isCurrent()){
                 activityTimeseriesListResult.add(activityTimeseries);
             }
         }
@@ -488,7 +488,7 @@ public class ObjectBoxAdapter {
         List<NetworkTimeseries> networkTimeseriesList = timeseriesBox.getAll();
         List<NetworkTimeseries> networkTimeseriesListResult = new ArrayList<>();
         for(NetworkTimeseries networkTimeseries: networkTimeseriesList){
-            if(!networkTimeseries.isUploaded()  && !networkTimeseries.isCurrent()){
+            if(!networkTimeseries.isUploaded()  && networkTimeseries.isCurrent()){
                 networkTimeseriesListResult.add(networkTimeseries);
             }
         }
@@ -500,7 +500,7 @@ public class ObjectBoxAdapter {
         List<RunningApplicationTimeseries> runningApplicationTimeseriesList = timeseriesBox.getAll();
         List<RunningApplicationTimeseries> runningApplicationTimeseriesListResult = new ArrayList<>();
         for(RunningApplicationTimeseries runningApplicationTimeseries: runningApplicationTimeseriesList){
-            if(!runningApplicationTimeseries.isUploaded() && !runningApplicationTimeseries.isCurrent()){
+            if(!runningApplicationTimeseries.isUploaded() && runningApplicationTimeseries.isCurrent()){
                 runningApplicationTimeseriesListResult.add(runningApplicationTimeseries);
             }
         }
@@ -512,7 +512,7 @@ public class ObjectBoxAdapter {
         List<ScreenOnTimeseries> screenOnTimeseriesList = timeseriesBox.getAll();
         List<ScreenOnTimeseries> screenOnTimeseriesListResult = new ArrayList<>();
         for(ScreenOnTimeseries screenOnTimeseries: screenOnTimeseriesList){
-            if(!screenOnTimeseries.isUploaded()&& !screenOnTimeseries.isCurrent()){
+            if(!screenOnTimeseries.isUploaded()&& screenOnTimeseries.isCurrent()){
                 screenOnTimeseriesListResult.add(screenOnTimeseries);
             }
         }
@@ -524,7 +524,7 @@ public class ObjectBoxAdapter {
         List<TrackTimeseries> trackTimeseriesList = timeseriesBox.getAll();
         List<TrackTimeseries> trackTimeseriesListResult = new ArrayList<>();
         for(TrackTimeseries trackTimeseries: trackTimeseriesList){
-            if(!trackTimeseries.isUploaded() && !trackTimeseries.isCurrent() ){
+            if(!trackTimeseries.isUploaded() && trackTimeseries.isCurrent() ){
                 trackTimeseriesListResult.add(trackTimeseries);
             }
         }

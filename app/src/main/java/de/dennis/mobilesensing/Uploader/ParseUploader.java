@@ -28,6 +28,7 @@ import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.SensorTime
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Track.TrackObject;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBox.Track.TrackTimeseries;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.ObjectBoxAdapter;
+import io.objectbox.relation.ToMany;
 
 /**
  * Created by Dennis on 17.09.2017.
@@ -359,6 +360,7 @@ public class ParseUploader {
                 po.put("valueTypes",ja );
                 po.put("user", ParseUser.getCurrentUser().getUsername());
                 JSONArray values = new JSONArray();
+//                ToMany<GActivityObject> k = gActTimeseries.getValues();
                 for(GActivityObject gActObject: gActTimeseries.getValues()){
                     /*
                      {
@@ -383,6 +385,7 @@ public class ParseUploader {
             }
         }catch(Exception e){
             undoUpdated(st);
+            e.printStackTrace();
         }
     }
 

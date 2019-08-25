@@ -159,7 +159,9 @@ public class ObjectboxPtenablerUtilities {
 
     public static void clearClusteredLocation(int olderThanXDays) {
         Date x = new Date();
-        long millis =x.getTime()-((long)olderThanXDays *1000L*3600L*24L);
+//        long millis =x.getTime()-((long)olderThanXDays *1000L*3600L*24L);
+        long millis =x.getTime()-((long)olderThanXDays *1000l*60l);
+
         Box clusterBox = Module.getBoxStore().boxFor(ClusterObject.class);
         Box gLocBox = Module.getBoxStore().boxFor(GLocationsObject.class);
         List<ClusterObject> cos = clusterBox.getAll();

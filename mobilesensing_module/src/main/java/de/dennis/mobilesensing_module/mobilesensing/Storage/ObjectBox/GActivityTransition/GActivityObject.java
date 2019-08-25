@@ -20,6 +20,9 @@ public class GActivityObject extends SensorObject {
 
     public ToOne<GActivityTimeseries> gActivityTimeseries;
 
+    public GActivityObject() {
+        int i =0 ;
+    }
 
     public GActivityObject(long timestamp, long endtime, String activity) {
         this.timestamp = timestamp;

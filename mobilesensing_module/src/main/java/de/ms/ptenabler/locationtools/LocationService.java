@@ -218,7 +218,8 @@ public class LocationService extends Service implements
 	public void checkIfClusteringDue(){
 		Date now = new Date();
 		Date last = new Date(prefs.getLong(LAST_CLUSTERED, (long) 0));
-		if(now.getTime()-last.getTime()>1000l*24l*3600l && !Utilities.isMyServiceRunning(ClusterService.class)){
+//		if(now.getTime()-last.getTime()>1000l*24l*3600l && !Utilities.isMyServiceRunning(ClusterService.class)){
+		if(now.getTime()-last.getTime()>1000l * 60l && !Utilities.isMyServiceRunning(ClusterService.class)){
 			Log.d("PTEnabler","Clustering Locations from" +last.toLocaleString() +" until " + now.toLocaleString());
 			Intent msgIntent = new Intent(this, ClusterService.class);
 			this.startService(msgIntent);

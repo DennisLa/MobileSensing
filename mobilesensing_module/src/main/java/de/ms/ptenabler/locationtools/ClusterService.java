@@ -41,7 +41,9 @@ public class ClusterService extends IntentService {
 		//prefs= PreferenceManager.getDefaultSharedPreferences(this);
         prefs = Module.getContext().getSharedPreferences("Clustering",MODE_PRIVATE);
 		//Utilities.openDBConnection().clearLocationHistory(14);
-		Date start = new Date(prefs.getLong(LAST_CLUSTERED,new Date().getTime()-(1000l*3600l*24l)));
+//		Date start = new Date(prefs.getLong(LAST_CLUSTERED,new Date().getTime()-(1000l*3600l*24l)));
+        Date start = new Date(prefs.getLong(LAST_CLUSTERED,new Date().getTime()-(1000l*60l)));
+
         long now = new Date().getTime();
         Map<Location, Dataset> clusteredLocs = ClusterManagement.getManager().clusterLocations(start, new Date(), 2000);
         //Map<Location, Dataset> clusteredLocs = Utilities.clusterLocations(new Date(0) , new Date(), 10000);

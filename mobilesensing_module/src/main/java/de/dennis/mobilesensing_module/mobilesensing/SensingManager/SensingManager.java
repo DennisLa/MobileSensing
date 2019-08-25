@@ -126,6 +126,7 @@ public class SensingManager {
         try {
             Bundle settings;
             //enable Google Activity Sensing
+
             if(prefs.getBoolean(SensorNames.GActivity.name(),false)&& checkSelfPermission(Module.getContext(),Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
             {
                 mGActivity = new GActivityRecognition();
@@ -209,10 +210,14 @@ public class SensingManager {
                     //Cluster
                     ComponentName serviceComponent = new ComponentName(Module.getContext(), ClusterJobService.class);
                     JobInfo.Builder builder = new JobInfo.Builder(0, serviceComponent);
-                    //builder.setMinimumLatency(3600000); // wait at least
-                    //builder.setOverrideDeadline(3600000); // maximum delay
-                    builder.setMinimumLatency(600000); // wait at least 3600000
-                    builder.setOverrideDeadline(600000); // maximum delay
+//                    builder.setMinimumLatency(1000*10); // wait at least 3600000
+                    builder.setOverrideDeadline(1000*60); // maximum delay 600000
+//                    builder.setMinimumLatency(3600000); // wait at least 3600000
+//                    builder.setOverrideDeadline(600000); // maximum delay 600000
+                    // schedule the start of the service every 10 - 30 seconds
+//                    builder.setMinimumLatency(3 * 1000); // wait at least
+//                    builder.setOverrideDeadline(1 * 1000); // maximum delay
+                    builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
                     JobScheduler jobScheduler = (JobScheduler) Module.getContext().getSystemService(Context.JOB_SCHEDULER_SERVICE);
                     jobScheduler.schedule(builder.build());
                 }else{
@@ -231,8 +236,8 @@ public class SensingManager {
                 //
                 try {
                     //Location Listener
-                    //mLocationListener = new LocationListener();
-                    //mSensing.addContextTypeListener(ContextType.LOCATION, mLocationListener);
+//                    mLocationListener = new GLocationListener();
+//                    mSensing.addContextTypeListener(ContextType.LOCATION, mLocationListener);
                     //Activity Listener
                     mActivityListener = new ActivityListener();
                     mSensing.addContextTypeListener(ContextType.ACTIVITY_RECOGNITION, mActivityListener);

@@ -68,10 +68,25 @@ public class LoginActivity extends AppCompatActivity {
                 }else{
                     //some dumb content for the moment
                     mProgressDialog.show();
-//                    Intent i = new Intent(Application.getContext(), WebviewActivity.class);
-                    Intent i = new Intent(Application.getContext(), MapsActivity.class);
-                    startActivity(i);
-                    finish();
+                    ParseUser.logInInBackground(email, password, new LogInCallback() {
+                        public void done(ParseUser user, ParseException e) {
+                            if (user != null) {
+                                // Hooray! The user is logged in.
+                                SharedPreferences prefs = Application.getContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = prefs.edit();
+                                editor.putString("Username", email);
+                                editor.putString("Password", password);
+                                editor.apply();
+                                Intent i = new Intent(Application.getContext(), MapsActivity.class);
+                                startActivity(i);
+                                finish();
+                            } else {
+                                // Signup failed. Look at the ParseException to see what happened.
+                                Toast.makeText(Application.getContext(),"Wrong Email or Password", Toast.LENGTH_LONG);
+
+                            }
+                        }
+                    });
                     mProgressDialog.dismiss();
 //                    mProgressDialog.show();
 //                    ParseUser.logInInBackground(email, password, new LogInCallback() {

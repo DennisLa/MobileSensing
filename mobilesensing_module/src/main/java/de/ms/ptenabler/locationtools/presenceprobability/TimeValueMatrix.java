@@ -9,7 +9,8 @@ import java.util.Date;
 public class TimeValueMatrix {
 
     private double[][] matrix;
-    private long MillisOfDay = 1000l*3600l*24l;
+//    private long MillisOfDay = 1000l*3600l*24l;
+    private long MillisOfDay = 1000l*60l;
     private long slotSizeInMillis;
     private double [][] base;
     private int slots;
