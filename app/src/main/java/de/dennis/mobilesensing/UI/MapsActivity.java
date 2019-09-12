@@ -288,7 +288,7 @@ public class MapsActivity extends FragmentActivity implements
 //        mMap.animateCamera(loc);
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(latLng)
-                .zoom(17).build();
+                .zoom(10).build();
         //Zoom in and animate the camera.
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 

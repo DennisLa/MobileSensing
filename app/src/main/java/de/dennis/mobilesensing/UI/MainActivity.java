@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
 //        if (ParseUser.getCurrentUser() != null)
 //            ParseUser.getCurrentUser().logOut();
         this.checkPermissions();
-
+        Upload();
+/*
 //        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
 //        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 //            @Override
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
 //                for(GLocationTimeseries act: activityTimeseries){
 //                    EventBus.getDefault().post(new UploadEvent(act));
 //                }
-//                Intent i = new Intent(Application.getContext(), DataActivity.class);
+//                Intent i = new Intent(Application.getContext(), RegisterActivity.class);
 //                startActivity(i);
 //                finish();
             }
@@ -118,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
 //                finish();
 //            }
 //        });
+        */
     }
 
     private void Upload() {
@@ -168,9 +170,9 @@ public class MainActivity extends AppCompatActivity {
                     public void done(ParseUser user, ParseException e) {
                         if (user != null) {
                             // Hooray! The user is logged in.
-//                            Intent i = new Intent(Application.getContext(), MapsActivity.class);
-//                            startActivity(i);
-//                            finish();
+                            Intent i = new Intent(Application.getContext(), MapsActivity.class);
+                            startActivity(i);
+                            finish();
                         } else {
                             // Signup failed. Look at the ParseException to see what happened.
                             Toast.makeText(Application.getContext(), "Wrong Email or Password", Toast.LENGTH_LONG);
@@ -179,19 +181,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             } else {
-//                Intent i = new Intent(Application.getContext(), LoginActivity.class);
-//                startActivity(i);
-//                finish();
+                Intent i = new Intent(Application.getContext(), LoginActivity.class);
+                startActivity(i);
+                finish();
             }
         }else{
-            if(!ParseUser.getCurrentUser().isAuthenticated())
-            {
-//                Intent i = new Intent(Application.getContext(), LoginActivity.class);
-//                startActivity(i);
-//                finish();
-            }else{
-                Application.startSensing();
-            }
+//            if(!ParseUser.getCurrentUser().isAuthenticated())
+//            {
+                Intent i = new Intent(Application.getContext(), LoginActivity.class);
+                startActivity(i);
+                finish();
+//            }else{
+//                Application.startSensing();
+//            }
         }
     }
 
