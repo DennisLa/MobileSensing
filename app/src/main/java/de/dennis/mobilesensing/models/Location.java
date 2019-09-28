@@ -1,5 +1,6 @@
 package de.dennis.mobilesensing.models;
 
+import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -10,7 +11,16 @@ public class Location implements Parcelable {
     private String title;
     private String description;
     private int image;
+    private Drawable picture; // from phone upload image
 //private ImageView imageView;
+
+
+    public Location(LatLng position, String title, String description, Drawable picture) {
+        this.position = position;
+        this.title = title;
+        this.description = description;
+        this.picture = picture;
+    }
 
     public Location(LatLng position, String title, String description) {
         this.position = position;
@@ -36,6 +46,14 @@ public class Location implements Parcelable {
         position = in.readParcelable(LatLng.class.getClassLoader());
         title = in.readString();
         description = in.readString();
+    }
+
+    public Drawable getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Drawable picture) {
+        this.picture = picture;
     }
 
     public static final Creator<Location> CREATOR = new Creator<Location>() {

@@ -5,7 +5,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
@@ -24,6 +26,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -43,7 +46,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.parse.FindCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -152,16 +157,55 @@ public class MapsActivity extends FragmentActivity implements
             listOfLocationParseObj = query.find();
             listOfLocationParseObj.get(0).getDouble("Latitude");
             for (int i=0; i<listOfLocationParseObj.size(); i++) {
-                Double latitude = listOfLocationParseObj.get(i).getDouble("Latitude");
-                Double longitude = listOfLocationParseObj.get(i).getDouble("Longitude");
-                String title = listOfLocationParseObj.get(i).getString("Title");
-                String description = listOfLocationParseObj.get(i).getString("Description");
-                int image = listOfLocationParseObj.get(i).getInt("Photo");
-                boolean addedSuccessfully = locationsList.add(
-                        new de.dennis.mobilesensing.models.Location(new LatLng(latitude, longitude),
-                                title,
-                                description,
-                                image));
+                final Double latitude = listOfLocationParseObj.get(i).getDouble("Latitude");
+                final Double longitude = listOfLocationParseObj.get(i).getDouble("Longitude");
+                final String title = listOfLocationParseObj.get(i).getString("Title");
+                final String description = listOfLocationParseObj.get(i).getString("Description");
+//                ParseFile
+                ParseFile fileObject = (ParseFile) listOfLocationParseObj.get(i).get("pictureFromPhone");
+                if (fileObject != null) {
+                    Drawable d ;
+                    byte[] data = fileObject.getData();
+                    Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                    d = new BitmapDrawable(getResources(), bmp);
+                    boolean addedSuccessfully = locationsList.add(
+                            new de.dennis.mobilesensing.models.Location(new LatLng(latitude, longitude),
+                                    title,
+                                    description,
+                                    d));
+//                    fileObject.getDataInBackground(new GetDataCallback() {
+//                        public void done(byte[] data, ParseException e) {
+//                            if (e == null) {
+//                                //try to find a way to retrive data without call back
+//
+//                                // Decode the Byte[] into
+//                                // Bitmap
+//                                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+//                                d[0] = new BitmapDrawable(getResources(), bmp);
+//                                // initialize
+//                                //                            ImageView image = (ImageView) findViewById(R.id.image);
+//                                //
+//                                //                            // Set the Bitmap into the
+//                                //                            // ImageView
+//                                //                            image.setImageBitmap(bmp);
+//
+//                            } else {
+//                                Log.d("test", "Problem load image the data.");
+//                                Toast.makeText(Application.getContext(), "error", Toast.LENGTH_LONG).show();
+//                            }
+//                        }
+
+//                    });
+
+                }
+                 else {
+                     int image = listOfLocationParseObj.get(i).getInt("Photo");
+                     boolean addedSuccessfully = locationsList.add(
+                             new de.dennis.mobilesensing.models.Location(new LatLng(latitude, longitude),
+                                     title,
+                                     description,
+                                     image));
+                 }
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -195,22 +239,26 @@ public class MapsActivity extends FragmentActivity implements
                 Log.i(TAG, "addMapMarkers: location: ");
                 try {
                     String snippet = "is it working?";
-                    int icon;
-                    if (mLocation.getImage() == 0)
-                        icon = R.drawable.logo; // set the default avatar
-                    else
-                        icon = mLocation.getImage();
+                    Drawable icon;
+                    if (mLocation.getImage() == 0) {
+//                        icon = R.drawable.logo; // set the default avatar
+                        icon = mLocation.getPicture();
+                    }
+                    // here
+                    else {
+                        int k = mLocation.getImage();
+                        icon = Application.getContext().getDrawable(mLocation.getImage());
+                    }
                     ClusterMarker newClusterMarker = new ClusterMarker(
-                            mLocation.getPosition(),
-                            //new LatLng(52.249906, 8.070234),
-                            "title",
-                            snippet,
-                            icon
+                        mLocation.getPosition(),
+                        //new LatLng(52.249906, 8.070234),
+                        "title",
+                        snippet,
+                        icon
                     );
                     mClusterMarkers.add(newClusterMarker);
                     mClusterManager.addItem(newClusterMarker);
                 }
-
                 catch (NullPointerException e) {
                     Log.e(TAG, "addMapMarkers: NullPointerException: " );
                     e.printStackTrace();
