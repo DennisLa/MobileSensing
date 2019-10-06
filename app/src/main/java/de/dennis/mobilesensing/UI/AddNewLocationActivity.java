@@ -185,7 +185,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements OnMapRe
                     try {
                         int k = 10;
                         BitmapFactory.Options op = new BitmapFactory.Options();
-                        op.inSampleSize = 8;
+                        op.inSampleSize = 10;
                         Bitmap bitmap = BitmapFactory.decodeStream(imageIputStream, null, op);
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);

@@ -166,7 +166,9 @@ public class MapsActivity extends FragmentActivity implements
                 if (fileObject != null) {
                     Drawable d ;
                     byte[] data = fileObject.getData();
-                    Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                    BitmapFactory.Options op = new BitmapFactory.Options();
+                    op.inSampleSize = 2;
+                    Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length, op);
                     d = new BitmapDrawable(getResources(), bmp);
                     boolean addedSuccessfully = locationsList.add(
                             new de.dennis.mobilesensing.models.Location(new LatLng(latitude, longitude),
