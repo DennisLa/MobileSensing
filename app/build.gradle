@@ -51,7 +51,7 @@ dependencies {
     //compile "com.android.support:support-compat:27.1.1"
     //compile 'com.android.support:support:23.4.0'
     compile 'com.jaredrummler:android-processes:1.0.9'
-    compile 'com.android.support:design:25.0.0'
+    compile 'com.android.support:design:25.+'
     compile 'com.android.support.constraint:constraint-layout:1.1.3'
     compile 'com.beardedhen:androidbootstrap:2.3.2'
     compile 'com.github.parse-community.Parse-SDK-Android:parse:1.20.0'
@@ -59,6 +59,7 @@ dependencies {
     //compile 'com.baasbox:baasbox-android:0.9.0'
     //compile 'com.google.android.gms:play-services-location:11.0.4'
     compile project(path: ':mobilesensing_module')
+    compile project(path: ':gpslogger')
 
     //compile 'com.android.support:appcompat-v7:27.1.1'
 }

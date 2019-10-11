@@ -60,6 +60,8 @@ import de.dennis.mobilesensing.Application;
 import de.dennis.mobilesensing.R;
 import de.dennis.mobilesensing.models.ClusterMarker;
 import de.dennis.mobilesensing.util.ClusterManagerRenderer;
+import com.example.gpslogger.gpslogger.GPSActivity;
+
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback,
@@ -122,7 +124,8 @@ public class MapsActivity extends FragmentActivity implements
                         startActivity(i);
                         break;
                     case R.id.menu_chats:
-                        i = new Intent(MapsActivity.this, ChatsActivity.class);
+//                        i = new Intent(MapsActivity.this, ChatsActivity.class);
+                        i = new Intent(MapsActivity.this, GPSActivity.class);
                         startActivity(i);
                         break;
                 }

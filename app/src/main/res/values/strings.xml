@@ -1,20 +1,20 @@
 <resources>
-    <string name="app_name">Ganesha</string>
+    <string name="app_name" translatable="false">Ganesha</string>
 
     <string-array name="gender_array">
         <item>Weiblich</item>
         <item>Männlich</item>
         <item>Anderes</item>
     </string-array>
-    <string name="title_activity_webview">WebviewActivity</string>
+    <string name="title_activity_webview" translatable="false">WebviewActivity</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
 
-    <string name="action_settings">Einstellungen</string>
-    <string name="menu_maps">Maps</string>
-    <string name="menu_data">Data</string>
-    <string name="menu_chats">Chats</string>
+    <string name="action_settings" translatable="false">Einstellungen</string>
+    <string name="menu_maps" translatable="false">Maps</string>
+    <string name="menu_data" translatable="false">Data</string>
+    <string name="menu_chats" translatable="false">Chats</string>
 
     <string-array name="navbar">
         <item>Fahrten bewerten</item>
@@ -22,10 +22,10 @@
         <item>Abmelden</item>
     </string-array>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="title_activity_chats">ChatsActivity</string>
-    <string name="title_activity_data">DataActivity</string>
-    <string name="title_activity_location_description">Map</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="title_activity_maps" translatable="false">Map</string>
+    <string name="title_activity_chats" translatable="false">ChatsActivity</string>
+    <string name="title_activity_data" translatable="false">DataActivity</string>
+    <string name="title_activity_location_description" translatable="false">Map</string>
 
 </resources>

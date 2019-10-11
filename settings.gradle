@@ -1,1 +1,1 @@
-include ':app', ':mobilesensing_module'
+include ':app', ':mobilesensing_module', ':gpslogger'

@@ -33,6 +33,7 @@ public class Module extends MultiDexApplication {
     private static Context context;
     @Override
     public void onCreate() {
+
         super.onCreate();
     }
     public static void init(Context app_context, String user_Name){

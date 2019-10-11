@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
+import com.example.gpslogger.gpslogger.GPSApplication;
 import com.parse.LogOutCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -23,7 +24,7 @@ import de.dennis.mobilesensing_module.mobilesensing.Upload.UploadManager;
 /**
  * Created by Dennis on 28.02.2017.
  */
-public class Application extends MultiDexApplication {
+public class Application extends GPSApplication {
     private static Context context;
     private static SensingManager sensMang;
     private static UploadManager uplMang;
