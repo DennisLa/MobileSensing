@@ -23,6 +23,8 @@ import com.intel.context.sensing.InitCallback;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
+
 import de.dennis.mobilesensing_module.mobilesensing.EventBus.MissingPermissionsEvent;
 import de.dennis.mobilesensing_module.mobilesensing.Module;
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.GoogleActivity.GActivityRecognition;
@@ -36,8 +38,6 @@ import de.dennis.mobilesensing_module.mobilesensing.Sensors.OtherSensors.Running
 import de.dennis.mobilesensing_module.mobilesensing.Sensors.OtherSensors.ScreenOnService.ScreenOnService;
 import de.dennis.mobilesensing_module.mobilesensing.Storage.StorageEventListener;
 import de.dennis.mobilesensing_module.mobilesensing.Upload.Delete.DeleteService;
-
-import java.util.ArrayList;
 
 import static android.support.v4.content.ContextCompat.checkSelfPermission;
 
