@@ -24,34 +24,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/id_coordinatorlayout"
-    tools:context="com.example.gpslogger.gpslogger.GPSActivity">
+    tools:context=".gpslogger.GPSActivity">
 
-<android.support.design.widget.AppBarLayout
-    android:id="@+id/id_appbarlayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:elevation="3dp">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/id_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        app:titleTextAppearance="@style/ToolbarTitle"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/id_tablayout"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/id_appbarlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabMode="fixed"
-        app:tabGravity="fill"/>
-</android.support.design.widget.AppBarLayout>
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:elevation="3dp">
 
-<android.support.v4.view.ViewPager
-    android:id="@+id/id_viewpager"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/id_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+
+            app:titleTextAppearance="@style/ToolbarTitle"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/id_tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed"
+            app:tabGravity="fill"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/id_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/id_bottomsheet"

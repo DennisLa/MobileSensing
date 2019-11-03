@@ -107,6 +107,15 @@ public class MapsActivity extends FragmentActivity implements
 //               setContentView(R.layout.location_description);
            }
         });
+        FloatingActionButton fab2 = findViewById(R.id.lunchGPSLogger);
+        fab2.setOnClickListener(new View.OnClickListener() {
+           public void onClick(View v) {
+               Intent i = new Intent(MapsActivity.this, GPSActivity.class);
+               startActivity(i);
+               finish();
+//               setContentView(R.layout.location_description);
+           }
+        });
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         Menu menu = bottomNavigationView.getMenu();
@@ -124,8 +133,7 @@ public class MapsActivity extends FragmentActivity implements
                         startActivity(i);
                         break;
                     case R.id.menu_chats:
-//                        i = new Intent(MapsActivity.this, ChatsActivity.class);
-                        i = new Intent(MapsActivity.this, GPSActivity.class);
+                        i = new Intent(MapsActivity.this, ChatsActivity.class);
                         startActivity(i);
                         break;
                 }

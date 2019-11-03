@@ -22,7 +22,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="eu.basicairdata.graziano.gpslogger.FragmentRecordingControls"
+    tools:context="com.example.gpslogger.gpslogger.FragmentRecordingControls"
     android:id="@+id/id_fragmentrecordingcontrols"
     android:background="@color/colorTrackBackground"
     android:orientation="horizontal"

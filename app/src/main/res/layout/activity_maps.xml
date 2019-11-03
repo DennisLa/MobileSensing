@@ -38,10 +38,25 @@
         android:layout_marginLeft="150dp"
         android:layout_marginTop="150dp"
         android:layout_marginRight="50dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="70dp"
         android:clickable="true"
         android:scaleType="center"
         app:backgroundTint="@color/colorPrimaryDark"
         android:tint="@color/white"
     />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/lunchGPSLogger"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_record"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="130dp"
+        android:clickable="true"
+        android:scaleType="center"
+        app:backgroundTint="@color/colorPrimaryDark"
+        android:tint="@color/white"
+        />
 </FrameLayout>

@@ -38,13 +38,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gpslogger.R;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -266,6 +273,7 @@ public class FragmentTracklist extends Fragment {
             }
             return;
         }
+//        if (msg == EventBusMSG.TRACK_UPLOADED_TO_PARSE) {
         if (msg == EventBusMSG.INTENT_SEND) {
             final List<ExportingTask> selectedTracks = GPSApplication.getInstance().getExportingTaskList(); // The list of shared tracks
             ArrayList<Uri> files = new ArrayList<>();                                               // The list of URI to be attached to intent
@@ -273,94 +281,181 @@ public class FragmentTracklist extends Fragment {
 
             StringBuilder extraSubject = new StringBuilder(getString(R.string.app_name) + " - ");
             StringBuilder extraText = new StringBuilder();
-            int i = 0;                                                                              // A service counter for string building
 
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_SEND_MULTIPLE);
-            //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setType("text/xml");
+            Track track = GPSApplication.getInstance().GPSDataBase.getTrack(selectedTracks.get(0).getId()); //just upload the first item in the list
+            if (track == null) return;
+//                if (track.isUploadedStatus()) continue;// already uploaded
+            extraSubject.append(track.getName());
 
-            for (ExportingTask ET : selectedTracks) {
-
-                Track track = GPSApplication.getInstance().GPSDataBase.getTrack(ET.getId());
-                if (track == null) return;
-
-                if (i > 0) {
-                    extraSubject.append(" + ");
-                    extraText.append("\n\n----------------------------\n");
-                }
-                extraSubject.append(track.getName());
-
-                PhysicalDataFormatter phdformatter = new PhysicalDataFormatter();
-                PhysicalData phdDuration;
-                PhysicalData phdDurationMoving;
-                PhysicalData phdSpeedMax;
-                PhysicalData phdSpeedAvg;
-                PhysicalData phdSpeedAvgMoving;
-                PhysicalData phdDistance;
-                PhysicalData phdAltitudeGap;
-                PhysicalData phdOverallDirection;
-                phdDuration = phdformatter.format(track.getDuration(),PhysicalDataFormatter.FORMAT_DURATION);
-                phdDurationMoving = phdformatter.format(track.getDuration_Moving(),PhysicalDataFormatter.FORMAT_DURATION);
-                phdSpeedMax = phdformatter.format(track.getSpeedMax(),PhysicalDataFormatter.FORMAT_SPEED);
-                phdSpeedAvg = phdformatter.format(track.getSpeedAverage(),PhysicalDataFormatter.FORMAT_SPEED_AVG);
-                phdSpeedAvgMoving = phdformatter.format(track.getSpeedAverageMoving(),PhysicalDataFormatter.FORMAT_SPEED_AVG);
-                phdDistance = phdformatter.format(track.getEstimatedDistance(),PhysicalDataFormatter.FORMAT_DISTANCE);
-                phdAltitudeGap = phdformatter.format(track.getEstimatedAltitudeGap(GPSApplication.getInstance().getPrefEGM96AltitudeCorrection()),PhysicalDataFormatter.FORMAT_ALTITUDE);
-                phdOverallDirection = phdformatter.format(track.getBearing(),PhysicalDataFormatter.FORMAT_BEARING);
-                if (track.getNumberOfLocations() <= 1) {
-                    extraText.append(getString(R.string.app_name) + " - " + getString(R.string.tab_track) + " " + track.getName()
-                            + "\n" + track.getNumberOfLocations() + " " + getString(R.string.trackpoints)
-                            + "\n" + track.getNumberOfPlacemarks() + " " + getString(R.string.placemarks));
-                } else {
-                    extraText.append(getString(R.string.app_name) + " - " + getString(R.string.tab_track) + " " + track.getName()
-                            + "\n" + track.getNumberOfLocations() + " " + getString(R.string.trackpoints)
-                            + "\n" + track.getNumberOfPlacemarks() + " " + getString(R.string.placemarks)
-                            + "\n"
-                            + "\n" + getString(R.string.distance) + " = " + phdDistance.Value + " " + phdDistance.UM
-                            + "\n" + getString(R.string.duration) + " = " + phdDuration.Value + " | " + phdDurationMoving.Value
-                            + "\n" + getString(R.string.altitude_gap) + " = " + phdAltitudeGap.Value + " " + phdAltitudeGap.UM
-                            + "\n" + getString(R.string.max_speed) + " = " + phdSpeedMax.Value + " " + phdSpeedMax.UM
-                            + "\n" + getString(R.string.average_speed) + " = " + phdSpeedAvg.Value + " | " + phdSpeedAvgMoving.Value + " " + phdSpeedAvg.UM
-                            + "\n" + getString(R.string.overall_direction) + " = " + phdOverallDirection.Value + " " + phdOverallDirection.UM
-                            + "\n"
-                            + "\n" + getString(R.string.pref_track_stats) + ": " + getString(R.string.pref_track_stats_totaltime) + " | " + getString(R.string.pref_track_stats_movingtime));
-                }
-
-                String fname = track.getName() + ".kml";
-                file = new File(Environment.getExternalStorageDirectory() + "/GPSLogger/AppData/", fname);
-                if (file.exists () && GPSApplication.getInstance().getPrefExportKML()) {
-                    Uri uri = Uri.fromFile(file);
-                    files.add(uri);
-                }
-                fname = track.getName() + ".gpx";
-                file = new File(Environment.getExternalStorageDirectory() + "/GPSLogger/AppData/", fname);
-                if (file.exists ()  && GPSApplication.getInstance().getPrefExportGPX()) {
-                    Uri uri = Uri.fromFile(file);
-                    files.add(uri);
-                }
-                fname = track.getName() + ".txt";
-                file = new File(Environment.getExternalStorageDirectory() + "/GPSLogger/AppData/", fname);
-                if (file.exists ()  && GPSApplication.getInstance().getPrefExportTXT()) {
-                    Uri uri = Uri.fromFile(file);
-                    files.add(uri);
-                }
-                i++;
+            PhysicalDataFormatter phdformatter = new PhysicalDataFormatter();
+            PhysicalData phdDuration;
+            PhysicalData phdDurationMoving;
+            PhysicalData phdSpeedMax;
+            PhysicalData phdSpeedAvg;
+            PhysicalData phdSpeedAvgMoving;
+            PhysicalData phdDistance;
+            PhysicalData phdAltitudeGap;
+            PhysicalData phdOverallDirection;
+            phdDuration = phdformatter.format(track.getDuration(),PhysicalDataFormatter.FORMAT_DURATION);
+            phdDurationMoving = phdformatter.format(track.getDuration_Moving(),PhysicalDataFormatter.FORMAT_DURATION);
+            phdSpeedMax = phdformatter.format(track.getSpeedMax(),PhysicalDataFormatter.FORMAT_SPEED);
+            phdSpeedAvg = phdformatter.format(track.getSpeedAverage(),PhysicalDataFormatter.FORMAT_SPEED_AVG);
+            phdSpeedAvgMoving = phdformatter.format(track.getSpeedAverageMoving(),PhysicalDataFormatter.FORMAT_SPEED_AVG);
+            phdDistance = phdformatter.format(track.getEstimatedDistance(),PhysicalDataFormatter.FORMAT_DISTANCE);
+            phdAltitudeGap = phdformatter.format(track.getEstimatedAltitudeGap(GPSApplication.getInstance().getPrefEGM96AltitudeCorrection()),PhysicalDataFormatter.FORMAT_ALTITUDE);
+            phdOverallDirection = phdformatter.format(track.getBearing(),PhysicalDataFormatter.FORMAT_BEARING);
+            if (track.getNumberOfLocations() <= 1) {
+                extraText.append(getString(R.string.app_name) + " - " + getString(R.string.tab_track) + " " + track.getName()
+                        + "\n" + track.getNumberOfLocations() + " " + getString(R.string.trackpoints)
+                        + "\n" + track.getNumberOfPlacemarks() + " " + getString(R.string.placemarks));
+            } else {
+                extraText.append(getString(R.string.app_name) + " - " + getString(R.string.tab_track) + " " + track.getName()
+                        + "\n" + track.getNumberOfLocations() + " " + getString(R.string.trackpoints)
+                        + "\n" + track.getNumberOfPlacemarks() + " " + getString(R.string.placemarks)
+                        + "\n"
+                        + "\n" + getString(R.string.distance) + " = " + phdDistance.Value + " " + phdDistance.UM
+                        + "\n" + getString(R.string.duration) + " = " + phdDuration.Value + " | " + phdDurationMoving.Value
+                        + "\n" + getString(R.string.altitude_gap) + " = " + phdAltitudeGap.Value + " " + phdAltitudeGap.UM
+                        + "\n" + getString(R.string.max_speed) + " = " + phdSpeedMax.Value + " " + phdSpeedMax.UM
+                        + "\n" + getString(R.string.average_speed) + " = " + phdSpeedAvg.Value + " | " + phdSpeedAvgMoving.Value + " " + phdSpeedAvg.UM
+                        + "\n" + getString(R.string.overall_direction) + " = " + phdOverallDirection.Value + " " + phdOverallDirection.UM
+                        + "\n"
+                        + "\n" + getString(R.string.pref_track_stats) + ": " + getString(R.string.pref_track_stats_totaltime) + " | " + getString(R.string.pref_track_stats_movingtime));
             }
-            intent.putExtra(Intent.EXTRA_SUBJECT, extraSubject.toString());
-            intent.putExtra(Intent.EXTRA_TEXT, (CharSequence) (extraText.toString()));
-            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
-            // Create intent to show chooser
-            Intent chooser = Intent.createChooser(intent, getString(R.string.card_menu_share));
-            // Verify the intent will resolve to at least one activity
-            try {
-                if ((intent.resolveActivity(getContext().getPackageManager()) != null) && (!files.isEmpty())) {
-                    startActivity(chooser);
+
+            String fname = track.getName() + ".gpx";
+            file = new File(Environment.getExternalStorageDirectory() + "/GPSLogger/AppData/", fname);
+            if (file.exists ()  && GPSApplication.getInstance().getPrefExportGPX()) {
+                Uri uri = Uri.fromFile(file);
+                files.add(uri);
+
+                int size = (int) file.length();
+                byte[] data = new byte[size];
+                try {
+                    BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+                    buf.read(data, 0, data.length);
+                    buf.close();
+                } catch (FileNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
-            } catch (NullPointerException e) {
-                //Log.w("myApp", "[#] FragmentTracklist.java - Unable to start the Activity");
+                ParseFile parseFile = new ParseFile(file.getName(), data);
+                parseFile.saveInBackground();
+
+                ParseObject gameScore = new ParseObject("gpslogger");
+                gameScore.put("TrackName", getString(R.string.app_name) + " - " + getString(R.string.tab_track) + " " + track.getName());
+                gameScore.put("TrackPoints", track.getNumberOfLocations());
+                gameScore.put("Placemarks", track.getNumberOfPlacemarks());
+                gameScore.put("DistanceInMeters", phdDistance.Value);
+                gameScore.put("Duration", phdDuration.Value);
+                gameScore.put("MaxSpeed", phdSpeedMax.Value);
+                gameScore.put("AltitudeGap", phdAltitudeGap.Value);
+                gameScore.put("AverageSpeed", phdSpeedAvg.Value);
+                gameScore.put("overallDirection", phdOverallDirection.Value);
+                gameScore.put("file", parseFile);
+                gameScore.saveInBackground();
+                track.setUploadedStatus(true);
             }
+            Toast.makeText(getContext(), "Saved to database", Toast.LENGTH_SHORT).show();
         }
+//        if (msg == EventBusMSG.INTENT_SEND) {
+//            final List<ExportingTask> selectedTracks = GPSApplication.getInstance().getExportingTaskList(); // The list of shared tracks
+//            ArrayList<Uri> files = new ArrayList<>();                                               // The list of URI to be attached to intent
+//            File file;
+//
+//            StringBuilder extraSubject = new StringBuilder(getString(R.string.app_name) + " - ");
+//            StringBuilder extraText = new StringBuilder();
+//            int i = 0;                                                                              // A service counter for string building
+//
+////            Intent intent = new Intent();
+////            intent.setAction(Intent.ACTION_SEND_MULTIPLE);
+////            //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+////            intent.setType("text/xml");
+//
+//            for (ExportingTask ET : selectedTracks) {
+//
+//                Track track = GPSApplication.getInstance().GPSDataBase.getTrack(ET.getId());
+//                if (track == null) return;
+//
+//                if (i > 0) {
+//                    extraSubject.append(" + ");
+//                    extraText.append("\n\n----------------------------\n");
+//                }
+//                extraSubject.append(track.getName());
+//
+//                PhysicalDataFormatter phdformatter = new PhysicalDataFormatter();
+//                PhysicalData phdDuration;
+//                PhysicalData phdDurationMoving;
+//                PhysicalData phdSpeedMax;
+//                PhysicalData phdSpeedAvg;
+//                PhysicalData phdSpeedAvgMoving;
+//                PhysicalData phdDistance;
+//                PhysicalData phdAltitudeGap;
+//                PhysicalData phdOverallDirection;
+//                phdDuration = phdformatter.format(track.getDuration(),PhysicalDataFormatter.FORMAT_DURATION);
+//                phdDurationMoving = phdformatter.format(track.getDuration_Moving(),PhysicalDataFormatter.FORMAT_DURATION);
+//                phdSpeedMax = phdformatter.format(track.getSpeedMax(),PhysicalDataFormatter.FORMAT_SPEED);
+//                phdSpeedAvg = phdformatter.format(track.getSpeedAverage(),PhysicalDataFormatter.FORMAT_SPEED_AVG);
+//                phdSpeedAvgMoving = phdformatter.format(track.getSpeedAverageMoving(),PhysicalDataFormatter.FORMAT_SPEED_AVG);
+//                phdDistance = phdformatter.format(track.getEstimatedDistance(),PhysicalDataFormatter.FORMAT_DISTANCE);
+//                phdAltitudeGap = phdformatter.format(track.getEstimatedAltitudeGap(GPSApplication.getInstance().getPrefEGM96AltitudeCorrection()),PhysicalDataFormatter.FORMAT_ALTITUDE);
+//                phdOverallDirection = phdformatter.format(track.getBearing(),PhysicalDataFormatter.FORMAT_BEARING);
+//                if (track.getNumberOfLocations() <= 1) {
+//                    extraText.append(getString(R.string.app_name) + " - " + getString(R.string.tab_track) + " " + track.getName()
+//                            + "\n" + track.getNumberOfLocations() + " " + getString(R.string.trackpoints)
+//                            + "\n" + track.getNumberOfPlacemarks() + " " + getString(R.string.placemarks));
+//                } else {
+//                    extraText.append(getString(R.string.app_name) + " - " + getString(R.string.tab_track) + " " + track.getName()
+//                            + "\n" + track.getNumberOfLocations() + " " + getString(R.string.trackpoints)
+//                            + "\n" + track.getNumberOfPlacemarks() + " " + getString(R.string.placemarks)
+//                            + "\n"
+//                            + "\n" + getString(R.string.distance) + " = " + phdDistance.Value + " " + phdDistance.UM
+//                            + "\n" + getString(R.string.duration) + " = " + phdDuration.Value + " | " + phdDurationMoving.Value
+//                            + "\n" + getString(R.string.altitude_gap) + " = " + phdAltitudeGap.Value + " " + phdAltitudeGap.UM
+//                            + "\n" + getString(R.string.max_speed) + " = " + phdSpeedMax.Value + " " + phdSpeedMax.UM
+//                            + "\n" + getString(R.string.average_speed) + " = " + phdSpeedAvg.Value + " | " + phdSpeedAvgMoving.Value + " " + phdSpeedAvg.UM
+//                            + "\n" + getString(R.string.overall_direction) + " = " + phdOverallDirection.Value + " " + phdOverallDirection.UM
+//                            + "\n"
+//                            + "\n" + getString(R.string.pref_track_stats) + ": " + getString(R.string.pref_track_stats_totaltime) + " | " + getString(R.string.pref_track_stats_movingtime));
+//                }
+//
+//                String fname = track.getName() + ".kml";
+//                file = new File(Environment.getExternalStorageDirectory() + "/GPSLogger/AppData/", fname);
+//                if (file.exists () && GPSApplication.getInstance().getPrefExportKML()) {
+//                    Uri uri = Uri.fromFile(file);
+//                    files.add(uri);
+//                }
+//                fname = track.getName() + ".gpx";
+//                file = new File(Environment.getExternalStorageDirectory() + "/GPSLogger/AppData/", fname);
+//                if (file.exists ()  && GPSApplication.getInstance().getPrefExportGPX()) {
+//                    Uri uri = Uri.fromFile(file);
+//                    files.add(uri);
+//                }
+//                fname = track.getName() + ".txt";
+//                file = new File(Environment.getExternalStorageDirectory() + "/GPSLogger/AppData/", fname);
+//                if (file.exists ()  && GPSApplication.getInstance().getPrefExportTXT()) {
+//                    Uri uri = Uri.fromFile(file);
+//                    files.add(uri);
+//                }
+//                i++;
+//            }
+////            intent.putExtra(Intent.EXTRA_SUBJECT, extraSubject.toString());
+////            intent.putExtra(Intent.EXTRA_TEXT, (CharSequence) (extraText.toString()));
+////            intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
+////            // Create intent to show chooser
+////            Intent chooser = Intent.createChooser(intent, getString(R.string.card_menu_share));
+////            // Verify the intent will resolve to at least one activity
+////            try {
+////                if ((intent.resolveActivity(getContext().getPackageManager()) != null) && (!files.isEmpty())) {
+////                    startActivity(chooser);
+////                }
+////            } catch (NullPointerException e) {
+////                //Log.w("myApp", "[#] FragmentTracklist.java - Unable to start the Activity");
+////            }
+//        }
     }
 
 

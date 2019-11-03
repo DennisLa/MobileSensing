@@ -106,6 +106,15 @@ public class Track {
     // - Max Acceleration = 12 m/s^2
     // - Stabilization time = 4 s
     private SpikesChecker AltitudeFilter = new SpikesChecker(12, 4);
+    private boolean uploadedStatus = false;
+
+    public boolean isUploadedStatus() {
+        return uploadedStatus;
+    }
+
+    public void setUploadedStatus(boolean uploadedStatus) {
+        this.uploadedStatus = uploadedStatus;
+    }
 
     public void add(LocationExtended location) {
         if (NumberOfLocations == 0) {

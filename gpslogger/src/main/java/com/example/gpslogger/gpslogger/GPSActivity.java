@@ -37,6 +37,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -53,15 +54,22 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.gpslogger.R;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class GPSActivity extends AppCompatActivity {
 
@@ -247,6 +255,15 @@ public class GPSActivity extends AppCompatActivity {
                 EventBus.getDefault().post(EventBusMSG.NEW_TRACK);
                 ToastClickAgain.cancel();
                 Toast.makeText(this, getString(R.string.toast_track_saved_into_tracklist), Toast.LENGTH_SHORT).show();
+                ///
+                EventBus.getDefault().post(EventBusMSG.ACTION_BULK_SHARE_TRACKS);
+                EventBus.getDefault().post(EventBusMSG.TRACK_UPLOADED_TO_PARSE);
+
+                //NAVIGATE TO MAPS ACTIVITY
+//                Intent i = new Intent(GPSActivity.this, MapsActivity.class);
+//                startActivity(i);
+//                finish();
+
             } else {
                 // This is the first click
                 GPSApp.setNewTrackFlag(true); // Start the timer
@@ -274,7 +291,7 @@ public class GPSActivity extends AppCompatActivity {
         if (activeTab != 2) {
             mBottomSheetBehavior.setPeekHeight(1);
             mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            //Log.w("myApp", "[#] GPSActivity.java - mBottomSheetBehavior.setPeekHeight(" + bottomSheet.getHeight() +");");
+            //Log.w("myApp", "[#] GPSActivity.java - mBottomSheetBehdoavior.setPeekHeight(" + bottomSheet.getHeight() +");");
             mBottomSheetBehavior.setPeekHeight(bottomSheet.getHeight());
         } else {
             mBottomSheetBehavior.setPeekHeight(1);
@@ -371,6 +388,20 @@ public class GPSActivity extends AppCompatActivity {
                     }
                 });
                 break;
+            case EventBusMSG.NEW_TRACK:
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "it's inside here in the event thing ", Toast.LENGTH_LONG).show();
+                        ParseObject gameScore = new ParseObject("fromgpslogger");
+                        gameScore.put("score", 17);
+                        gameScore.put("playerName", "gpsactivity-newtrack");
+                        gameScore.put("cheatMode", false);
+                        gameScore.saveInBackground();
+                    }
+                });
+                break;
+
             case EventBusMSG.TOAST_UNABLE_TO_WRITE_THE_FILE:
                 runOnUiThread(new Runnable() {
                     @Override

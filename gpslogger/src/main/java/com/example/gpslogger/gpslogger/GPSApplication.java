@@ -98,6 +98,8 @@ public class GPSApplication extends Application implements GpsStatus.Listener, L
     public static final int JOB_TYPE_VIEW       = 2;                // Bulk View
     public static final int JOB_TYPE_SHARE      = 3;                // Bulk Share
     public static final int JOB_TYPE_DELETE     = 4;                // Bulk Delete
+    public static final int JOB_TYPE_UPLOAD_TO_PARSE     = 5;                // Bulk Delete
+
 
     public static final String FLAG_RECORDING   = "flagRecording";  // The persistent Flag is set when the app is recording, in order to detect Background Crashes
 
@@ -678,14 +680,12 @@ public class GPSApplication extends Application implements GpsStatus.Listener, L
         EGM96 egm96 = EGM96.getInstance();                                              // Load EGM Grid
         if (egm96 != null) {
             if (!egm96.isEGMGridLoaded()) {
-                String i = Environment.getExternalStorageDirectory().getPath();
-                String j = Environment.getExternalStorageDirectory().getAbsolutePath();
                 egm96.LoadGridFromFile(Environment.getExternalStorageDirectory() + "/MobileSensing/AppData/WW15MGH.DAC", getApplicationContext().getFilesDir() + "/WW15MGH.DAC");
             }
         }
 
         try {                                                                           // Determine the app installation source
-            String installer;
+            String installer="";
             installer = getApplicationContext().getPackageManager().getInstallerPackageName(getApplicationContext().getPackageName());
             if (installer.equals("com.android.vending") || installer.equals("com.google.android.feedback"))
                 AppOrigin = APP_ORIGIN_GOOGLE_PLAY_STORE;                               // App installed from Google Play Store
@@ -891,6 +891,17 @@ public class GPSApplication extends Application implements GpsStatus.Listener, L
         return nsel;
     }
 
+    public void SelectAllTracks() {
+        synchronized(_ArrayListTracks) {
+            for (Track T : _ArrayListTracks) {
+                if (!T.isSelected()) {
+                    T.setSelected(true);
+                    EventBus.getDefault().post(new EventBusMSGNormal(EventBusMSG.TRACKLIST_SELECT, T.getId()));
+                }
+            }
+        }
+        EventBus.getDefault().post(EventBusMSG.REFRESH_TRACKLIST);
+    }
 
     public void DeselectAllTracks() {
         synchronized(_ArrayListTracks) {
@@ -909,14 +920,14 @@ public class GPSApplication extends Application implements GpsStatus.Listener, L
         ExportingTaskList.clear();
         synchronized(_ArrayListTracks) {
             for (Track T : _ArrayListTracks) {
-                if (T.isSelected()) {
+//                if (T.isSelected()) {
                     ExportingTask ET = new ExportingTask();
                     ET.setId(T.getId());
                     ET.setName(T.getName());
                     ET.setNumberOfPoints_Total(T.getNumberOfLocations() + T.getNumberOfPlacemarks());
                     ET.setNumberOfPoints_Processed(0);
                     ExportingTaskList.add(ET);
-                }
+//                }
             }
         }
         JobsPending = ExportingTaskList.size();

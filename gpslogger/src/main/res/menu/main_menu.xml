@@ -22,7 +22,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/id_main_menu"
-    tools:context="eu.basicairdata.graziano.gpslogger.GPSActivity">
+    tools:context="com.example.gpslogger.gpslogger.GPSActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

@@ -41,6 +41,7 @@ public class EventBusMSG {
     static final short TRACKLIST_SELECT                 =  25;  // The user select (into the tracklist) the track with a given id
     static final short INTENT_SEND                      =  26;  // Request to share
     static final short TOAST_UNABLE_TO_WRITE_THE_FILE   =  27;  // Exporter fails to export the Track (given id)
+    static final short TRACK_UPLOADED_TO_PARSE          =  27;  // Exporter fails to export the Track (given id)
 
     static final short ACTION_BULK_DELETE_TRACKS        =  40;  // Delete the selected tracks
     static final short ACTION_BULK_EXPORT_TRACKS        =  41;  // Export the selected tracks
