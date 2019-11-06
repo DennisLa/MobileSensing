@@ -125,3 +125,5 @@
     @android.support.annotation.Keep <init>(...);
 }
 
+-keepattributes InnerClasses
+-dontoptimize
